@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: "movie_night_db"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: movie_night
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: devpassword
+      TZ: Asia/Tokyo
+    ports:
+      - "3333:3306"
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+
+  app:
+    build: ./movie_night_app
+    container_name: movie_night_next_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./movie_night_app:/app
+      - /app/node_modules
+    command: npm run dev
+
+volumes:
+  mysql_data:
