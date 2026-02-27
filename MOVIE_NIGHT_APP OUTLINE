@@ -11,6 +11,14 @@ MOVIE_NIGHT_APP
  - Unwatched Movies
 
 ---------------
+TO DO
+---------------
+- Get Database Data Connected to Pages. (movies)
+- Make dummy data for DB
+- Connect to movie database
+- Search function for API 
+
+---------------
 STACK
 ---------------
 - REACT 
@@ -31,3 +39,10 @@ IDEAS
 - VOTING SYSTEM
 - GET MOVIE DATA FROM TMDB
 - BASIC CRUD (ADD REMOVE FILMS)
+
+
+- Use search - get movie from tmdb (name, year, basically all data)
+- Add movie to SHORTLIST which can be movies table in database.
+- Then just look up database to work with my data.
+- Add to watched_movies
+
