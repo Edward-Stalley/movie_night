@@ -1,9 +1,11 @@
+//  # QUERIES FOR MYSQL DATABASE (movie_night)
 import { pool } from "@/lib/db";
 import { RowDataPacket } from "mysql2";
 import { WatchedMovieRow } from "@/lib/types/db";
 
-// (GET)
-// Database: watched_movies
+// # Table: watched_movies
+
+// ## (GET) : Get List of Movies from watched_movies.
 export async function getWatchedMoviesRaw(): Promise<WatchedMovieRow[]> {
   const [rows] = await pool.query<RowDataPacket[]>(`
 SELECT
@@ -32,3 +34,5 @@ JOIN users chooser
 
   return rows as WatchedMovieRow[];
 }
+
+// ## (POST) : Add individual Movie to watched_movies.

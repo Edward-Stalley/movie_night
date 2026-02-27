@@ -1,3 +1,6 @@
+// # The Movie Database API REQUESTS
+// # Connection to The Movie Database API.
+
 const tmdbBaseUrl = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 

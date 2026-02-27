@@ -1,14 +1,8 @@
-// lib/transform.ts
-import type {
-  WatchedMovie,
-  Review,
-  WatchedMovieRow,
-  Movie,
-  SearchedMovie,
-} from "@/lib/types/db";
-import { TMDBMovie } from "./types/tmdb";
+// # Reorganises data from either Database or API into correct data structure / shape.
 
-// Reorganises data from either Database or API into correct data structure / shape.
+import type { WatchedMovieRow } from "@/lib/types/db";
+import { TMDBMovie } from "./types/tmdb";
+import { SearchedMovie, WatchedMovie } from "./types/domain";
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 export function groupWatchedMovies(rows: WatchedMovieRow[]): WatchedMovie[] {
