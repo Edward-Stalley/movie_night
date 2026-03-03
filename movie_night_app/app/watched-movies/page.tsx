@@ -1,5 +1,5 @@
 import { groupWatchedMovies } from "@/lib/transform";
-import type { WatchedMovie } from "@/lib/types/db";
+import type { WatchedMovie } from "@/lib/types/domain";
 import Image from "next/image";
 import { StarRating } from "@/app/components/starRating";
 
@@ -37,15 +37,18 @@ export default async function WatchedMovies() {
             {/* {m.watchedOn.getFullYear()} */}
             {/* {m.release_date?.getFullYear()} */}
           </div>
-          <div className="text-2xl">{m.chosenBy}</div>
           <div>
             {m.reviews.map((r) => (
               <div
                 key={r.ratedBy}
-                className=" flex bg-accent-content m-1 rounded-2xl"
+                className=" flex bg-accent-content m-1 rounded-2xl pt-2 pl-2"
               >
-                <div className="w-10">{r.ratedBy}</div>
-                <div className="flex-col ml-2">
+                <div
+                  className={`${r.ratedBy === m.chosenBy ? "text-accent font-bold" : ""} mr-1 w-10`}
+                >
+                  {r.ratedBy}
+                </div>
+                <div className="flex-col">
                   <StarRating rating={r.rating} />
                   <div className="flex pl-2 pt-2">
                     <svg

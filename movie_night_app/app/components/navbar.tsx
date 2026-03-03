@@ -30,7 +30,7 @@ export default function Navbar() {
               <Link href="/search-movie">Search Movie</Link>
             </li>
             <li>
-              <Link href="/">Shortlist</Link>
+              <Link href="/movies">Movies</Link>
             </li>
             <li>
               <Link href="/watched-movies">Watched</Link>

@@ -1,11 +1,11 @@
 // # Reorganises data from either Database or API into correct data structure / shape.
 
-import type { WatchedMovieRow } from "@/lib/types/db";
+import type { MovieRow } from "@/lib/types/db";
 import { TMDBMovie } from "./types/tmdb";
-import { SearchedMovie, WatchedMovie } from "./types/domain";
+import { SearchedMovie, StoredMovie, WatchedMovie } from "./types/domain";
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
-export function groupWatchedMovies(rows: WatchedMovieRow[]): WatchedMovie[] {
+export function groupWatchedMovies(rows: MovieRow[]): WatchedMovie[] {
   const moviesMap = new Map<number, WatchedMovie>();
 
   for (const row of rows) {
@@ -35,6 +35,27 @@ export function groupWatchedMovies(rows: WatchedMovieRow[]): WatchedMovie[] {
     }
   }
 
+  return Array.from(moviesMap.values());
+}
+
+export function groupMovies(rows: MovieRow[]): StoredMovie[] {
+  const moviesMap = new Map<number, StoredMovie>();
+  for (const row of rows) {
+    if (!moviesMap.has(row.tmdbId)) {
+      console.log(row.tmdbId);
+      moviesMap.set(row.id, {
+        id: row.id,
+        tmdbId: row.tmdbId,
+        overview: row.overview,
+        genreIds: row.genreIds,
+        originalTitle: row.originalTitle,
+        posterPath: row.posterPath,
+        releaseDate: new Date(row.releaseDate),
+      });
+    }
+  }
+
+  const movieList = Array.from(moviesMap.values());
   return Array.from(moviesMap.values());
 }
 

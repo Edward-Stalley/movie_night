@@ -1,12 +1,15 @@
 // # Used in the application
 
-export interface SearchedMovie {
-  id: number; // === tmdb_id
+export interface MovieBase {
   originalTitle: string | null;
   overview: string | null;
   releaseDate: Date;
   posterPath: string | null;
   genreIds: number[] | null;
+}
+
+export interface SearchedMovie extends MovieBase {
+  id: number; // === tmdb_id
 }
 
 export interface Review {
@@ -15,26 +18,25 @@ export interface Review {
   comment: string | null;
 }
 
-export interface WatchedMovie {
+export interface WatchedMovie extends MovieBase {
   id: number;
   tmdbId: number;
   watchedOn: Date;
   chosenBy: string;
   username: string;
   reviews: Review[];
-  genreIds: number[] | null;
-  originalTitle: string | null;
-  overview: string | null;
-  releaseDate: Date;
-  posterPath: string | null;
 }
 
-export interface StoredMovie {
+export interface ShortlistedMovie extends MovieBase {
   id: number;
   tmdbId: number;
-  originalTitle: string | null;
-  overview: string | null;
-  releaseDate: Date;
-  posterPath: string | null;
-  genreIds: number[] | null;
+  addedBy: Date;
+  username: string;
 }
+
+export interface StoredMovie extends MovieBase {
+  id: number;
+  tmdbId: number;
+}
+
+export type MovieInsert = Omit<StoredMovie, "id">;
