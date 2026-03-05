@@ -2,14 +2,12 @@
 
 import Image from "next/image";
 import { searchMovie } from "@/lib/tmdb";
-import { MouseEvent, useState } from "react";
-import { addMovie } from "@/lib/queries";
+import { useState } from "react";
 import { transformSearchedMovies } from "@/lib/transform";
 import { MovieInsert, SearchedMovie } from "@/lib/types/domain";
 
 export default function SearchMovie() {
   const [movieTitle, setMovieTitle] = useState("");
-  // need to define this type later
   const [movieResults, setMovieResults] = useState<SearchedMovie[]>([]);
 
   const searchForMovie = async () => {

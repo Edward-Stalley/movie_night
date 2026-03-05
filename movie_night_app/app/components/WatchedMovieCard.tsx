@@ -1,4 +1,4 @@
-import { WatchedMovie, WatchedMovieCardProps } from "@/lib/types/domain";
+import { WatchedMovieCardProps } from "@/lib/types/domain";
 import Image from "next/image";
 import StarRating from "@/app/components/StarRating";
 
@@ -30,7 +30,6 @@ export default function WatchedMovieCard({
         {!isDetailScreen && layout === "list" && (
           <div className="text-3xl">{movie.originalTitle}</div>
         )}
-        {/* <div className="text-2xl uppercase font-semibold opacity-60"></div> */}
         {layout === "list" && (
           <div>
             {movie.reviews.map((r) => (
@@ -48,14 +47,12 @@ export default function WatchedMovieCard({
                   <div className="flex pl-2 pt-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      // xmlns:xlink="http://www.w3.org/1999/xlink"
                       fill="white"
                       height="15px"
                       width="15px"
                       version="1.1"
                       id="Capa_1"
                       viewBox="0 0 198 198"
-                      // xml:space="preserve"
                     >
                       <g>
                         <path d="M0,92.905h48.024c-0.821,35-10.748,38.973-23.216,40.107L20,133.608v38.486l5.542-0.297   c16.281-0.916,34.281-3.851,46.29-18.676C82.359,140.125,87,118.893,87,86.3V25.905H0V92.905z" />

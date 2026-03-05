@@ -22,7 +22,7 @@ export default function WatchedMoviesLayout({ movies }: Props) {
       </Link>
     );
   });
-  
+
   return (
     <>
       <LayoutToggle layout={layout} onChange={setLayout} />
