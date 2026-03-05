@@ -1,6 +1,18 @@
 import Link from "next/link";
+import { auth } from "@/app/auth";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await auth();
+
+  let loggedIn = (
+    <div className="bg-primary-content m-2 p-2 ">Not Logged In</div>
+  );
+  if (session?.user) {
+    loggedIn = (
+      <div className="bg-primary-content m-2 p-2 ">{`${session.user.name}`}</div>
+    );
+  }
+
   return (
     <div className="navbar bg-base-300 shadow-sm">
       <div className="navbar-start">
@@ -73,6 +85,7 @@ export default function Navbar() {
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
         </button>
+        {loggedIn}
       </div>
     </div>
   );
