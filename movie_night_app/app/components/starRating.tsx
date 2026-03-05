@@ -1,4 +1,4 @@
-export function StarRating({
+export default function StarRating({
   rating,
   max = 5,
 }: {

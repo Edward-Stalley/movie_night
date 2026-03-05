@@ -1,8 +1,9 @@
-// # From mysql Database. 
+// # From mysql Database.
 // # "snake_case" is converted to "camelCase" in the SQL Query in "@/lib/queries".
 
 export interface MovieRow {
   id: number;
+  movieId: number;
   tmdbId: number;
   watchedOn: Date;
   chosenBy: string;

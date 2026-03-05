@@ -1,39 +1,32 @@
-import { groupMovies, groupWatchedMovies } from "@/lib/transform";
-import Image from "next/image";
-import { MovieBase } from "@/lib/types/domain";
-import { getMoviesListRaw } from "@/lib/queries";
-
+import { groupMovies } from "@/lib/transform";
+import { StoredMovie } from "@/lib/types/domain";
+import { getMovies } from "@/lib/queries";
+import MovieCard from "../components/MovieCard";
 export const dynamic = "force-dynamic";
 
 export default async function GeneralMovieList() {
-  const data = await getMoviesListRaw();
-  const movies: MovieBase[] = groupMovies(data);
+  const data = await getMovies();
+
+  const movies: StoredMovie[] = groupMovies(data);
+
   const movieList = movies.map((m) => {
     return (
-      <li
-        key={`${m.overview}+${m.originalTitle}`}
-        className="list-row bg-neutral m-4"
-      >
-        <div className="text-4xl font-thin opacity-30 tabular-nums"></div>
-        <div>
-          <div>
-            <Image
-              className="rounded-xl"
-              src={`https://image.tmdb.org/t/p/w500/${m.posterPath}`}
-              width={210}
-              height={315}
-              priority
-              alt={`${m.originalTitle} (${m.releaseDate})`}
-            />
-          </div>
-        </div>
-      </li>
+      <MovieCard
+        key={m.id}
+        id={m.id}
+        tmdbId={m.tmdbId}
+        originalTitle={m.originalTitle}
+        overview={m.overview}
+        releaseDate={m.releaseDate}
+        posterPath={m.posterPath}
+        genreIds={m.genreIds}
+      />
     );
   });
 
   return (
-    <div>
-      <ul className=" grid grid-cols-5 list bg-base-100 rounded-box shadow-md">
+    <div className="">
+      <ul className="bg-base-100 pt-2 pl-5 pr-5 grid gap-2 sm:grid-cols-2  md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
         {movieList}
       </ul>
     </div>

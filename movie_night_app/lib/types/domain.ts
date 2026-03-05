@@ -19,8 +19,9 @@ export interface Review {
 }
 
 export interface WatchedMovie extends MovieBase {
-  id: number;
-  tmdbId: number;
+  id: number; // Watched Movie ID
+  tmdbId: number; // TMDB ID
+  movieId: number; // Movies ID
   watchedOn: Date;
   chosenBy: string;
   username: string;
@@ -40,3 +41,9 @@ export interface StoredMovie extends MovieBase {
 }
 
 export type MovieInsert = Omit<StoredMovie, "id">;
+
+export interface WatchedMovieCardProps {
+  movie: WatchedMovie;
+  isDetailScreen: boolean;
+  layout: string | null;
+}

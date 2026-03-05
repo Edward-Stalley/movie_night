@@ -46,7 +46,7 @@ export default function SearchMovie() {
   const searchedMovieResults = movieResults.map(
     (m: SearchedMovie, index: number) => (
       <div
-        key={`${m.originalTitle}+${m.releaseDate}`}
+        key={`${m.originalTitle}+ ${m.overview}`}
         className="carousel-item m-1"
       >
         <div className=" card image-full group hover:opacity-70 relative">

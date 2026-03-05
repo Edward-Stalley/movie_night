@@ -5,6 +5,10 @@ import { TMDBMovie } from "./types/tmdb";
 import { SearchedMovie, StoredMovie, WatchedMovie } from "./types/domain";
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
+
+// ## Watched Movies
+
+// Takes Array of SAME WATCHED MOVIE and restructures it for Domain Display.
 export function groupWatchedMovies(rows: MovieRow[]): WatchedMovie[] {
   const moviesMap = new Map<number, WatchedMovie>();
 
@@ -12,7 +16,8 @@ export function groupWatchedMovies(rows: MovieRow[]): WatchedMovie[] {
     if (!moviesMap.has(row.id)) {
       moviesMap.set(row.id, {
         id: row.id,
-        tmdbId: row.id,
+        movieId: row.movieId,
+        tmdbId: row.tmdbId,
         watchedOn: new Date(row.watchedOn),
         username: row.username,
         chosenBy: row.chosenBy,
@@ -38,11 +43,12 @@ export function groupWatchedMovies(rows: MovieRow[]): WatchedMovie[] {
   return Array.from(moviesMap.values());
 }
 
+// ## General Movies (Movie List)
+
 export function groupMovies(rows: MovieRow[]): StoredMovie[] {
   const moviesMap = new Map<number, StoredMovie>();
   for (const row of rows) {
     if (!moviesMap.has(row.tmdbId)) {
-      console.log(row.tmdbId);
       moviesMap.set(row.id, {
         id: row.id,
         tmdbId: row.tmdbId,
