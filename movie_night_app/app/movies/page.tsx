@@ -2,6 +2,7 @@ import { groupMovies } from "@/lib/transform";
 import { StoredMovie } from "@/lib/types/domain";
 import { getMovies } from "@/lib/queries";
 import MovieCard from "../components/MovieCard";
+import { PopcornIcon } from "../components/icons/movie-icons";
 export const dynamic = "force-dynamic";
 
 export default async function GeneralMovieList() {
@@ -25,7 +26,7 @@ export default async function GeneralMovieList() {
   });
 
   return (
-    <div className="">
+    <div>
       <ul className="bg-base-100 pt-2 pl-5 pr-5 grid gap-2 sm:grid-cols-2  md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
         {movieList}
       </ul>

@@ -29,7 +29,6 @@ export default function MovieCard(movie: StoredMovie) {
         height={315}
         className="rounded-2xl h-auto w-auto"
       />
-
       <button
         onClick={handleDelete}
         className="opacity-0 group-hover:opacity-100 btn btn-secondary btn-soft absolute top-0 right-0  rounded-tr-2xl rounded-br-none rounded-tl-none h-6 w-4"

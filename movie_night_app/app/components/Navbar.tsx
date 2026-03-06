@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/app/auth";
 import Image from "next/image";
+import { PopcornIcon, ReelIcon, GlassesIcon } from "./icons/movie-icons";
 
 export default async function Navbar() {
   const session = await auth();
@@ -27,10 +28,10 @@ export default async function Navbar() {
     <div className="navbar bg-base-300 shadow-sm">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-5 w-5 "
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -55,9 +56,10 @@ export default async function Navbar() {
             </li>
           </ul>
         </div>
-        <div className="navbar-center">
-          <a className="btn btn-ghost text-2xl">Movie Night</a>
+        <div className="flex">
+          <PopcornIcon className="h-5 w-5" />
         </div>
+          <p className="btn btn-ghost text-3xl">Movie Night</p>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
