@@ -1,10 +1,8 @@
 //  # QUERIES FOR MYSQL DATABASE (movie_night)
 import { pool } from "@/lib/db";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
-import { MovieRow } from "@/lib/types/db";
+import { DBUser, MovieRow } from "@/lib/types/db";
 import { MovieInsert, StoredMovie } from "./types/domain";
-import { TMDBMovie } from "./types/tmdb";
-import { groupWatchedMovies } from "./transform";
 
 // # Table: watched_movies
 
@@ -23,8 +21,8 @@ SELECT
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
     m.tmdb_id AS tmdbId,
-    chooser.user_name AS chosenBy,
-    rater.user_name AS ratedBy
+    chooser.name AS chosenBy,
+    rater.name AS ratedBy
 FROM watched_movies wm
 JOIN movies m
   ON wm.movie_id = m.id
@@ -55,8 +53,8 @@ SELECT
     m.overview,
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
-    chooser.user_name AS chosenBy,
-    rater.user_name AS ratedBy
+    chooser.name AS chosenBy,
+    rater.name AS ratedBy
 FROM watched_movies wm
 JOIN movies m
   ON wm.movie_id = m.id
@@ -144,4 +142,15 @@ WHERE m.id = ?
   console.log("got movie:", data);
 
   return rows[0] as MovieRow;
+}
+
+// USERS
+
+// # CREATE USER
+// # IF USER DOES NOT EXIST IN DB → CREATE USER
+export async function upsertUser(user: DBUser) {
+  await pool.query<ResultSetHeader>(
+    `INSERT INTO users(name, image, provider, provider_account_id) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE name = VALUES(name)`,
+    [user.name, user.image, user.provider, user.providerAccountId],
+  );
 }

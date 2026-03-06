@@ -27,7 +27,7 @@ export default function MovieCard(movie: StoredMovie) {
         alt={movie.originalTitle ?? "Movie"}
         width={200}
         height={315}
-        className="rounded-2xl"
+        className="rounded-2xl h-auto w-auto"
       />
 
       <button

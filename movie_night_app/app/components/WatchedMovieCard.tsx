@@ -23,6 +23,7 @@ export default function WatchedMovieCard({
             height={315}
             priority
             alt={`${movie.originalTitle} (${movie.movieId})`}
+            loading="eager"
           />
         </div>
       </div>

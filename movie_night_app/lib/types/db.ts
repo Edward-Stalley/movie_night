@@ -17,3 +17,11 @@ export interface MovieRow {
   releaseDate: Date;
   posterPath: string | null;
 }
+
+export interface DBUser {
+  // id: is auto generated so not needed in types.
+  name: string;
+  image: string;
+  provider: string;
+  providerAccountId: string;
+}

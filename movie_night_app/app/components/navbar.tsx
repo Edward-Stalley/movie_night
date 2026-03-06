@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth } from "@/app/auth";
+import Image from "next/image";
 
 export default async function Navbar() {
   const session = await auth();
@@ -9,7 +10,16 @@ export default async function Navbar() {
   );
   if (session?.user) {
     loggedIn = (
-      <div className="bg-primary-content m-2 p-2 ">{`${session.user.name}`}</div>
+      <div className="m-2 p-2 flex gap-2 items-center justify-center ">
+        {/* <a>{`${session.user.name}`}</a> */}
+        <Image
+          src={`${session.user.image}`}
+          alt={""}
+          width={30}
+          height={20}
+          className="rounded-2xl h-auto w-auto"
+        />
+      </div>
     );
   }
 
@@ -45,9 +55,9 @@ export default async function Navbar() {
             </li>
           </ul>
         </div>
-      </div>
-      <div className="navbar-center">
-        <a className="btn btn-ghost text-xl">Movie Night</a>
+        <div className="navbar-center">
+          <a className="btn btn-ghost text-2xl">Movie Night</a>
+        </div>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
@@ -85,7 +95,7 @@ export default async function Navbar() {
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
         </button>
-        {loggedIn}
+        <div>{loggedIn}</div>
       </div>
     </div>
   );
