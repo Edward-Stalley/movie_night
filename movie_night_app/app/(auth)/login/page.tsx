@@ -5,8 +5,6 @@ import LoginProviderButton from "@/app/components/auth/LoginProviderButton";
 
 export default async function Login() {
   const session = await auth();
-  console.log("session", session);
-
   return (
     <div className=" flex justify-center items-center min-h-screen ">
       <div className="flex flex-col  bg-accent-content justify-center items-center p-10 rounded-2xl">

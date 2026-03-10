@@ -1,10 +1,6 @@
-export default function StarRating({
-  rating,
-  max = 5,
-}: {
-  rating: number | null;
-  max?: number;
-}) {
+import { StarRatingProps } from "@/lib/types/domain";
+
+export default function StarRating({ rating, max = 5 }: StarRatingProps) {
   const safeRating = rating ?? 0;
 
   return (

@@ -2,6 +2,8 @@ import { groupWatchedMovies } from "@/lib/transform";
 import type { WatchedMovie } from "@/lib/types/domain";
 import { getWatchedMovie } from "@/lib/queries";
 import WatchedMovieCard from "@/app/components/WatchedMovieCard";
+import { auth } from "@/app/auth";
+import { mapSessionToLoggedInUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +12,10 @@ export default async function WatchedMovieDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const session = await auth();
+  // const loggedInUser = session?.user
+  const loggedInUser = mapSessionToLoggedInUser(session);
+
   const id = (await params).id;
 
   const numericId = Number(id);
@@ -29,6 +35,7 @@ export default async function WatchedMovieDetail({
         key={`${m.id}+${m.movieId}`}
         layout={"list"}
         isDetailScreen={true}
+        loggedInUser={loggedInUser}
       />
     </ul>
   );

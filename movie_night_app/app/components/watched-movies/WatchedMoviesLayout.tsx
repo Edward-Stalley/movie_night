@@ -1,6 +1,6 @@
 "use client";
 
-import type { WatchedMovie } from "@/lib/types/domain";
+import type { LoggedInUser, WatchedMovie } from "@/lib/types/domain";
 import WatchedMovieCard from "@/app/components/WatchedMovieCard";
 import Link from "next/link";
 import LayoutToggle from "../ui/LayoutToggle";
@@ -10,16 +10,20 @@ export const dynamic = "force-dynamic";
 
 type Props = {
   movies: WatchedMovie[];
+  loggedInUser?: LoggedInUser;
 };
 
-export default function WatchedMoviesLayout({ movies }: Props) {
+export default function WatchedMoviesLayout({ movies, loggedInUser }: Props) {
   const [layout, setLayout] = useState<"list" | "grid">("grid");
-
   const movieList = movies.map((m: WatchedMovie) => {
     return (
-      <Link href={`/watched-movies/${m.movieId}`} key={m.tmdbId}>
-        <WatchedMovieCard movie={m} isDetailScreen={false} layout={layout} />
-      </Link>
+      <WatchedMovieCard
+        key={m.tmdbId}
+        movie={m}
+        isDetailScreen={false}
+        layout={layout}
+        loggedInUser={loggedInUser}
+      />
     );
   });
 

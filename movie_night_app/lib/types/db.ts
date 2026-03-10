@@ -25,3 +25,9 @@ export interface DBUser {
   provider: string;
   providerAccountId: string;
 }
+
+export interface DBUserRow {
+  id: number;
+  name: string;
+  image: string;
+}

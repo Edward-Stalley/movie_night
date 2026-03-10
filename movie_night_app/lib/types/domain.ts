@@ -13,8 +13,15 @@ export interface SearchedMovie extends MovieBase {
 }
 
 export interface Review {
+  rating: number;
+  ratedBy: string;
+  comment: string | null;
+}
+
+export interface ReviewInsert {
+  watchedMovieId: number;
+  userId: number; // ratedBy on Client Side // this is actually name on client side. convert to id later.
   rating: number | null;
-  ratedBy: string | null;
   comment: string | null;
 }
 
@@ -46,4 +53,26 @@ export interface WatchedMovieCardProps {
   movie: WatchedMovie;
   isDetailScreen: boolean;
   layout: string | null;
+  loggedInUser?: LoggedInUser;
+}
+
+// export type LoggedInUser = string | null | undefined;
+
+export interface LoggedInUser {
+  id: string;
+  name: string;
+  image: string;
+}
+
+export type UserId = number;
+
+export interface IconClassNameProps {
+  className?: string;
+  fill?: string;
+}
+
+export interface StarRatingProps {
+  rating: number | null | undefined;
+  max?: number;
+  onChange?: (rating: number) => void;
 }

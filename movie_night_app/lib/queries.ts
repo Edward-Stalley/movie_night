@@ -1,8 +1,14 @@
 //  # QUERIES FOR MYSQL DATABASE (movie_night)
 import { pool } from "@/lib/db";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
-import { DBUser, MovieRow } from "@/lib/types/db";
-import { MovieInsert, StoredMovie } from "./types/domain";
+import { DBUser, DBUserRow, MovieRow } from "@/lib/types/db";
+import {
+  MovieInsert,
+  Review,
+  ReviewInsert,
+  StoredMovie,
+  UserId,
+} from "./types/domain";
 
 // # Table: watched_movies
 
@@ -98,6 +104,22 @@ export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
   };
 }
 
+//  ## POST / UPDATE review in movie_ratings table.
+
+export async function upsertReview(review: ReviewInsert) {
+  console.log("in upsert review", review);
+  const [result] = await pool.query<ResultSetHeader>(
+    `
+  INSERT INTO movie_ratings (watched_movie_id,user_id, rating, comment)
+    VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE rating = VALUES(rating), comment = VALUES(comment)
+    
+    `,
+    [review.watchedMovieId, review.userId, review.rating, review.comment],
+  );
+
+  return result;
+}
+
 //  ## General Movies
 
 export async function getMovies(): Promise<MovieRow[]> {
@@ -139,7 +161,6 @@ WHERE m.id = ?
     [id],
   );
   const data = rows[0] as MovieRow;
-  console.log("got movie:", data);
 
   return rows[0] as MovieRow;
 }
@@ -153,4 +174,21 @@ export async function upsertUser(user: DBUser) {
     `INSERT INTO users(name, image, provider, provider_account_id) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE name = VALUES(name)`,
     [user.name, user.image, user.provider, user.providerAccountId],
   );
+}
+
+// # GET USER by "provider_account_id"
+export async function getUserByProviderAccountId(
+  providerAccountId: string,
+): Promise<DBUserRow | null> {
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `
+  SELECT id, name, image
+  FROM users
+  WHERE provider_account_id = ?`,
+    [providerAccountId],
+  );
+
+  if ((rows as DBUserRow[]).length === 0) return null;
+  console.log("rows as DBUserRow[])[0]", (rows as DBUserRow[])[0]);
+  return (rows as DBUserRow[])[0];
 }

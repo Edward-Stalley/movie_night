@@ -9,6 +9,7 @@ export default async function Navbar() {
   let loggedIn = (
     <div className="bg-primary-content m-2 p-2 ">Not Logged In</div>
   );
+  
   if (session?.user) {
     loggedIn = (
       <div className="m-2 p-2 flex gap-2 items-center justify-center ">

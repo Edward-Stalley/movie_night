@@ -37,8 +37,6 @@ export default function SearchMovie() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(movieData),
     });
-
-    console.log("Saved to DB:", movieData);
   };
 
   const searchedMovieResults = movieResults.map(

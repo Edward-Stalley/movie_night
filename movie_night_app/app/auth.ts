@@ -1,10 +1,8 @@
-import { upsertUser } from "@/lib/queries";
+import { getUserByProviderAccountId, upsertUser } from "@/lib/queries";
 import { DBUser } from "@/lib/types/db";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-
-console.log("AUTH FILE LOADED");
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
@@ -28,17 +26,29 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       };
 
       const exists = await upsertUser(dbUser);
-
-      console.log(
-        "user logged in",
-        user,
-        account?.provider,
-        account?.providerAccountId,
-        typeof account?.provider,
-        typeof account?.providerAccountId,
-      );
-
       return true;
+    },
+
+    async jwt({ token, user, account }) {
+      // On first sign in, user and account are available
+      if (account && user) {
+        const dbUser = await getUserByProviderAccountId(
+          account.providerAccountId,
+        );
+        if (dbUser) {
+          token.userId = dbUser.id; // attach numeric DB ID to token
+          console.log("token.uerId", token.userId, dbUser);
+        }
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (session.user) {
+        // Attach "users.id" from the database to the session.
+        session.user.id = token.userId as string;
+      }
+      return session;
     },
   },
 });
