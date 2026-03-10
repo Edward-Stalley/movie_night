@@ -10,6 +10,7 @@ import StarRating from "@/app/components/StarRating";
 import { useState } from "react";
 import InvertedCommas from "@/app/components/icons/InvertedCommas";
 import EditPen from "@/app/components/icons/editPen";
+import { useRouter } from "next/navigation";
 
 type EditableReviewRowProps = {
   loggedInUser?: LoggedInUser;
@@ -24,22 +25,40 @@ export default function ReviewRow({
 }: EditableReviewRowProps) {
   const [editing, setEditing] = useState(false);
   const isAuthor = review.ratedBy === loggedInUser?.name;
+  const [rating, setRating] = useState<number | null>(review.rating ?? null);
+
   const isChooser = review.ratedBy === movie.chosenBy;
   const [reviewComment, setReviewComment] = useState(review.comment ?? "");
 
-  console.log("isAuthor, isChooser", isAuthor, isChooser);
+  const router = useRouter();
 
   const existingReview = movie.reviews.some(
     (r) => r.ratedBy === loggedInUser?.name,
   );
 
-  console.log("existingReview", existingReview);
-
   const toggleEditMode = () => {
     setEditing((prevState) => !prevState);
   };
 
-  console.log("LoggedInUser", loggedInUser);
+  const handleRatingClick = async (value: number) => {
+    setRating(value);
+
+    const reviewData: ReviewInsert = {
+      watchedMovieId: movie.movieId,
+      userId: Number(loggedInUser?.id),
+      comment: reviewComment,
+      rating: value,
+    };
+
+    await fetch(`/api/movies/watched/${movie.movieId}/reviews`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reviewData),
+    });
+
+    router.refresh();
+  };
+
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     if (!reviewComment.trim()) return;
@@ -59,6 +78,7 @@ export default function ReviewRow({
 
     review.comment = reviewComment;
     setEditing(false);
+    router.refresh();
   };
 
   const textArea = (
@@ -96,7 +116,11 @@ export default function ReviewRow({
         {review.ratedBy}
       </div>
       <div className="flex-col">
-        <StarRating rating={review.rating} />
+        <StarRating
+          rating={rating}
+          onClick={editing ? handleRatingClick : undefined}
+          isEditing={editing}
+        />
         <div className="flex pl-2 pt-2">
           <InvertedCommas />
           <div className="w-96">

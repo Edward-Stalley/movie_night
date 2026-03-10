@@ -10,7 +10,6 @@ export default async function WatchedMovies() {
   const session = await auth();
   // const loggedInUser = session?.user;
   const loggedInUser = mapSessionToLoggedInUser(session);
-  console.log("in watched movies", loggedInUser)
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/movies/watched`,
     {

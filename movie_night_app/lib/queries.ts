@@ -107,7 +107,6 @@ export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
 //  ## POST / UPDATE review in movie_ratings table.
 
 export async function upsertReview(review: ReviewInsert) {
-  console.log("in upsert review", review);
   const [result] = await pool.query<ResultSetHeader>(
     `
   INSERT INTO movie_ratings (watched_movie_id,user_id, rating, comment)
@@ -189,6 +188,5 @@ export async function getUserByProviderAccountId(
   );
 
   if ((rows as DBUserRow[]).length === 0) return null;
-  console.log("rows as DBUserRow[])[0]", (rows as DBUserRow[])[0]);
   return (rows as DBUserRow[])[0];
 }

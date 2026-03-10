@@ -1,15 +1,10 @@
 "use client";
 
-import {
-  LoggedInUser,
-  //   Review,
-  ReviewInsert,
-  WatchedMovie,
-} from "@/lib/types/domain";
+import { LoggedInUser, ReviewInsert, WatchedMovie } from "@/lib/types/domain";
 import StarRating from "@/app/components/StarRating";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InvertedCommas from "@/app/components/icons/InvertedCommas";
-import EditPen from "@/app/components/icons/editPen";
+import { useRouter } from "next/navigation";
 
 type AddReviewRowProps = {
   loggedInUser?: LoggedInUser;
@@ -22,6 +17,7 @@ export default function ReviewRowAdd({
 }: AddReviewRowProps) {
   const [reviewComment, setReviewComment] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
+  const router = useRouter();
 
   const handleRatingClick = async (value: number) => {
     setRating(value);
@@ -41,7 +37,6 @@ export default function ReviewRowAdd({
   };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
-    e.preventDefault();
     if (!reviewComment.trim()) return;
 
     const reviewData: ReviewInsert = {
@@ -56,6 +51,8 @@ export default function ReviewRowAdd({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(reviewData),
     });
+
+    router.refresh();
   };
 
   const textArea = (
@@ -81,7 +78,11 @@ export default function ReviewRowAdd({
     >
       <div className={"w-25"}>{loggedInUser?.name}</div>
       <div className="flex-col">
-        <StarRating rating={rating} onClick={handleRatingClick} />
+        <StarRating
+          rating={rating}
+          onClick={handleRatingClick}
+          isEditing={true}
+        />
         <div className="flex pl-2 pt-2">
           <InvertedCommas />
           <div className="w-96">{textArea}</div>

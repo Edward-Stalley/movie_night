@@ -37,7 +37,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         );
         if (dbUser) {
           token.userId = dbUser.id; // attach numeric DB ID to token
-          console.log("token.uerId", token.userId, dbUser);
         }
       }
       return token;

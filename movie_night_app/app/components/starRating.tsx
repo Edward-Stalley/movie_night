@@ -5,9 +5,14 @@ export default function StarRating({
   rating,
   max = 5,
   onClick,
+  isEditing,
 }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
-  const displayRating = hoverRating ?? rating ?? 0;
+  let displayRating = rating ?? 0;
+
+  if (isEditing && hoverRating !== null) {
+    displayRating = hoverRating;
+  }
 
   return (
     <div className="flex">
@@ -21,9 +26,9 @@ export default function StarRating({
             }}
             onMouseEnter={() => setHoverRating(starValue)}
             onMouseLeave={() => setHoverRating(null)}
-            className={`w-5 h-5 cursor-pointer hover:text-amber-400 ${
+            className={`w-5 h-5 ${
               starValue <= displayRating ? "text-amber-400" : "text-gray-300"
-            }`}
+            } ${isEditing ? "cursor-pointer hover:text-amber-400" : ""}`}
             viewBox="0 0 24 24"
             fill="currentColor"
           >

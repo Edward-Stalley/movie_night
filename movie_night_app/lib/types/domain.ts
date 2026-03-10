@@ -75,4 +75,5 @@ export interface StarRatingProps {
   rating: number | null | undefined;
   max?: number;
   onClick?: (rating: number) => void;
+  isEditing: boolean;
 }
