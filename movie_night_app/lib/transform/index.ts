@@ -1,8 +1,8 @@
 // # Reorganises data from either Database or API into correct data structure / shape.
 
 import type { MovieRow } from "@/lib/types/db";
-import { TMDBMovie } from "./types/tmdb";
-import { SearchedMovie, StoredMovie, WatchedMovie } from "./types/domain";
+import { TMDBMovie } from "@/lib/types/tmdb";
+import { SearchedMovie, StoredMovie, WatchedMovie } from "@/lib/types/domain";
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 

@@ -1,5 +1,5 @@
 import MovieCard from "@/app/components/MovieCard";
-import { getMovie } from "@/lib/queries";
+import { getMovie } from "@/lib/queries/movies";
 import { groupMovies } from "@/lib/transform";
 
 export default async function MovieDetail({

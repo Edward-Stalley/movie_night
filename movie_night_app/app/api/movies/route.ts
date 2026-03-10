@@ -1,8 +1,8 @@
-import { getWatchedMoviesRaw, addMovie } from "@/lib/queries";
+import { getMovies, addMovie } from "@/lib/queries";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const body = await getWatchedMoviesRaw();
+  const body = await getMovies();
   return NextResponse.json(body);
 }
 

@@ -1,9 +1,9 @@
 import { groupWatchedMovies } from "@/lib/transform";
 import type { WatchedMovie } from "@/lib/types/domain";
-import { getWatchedMovie } from "@/lib/queries";
+import { getWatchedMovie } from "@/lib/queries/watched-movies";
 import WatchedMovieCard from "@/app/components/WatchedMovieCard";
 import { auth } from "@/app/auth";
-import { mapSessionToLoggedInUser } from "@/lib/auth";
+import { mapSessionToLoggedInUser } from "@/lib/auth/session";
 
 export const dynamic = "force-dynamic";
 

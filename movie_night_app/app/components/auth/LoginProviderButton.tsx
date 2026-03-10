@@ -1,4 +1,4 @@
-import { login } from "@/lib/actions/auth";
+import { login } from "@/lib/auth/auth";
 
 type Props = {
   provider: string;

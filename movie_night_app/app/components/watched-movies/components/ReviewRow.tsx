@@ -11,6 +11,7 @@ import { useState } from "react";
 import InvertedCommas from "@/app/components/icons/InvertedCommas";
 import EditPen from "@/app/components/icons/editPen";
 import { useRouter } from "next/navigation";
+import { saveReview } from "@/lib/api/reviews";
 
 type EditableReviewRowProps = {
   loggedInUser?: LoggedInUser;
@@ -32,10 +33,6 @@ export default function ReviewRow({
 
   const router = useRouter();
 
-  const existingReview = movie.reviews.some(
-    (r) => r.ratedBy === loggedInUser?.name,
-  );
-
   const toggleEditMode = () => {
     setEditing((prevState) => !prevState);
   };
@@ -50,11 +47,7 @@ export default function ReviewRow({
       rating: value,
     };
 
-    await fetch(`/api/movies/watched/${movie.movieId}/reviews`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewData),
-    });
+    await saveReview(movie.movieId, reviewData);
 
     router.refresh();
   };
@@ -70,11 +63,7 @@ export default function ReviewRow({
       rating: review.rating,
     };
 
-    await fetch(`/api/movies/watched/${movie.movieId}/reviews`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewData),
-    });
+    await saveReview(movie.movieId, reviewData);
 
     review.comment = reviewComment;
     setEditing(false);
@@ -125,7 +114,6 @@ export default function ReviewRow({
           <InvertedCommas />
           <div className="w-96">
             {isAuthor ? (editing ? textArea : displayComment) : displayComment}
-            {isAuthor && !existingReview && textArea}
           </div>
         </div>
       </div>

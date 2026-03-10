@@ -1,4 +1,4 @@
-import { deleteMovie, getMovie } from "@/lib/queries";
+import { addMovie, deleteMovie, getMovie } from "@/lib/queries";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

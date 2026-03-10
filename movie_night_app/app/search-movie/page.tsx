@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { searchMovie } from "@/lib/tmdb";
+import { searchMovie } from "@/lib/external/tmdb";
 import { useState } from "react";
 import { transformSearchedMovies } from "@/lib/transform";
 import { MovieInsert, SearchedMovie } from "@/lib/types/domain";
+import { addMovieToMovies } from "@/lib/api/movies";
 
 export default function SearchMovie() {
   const [movieTitle, setMovieTitle] = useState("");
@@ -20,7 +21,7 @@ export default function SearchMovie() {
     }
   };
 
-  const addToWatchedList = async (movie: SearchedMovie) => {
+  const addToMovieList = async (movie: SearchedMovie) => {
     const movieData: MovieInsert = {
       originalTitle: movie.originalTitle,
       tmdbId: movie.id, // <-- TMDB id maps to db tmdb_id
@@ -30,13 +31,7 @@ export default function SearchMovie() {
       releaseDate: movie.releaseDate,
     };
 
-    // call your DB function
-
-    await fetch("/api/movies/watched", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(movieData),
-    });
+    await addMovieToMovies(movieData);
   };
 
   const searchedMovieResults = movieResults.map(
@@ -56,7 +51,7 @@ export default function SearchMovie() {
           />
           <button
             onClick={(e) =>
-              addToWatchedList({
+              addToMovieList({
                 originalTitle: m.originalTitle,
                 posterPath: m.posterPath,
                 id: m.id, // === tmdb id

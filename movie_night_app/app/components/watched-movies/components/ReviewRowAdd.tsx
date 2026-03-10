@@ -5,6 +5,7 @@ import StarRating from "@/app/components/StarRating";
 import { useState } from "react";
 import InvertedCommas from "@/app/components/icons/InvertedCommas";
 import { useRouter } from "next/navigation";
+import { saveReview } from "@/lib/api/reviews";
 
 type AddReviewRowProps = {
   loggedInUser?: LoggedInUser;
@@ -29,11 +30,7 @@ export default function ReviewRowAdd({
       rating: value,
     };
 
-    await fetch(`/api/movies/watched/${movie.movieId}/reviews`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewData),
-    });
+    await saveReview(movie.movieId, reviewData);
   };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -46,11 +43,7 @@ export default function ReviewRowAdd({
       rating: rating,
     };
 
-    await fetch(`/api/movies/watched/${movie.movieId}/reviews`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reviewData),
-    });
+    await saveReview(movie.movieId, reviewData);
 
     router.refresh();
   };

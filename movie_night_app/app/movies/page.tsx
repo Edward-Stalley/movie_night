@@ -1,8 +1,7 @@
 import { groupMovies } from "@/lib/transform";
 import { StoredMovie } from "@/lib/types/domain";
-import { getMovies } from "@/lib/queries";
+import { getMovies } from "@/lib/queries/movies";
 import MovieCard from "../components/MovieCard";
-import { PopcornIcon } from "../components/icons/movie-icons";
 export const dynamic = "force-dynamic";
 
 export default async function GeneralMovieList() {

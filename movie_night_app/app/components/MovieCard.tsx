@@ -3,20 +3,20 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { StoredMovie } from "@/lib/types/domain";
+import { deleteMovieFromMovies } from "@/lib/api/movies";
+import { addMovieToWatched } from "@/lib/api/watched-movies";
 
 export default function MovieCard(movie: StoredMovie) {
   const router = useRouter();
 
   const handleDelete = async () => {
-    await fetch(`/api/movies/${movie.id}`, { method: "DELETE" });
+    await deleteMovieFromMovies(movie);
     router.refresh();
   };
 
+  // NOT IMPLEMENTED YET
   const handleAdd = async () => {
-    await fetch(`/api/movies/watched`, {
-      method: "POST",
-      body: JSON.stringify(movie),
-    });
+    await addMovieToWatched(movie);
     router.refresh();
   };
 

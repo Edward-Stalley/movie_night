@@ -1,4 +1,4 @@
-import { getUserByProviderAccountId, upsertUser } from "@/lib/queries";
+import { getUserByProviderAccountId, upsertUser } from "@/lib/queries/users";
 import { DBUser } from "@/lib/types/db";
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
