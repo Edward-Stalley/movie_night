@@ -7,7 +7,7 @@ import {
   WatchedMovie,
 } from "@/lib/types/domain";
 import StarRating from "@/app/components/StarRating";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InvertedCommas from "@/app/components/icons/InvertedCommas";
 import EditPen from "@/app/components/icons/editPen";
 
@@ -22,6 +22,23 @@ export default function ReviewRowAdd({
 }: AddReviewRowProps) {
   const [reviewComment, setReviewComment] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
+
+  const handleRatingClick = async (value: number) => {
+    setRating(value);
+
+    const reviewData: ReviewInsert = {
+      watchedMovieId: movie.movieId,
+      userId: Number(loggedInUser?.id),
+      comment: reviewComment,
+      rating: value,
+    };
+
+    await fetch(`/api/movies/watched/${movie.movieId}/reviews`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reviewData),
+    });
+  };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -64,7 +81,7 @@ export default function ReviewRowAdd({
     >
       <div className={"w-25"}>{loggedInUser?.name}</div>
       <div className="flex-col">
-        <StarRating rating={rating} onChange={setRating} />
+        <StarRating rating={rating} onClick={handleRatingClick} />
         <div className="flex pl-2 pt-2">
           <InvertedCommas />
           <div className="w-96">{textArea}</div>

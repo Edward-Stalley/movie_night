@@ -58,8 +58,6 @@ export default function WatchedMovieCard({
           </div>
         )}
       </div>
-
-      <button className="btn btn-square btn-ghost"></button>
     </li>
   );
 }

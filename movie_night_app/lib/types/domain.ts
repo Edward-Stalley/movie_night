@@ -74,5 +74,5 @@ export interface IconClassNameProps {
 export interface StarRatingProps {
   rating: number | null | undefined;
   max?: number;
-  onChange?: (rating: number) => void;
+  onClick?: (rating: number) => void;
 }
