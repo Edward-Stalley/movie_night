@@ -1,4 +1,5 @@
-import { login } from "@/lib/auth/actions";
+"use client";
+import { signIn } from "next-auth/react";
 
 type Props = {
   provider: string;
@@ -6,24 +7,14 @@ type Props = {
 };
 
 export default function LoginProviderButton({ provider, icon }: Props) {
+  const handleClick = () => signIn(provider, { callbackUrl: "/movies" });
+
   return (
-    <form
-      action={async (formData: FormData) => {
-        "use server";
-        const provider = formData.get("provider") as string;
-        await login(provider);
-      }}
+    <button
+      className="btn bg-base-content hover:bg-neutral h-10 w-60"
+      onClick={handleClick}
     >
-      <div className="  ">
-        <button
-          className="btn  bg-base-content hover:bg-neutral h-10 w-60"
-          type="submit"
-          value={provider}
-          name="provider"
-        >
-          {icon}
-        </button>
-      </div>
-    </form>
+      {icon}
+    </button>
   );
 }
