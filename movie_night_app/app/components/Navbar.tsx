@@ -19,7 +19,7 @@ export default async function Navbar() {
           src={`${session.user.image}`}
           alt={""}
           width={30}
-          height={20}
+          height={30}
           className="rounded-2xl h-auto w-auto"
         />
         <LogoutButton />
@@ -29,7 +29,7 @@ export default async function Navbar() {
 
   return (
     <div className="navbar bg-base-300 shadow-sm">
-      <div className="navbar-start">
+      <div className="navbar-start flex items-center">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle ">
             <svg
@@ -59,13 +59,13 @@ export default async function Navbar() {
             </li>
           </ul>
         </div>
-        <Link href="/" className="btn flex w-fit justify-start">
+        <Link href="/" className="flex w-fit justify-start">
           <Image
             src="/movie-night-logo.svg"
             alt="Movie Night"
-            height={20}
-            width={20}
-            className="h-20 w-auto rounded-2xl"
+            height={10}
+            width={10}
+            className="h-10 w-auto  "
           />
         </Link>
       </div>

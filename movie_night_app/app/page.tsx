@@ -8,7 +8,7 @@ export default function Home() {
       <div className="absolute bottom-0 left-0 w-fu/ll h-full bg-primary bg-linear-to-br from-orange-300 via-bg-primary  [clip-path:polygon(-100%_0%,10%_60%,50%_0%)] pointer-events-none"></div>
       <div className="col-span-4 col-start-6 row-start-1 row-span-8 relative rounded-2xl z-10 ">
         <Image
-          src="/movie-night-logo.svg"
+          src="/movie-night-logo-padding.svg"
           alt="Movie Night"
           fill
           className=" h-auto w-auto object-cover rounded-2xl"
