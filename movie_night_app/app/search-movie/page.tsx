@@ -10,12 +10,14 @@ import { addMovieToMovies } from "@/lib/api/movies";
 export default function SearchMovie() {
   const [movieTitle, setMovieTitle] = useState("");
   const [movieResults, setMovieResults] = useState<SearchedMovie[]>([]);
+  const [searched, setSearched] = useState<boolean>(false);
 
   const searchForMovie = async () => {
     try {
       const data = await searchMovie(movieTitle);
       const transformedMovieData = transformSearchedMovies(data.results);
       setMovieResults(transformedMovieData || []);
+      setSearched(true);
     } catch (err) {
       setMovieResults([]);
     }
@@ -37,7 +39,7 @@ export default function SearchMovie() {
   const searchedMovieResults = movieResults.map(
     (m: SearchedMovie, index: number) => (
       <div
-        key={`${m.originalTitle}+ ${m.overview}`}
+        key={`${m.originalTitle}+ ${m.overview} + ${m.id}`}
         className="carousel-item m-1"
       >
         <div className=" card image-full group hover:opacity-70 relative">
@@ -77,7 +79,7 @@ export default function SearchMovie() {
   );
 
   return (
-    <div className="flex flex-col bg-base-100">
+    <div className="flex flex-col bg-base-100 w-full pt-6 ">
       <div className="flex flex-col items-center">
         <input
           placeholder="Type Film Name..."
@@ -94,7 +96,9 @@ export default function SearchMovie() {
         </button>
       </div>
       <div>
-        <div className="carousel carousel-center rounded-box p-4 m-8 bg-base-300">
+        <div
+          className={`carousel carousel-center rounded-box p-4 m-8 ${searched && "bg-base-300"}`}
+        >
           {searchedMovieResults}
         </div>
       </div>

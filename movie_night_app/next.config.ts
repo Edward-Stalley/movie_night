@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       "image.tmdb.org",
       "lh3.googleusercontent.com",
       "avatars.githubusercontent.com",
+      "media.themoviedb.org",
     ],
   },
   reactCompiler: true,

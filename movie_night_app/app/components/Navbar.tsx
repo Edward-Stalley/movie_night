@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { auth } from "@/app/auth";
 import Image from "next/image";
-import { PopcornIcon, ReelIcon, GlassesIcon } from "./icons/movie-icons";
+import LogoutButton from "./watched-movies/LogoutButton";
+import { MovieNightHome } from "./icons/movieNightHome";
 
 export default async function Navbar() {
   const session = await auth();
 
   let loggedIn = (
-    <div className="bg-primary-content m-2 p-2 ">Not Logged In</div>
+    <Link href={"/login"} className="btn btn-outline btn-primary m-2 ">
+      Log In
+    </Link>
   );
 
   if (session?.user) {
@@ -20,6 +23,7 @@ export default async function Navbar() {
           height={20}
           className="rounded-2xl h-auto w-auto"
         />
+        <LogoutButton />
       </div>
     );
   }
@@ -56,10 +60,9 @@ export default async function Navbar() {
             </li>
           </ul>
         </div>
-        <div className="flex">
-          <PopcornIcon className="h-5 w-5" />
-        </div>
-        <p className="btn btn-ghost text-3xl">Movie Night</p>
+        <Link href="/" className="btn flex w-fit justify-start">
+          <MovieNightHome className="h-20 w-20 transform transition-transform duration-200 hover:scale-110" />{" "}
+        </Link>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
