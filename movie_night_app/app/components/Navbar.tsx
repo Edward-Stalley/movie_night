@@ -2,7 +2,6 @@ import Link from "next/link";
 import { auth } from "@/app/auth";
 import Image from "next/image";
 import LogoutButton from "./watched-movies/LogoutButton";
-import { MovieNightHome } from "./icons/movieNightHome";
 
 export default async function Navbar() {
   const session = await auth();
@@ -61,7 +60,13 @@ export default async function Navbar() {
           </ul>
         </div>
         <Link href="/" className="btn flex w-fit justify-start">
-          <MovieNightHome className="h-20 w-20 transform transition-transform duration-200 hover:scale-110" />{" "}
+          <Image
+            src="/movie-night-logo.svg"
+            alt="Movie Night"
+            height={20}
+            width={20}
+            className="h-20 w-auto rounded-2xl"
+          />
         </Link>
       </div>
       <div className="navbar-end">
