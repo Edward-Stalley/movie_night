@@ -1,5 +1,5 @@
 
-import { getWatchedMovie } from "@/lib/queries";
+import { getWatchedMovie } from "@/lib/queries/watched-movies";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
