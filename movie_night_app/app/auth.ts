@@ -25,7 +25,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         providerAccountId: account.providerAccountId,
       };
 
-      const exists = await upsertUser(dbUser);
+      await upsertUser(dbUser);
       return true;
     },
 

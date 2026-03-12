@@ -8,7 +8,11 @@ import { pool } from "../db";
 // # IF USER DOES NOT EXIST IN DB → CREATE USER
 export async function upsertUser(user: DBUser) {
   await pool.query<ResultSetHeader>(
-    `INSERT INTO users(name, image, provider, provider_account_id) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE name = VALUES(name)`,
+    `
+    INSERT INTO users(name, image, provider, provider_account_id)
+    VALUES(?,?,?,?)
+    ON DUPLICATE KEY UPDATE name = VALUES(name), image = VALUES(image)
+    `,
     [user.name, user.image, user.provider, user.providerAccountId],
   );
 }
@@ -18,10 +22,11 @@ export async function getUserByProviderAccountId(
   providerAccountId: string,
 ): Promise<DBUserRow | null> {
   const [rows] = await pool.query<RowDataPacket[]>(
-    `
+  `
   SELECT id, name, image
   FROM users
-  WHERE provider_account_id = ?`,
+  WHERE provider_account_id = ?
+  `,
     [providerAccountId],
   );
 

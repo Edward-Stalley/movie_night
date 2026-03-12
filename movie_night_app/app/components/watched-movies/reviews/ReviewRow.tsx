@@ -65,7 +65,7 @@ export function ReviewRow({
 
     await saveReview(movie.movieId, reviewData);
 
-    review.comment = reviewComment;
+    // review.comment = reviewComment;
     setEditing(false);
     router.refresh();
   };

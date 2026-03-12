@@ -6,16 +6,15 @@ import { StoredMovie, WatchedMovieInsert } from "@/lib/types/domain";
 import { deleteMovieFromMovies } from "@/lib/api/movies";
 import { addMovieToWatched } from "@/lib/api/watched-movies";
 
-export default function MovieCard(movie: StoredMovie) {
+export default function MovieCard({ movie }: { movie: StoredMovie }) {
   const router = useRouter();
 
   const handleDelete = async () => {
     await deleteMovieFromMovies(movie);
     router.refresh();
   };
-""
-  // NOT IMPLEMENTED YET
-  const handleAdd = async () => {
+
+  const handleAddMovieToWatched = async () => {
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,
       watched_on: new Date().toISOString(),
@@ -42,7 +41,7 @@ export default function MovieCard(movie: StoredMovie) {
       </button>
 
       <button
-        onClick={handleAdd}
+        onClick={handleAddMovieToWatched}
         className="opacity-0 group-hover:opacity-100 btn btn-primary btn-soft  absolute bottom-0 rounded-tr-2xl rounded-bl-2xl rounded-br-none rounded-tl-none"
       >
         +

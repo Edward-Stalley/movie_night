@@ -43,7 +43,6 @@ WHERE m.id = ?
     `,
     [id],
   );
-  const data = rows[0] as MovieRow;
 
   return rows[0] as MovieRow;
 }

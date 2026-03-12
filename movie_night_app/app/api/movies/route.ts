@@ -2,7 +2,7 @@ import { getMovies } from "@/lib/queries/movies";
 import { addWatchedMovie } from "@/lib/queries/watched-movies";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const body = await getMovies();
   return NextResponse.json(body);
 }

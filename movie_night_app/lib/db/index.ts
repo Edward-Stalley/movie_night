@@ -1,7 +1,6 @@
 import mysql from "mysql2/promise";
 
 declare global {
-  // eslint-disable-next-line no-var
   var mysqlPool: mysql.Pool | undefined;
 }
 export const pool =

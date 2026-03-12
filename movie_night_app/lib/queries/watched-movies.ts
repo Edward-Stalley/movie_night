@@ -3,12 +3,7 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { MovieRow } from "@/lib/types/db";
 import { pool } from "../db";
-import {
-  MovieInsert,
-  StoredMovie,
-  WatchedMovie,
-  WatchedMovieInsert,
-} from "../types/domain";
+import { WatchedMovieInsert } from "../types/domain";
 
 // ## (GET) : Get List of Movies from watched_movies.
 export async function getWatchedMoviesRaw(): Promise<MovieRow[]> {
@@ -82,16 +77,17 @@ WHERE m.id = ?
 
 export async function addWatchedMovie(
   movie: WatchedMovieInsert,
-): Promise<WatchedMovieInsert> {
+): Promise<WatchedMovieInsert & { id: number }> {
   const [result] = await pool.query<ResultSetHeader>(
     `
     INSERT INTO watched_movies ( movie_id )
     VALUES (?);
     `,
     [movie.movieId],
-
-    // [movie.id, movie.movieId, movie.watched_on, movie.chosenBy],
   );
 
-  return movie;
+  return {
+    ...movie,
+    id: result.insertId,
+  };
 }

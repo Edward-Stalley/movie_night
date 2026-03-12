@@ -40,7 +40,8 @@ export function groupWatchedMovies(rows: MovieRow[]): WatchedMovie[] {
     }
   }
 
-  return Array.from(moviesMap.values());
+  const watchedMovieList = Array.from(moviesMap.values());
+  return watchedMovieList;
 }
 
 // ## General Movies (Movie List)
@@ -62,7 +63,7 @@ export function groupMovies(rows: MovieRow[]): StoredMovie[] {
   }
 
   const movieList = Array.from(moviesMap.values());
-  return Array.from(moviesMap.values());
+  return movieList;
 }
 
 // #2 External API → Domain objects
@@ -84,6 +85,7 @@ export function transformSearchedMovies(
       });
     }
   }
-  const testArray = Array.from(moviesMap.values());
-  return Array.from(moviesMap.values());
+
+  const searchdMovieList = Array.from(moviesMap.values());
+  return searchdMovieList;
 }

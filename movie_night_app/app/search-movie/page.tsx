@@ -19,6 +19,7 @@ export default function SearchMovie() {
       setMovieResults(transformedMovieData || []);
       setSearched(true);
     } catch (err) {
+      console.error(err)
       setMovieResults([]);
     }
   };
@@ -37,7 +38,7 @@ export default function SearchMovie() {
   };
 
   const searchedMovieResults = movieResults.map(
-    (m: SearchedMovie, index: number) => (
+    (m: SearchedMovie) => (
       <div
         key={`${m.originalTitle}+ ${m.overview} + ${m.id}`}
         className="carousel-item m-1"
@@ -52,7 +53,7 @@ export default function SearchMovie() {
             alt={`${m.originalTitle} (${m.releaseDate})`}
           />
           <button
-            onClick={(e) =>
+            onClick={() =>
               addToMovieList({
                 originalTitle: m.originalTitle,
                 posterPath: m.posterPath,

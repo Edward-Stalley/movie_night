@@ -33,7 +33,7 @@ export function ReviewRowAdd({
     await saveReview(movie.movieId, reviewData);
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async () => {
     if (!reviewComment.trim()) return;
 
     const reviewData: ReviewInsert = {
