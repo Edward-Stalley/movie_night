@@ -1,4 +1,3 @@
-
 import { getWatchedMovie } from "@/lib/queries/watched-movies";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -7,6 +6,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
+    console.log("in trhis folder")
     const { id } = await context.params;
     const numericId = Number(id);
     await getWatchedMovie(numericId);
@@ -16,3 +16,6 @@ export async function GET(
     return NextResponse.json({ error: "GET Failed" }, { status: 500 });
   }
 }
+
+
+

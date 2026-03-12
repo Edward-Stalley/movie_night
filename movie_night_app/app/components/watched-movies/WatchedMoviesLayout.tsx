@@ -2,7 +2,6 @@
 
 import type { LoggedInUser, WatchedMovie } from "@/lib/types/domain";
 import WatchedMovieCard from "@/app/components/WatchedMovieCard";
-import Link from "next/link";
 import LayoutToggle from "../ui/LayoutToggle";
 import { useState } from "react";
 

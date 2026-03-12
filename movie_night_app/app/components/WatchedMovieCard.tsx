@@ -1,8 +1,10 @@
 import { WatchedMovieCardProps } from "@/lib/types/domain";
 import Image from "next/image";
-import ReviewRow from "./watched-movies/components/ReviewRow";
+import {
+  ReviewRow,
+  ReviewRowAdd,
+} from "@/app/components/watched-movies/reviews";
 import Link from "next/link";
-import ReviewRowAdd from "./watched-movies/components/ReviewRowAdd";
 
 export default function WatchedMovieCard({
   movie,

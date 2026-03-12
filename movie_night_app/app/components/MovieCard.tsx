@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { StoredMovie } from "@/lib/types/domain";
+import { StoredMovie, WatchedMovieInsert } from "@/lib/types/domain";
 import { deleteMovieFromMovies } from "@/lib/api/movies";
 import { addMovieToWatched } from "@/lib/api/watched-movies";
 
@@ -16,7 +16,14 @@ export default function MovieCard(movie: StoredMovie) {
 
   // NOT IMPLEMENTED YET
   const handleAdd = async () => {
-    await addMovieToWatched(movie);
+    console.log("inside mopvie card");
+
+    const watchedMovieData: WatchedMovieInsert = {
+      movieId: movie.id,
+      watched_on: new Date().toISOString(),
+      chosenBy: null,
+    };
+    await addMovieToWatched(watchedMovieData);
     router.refresh();
   };
 

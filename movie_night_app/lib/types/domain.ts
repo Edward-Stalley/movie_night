@@ -35,6 +35,12 @@ export interface WatchedMovie extends MovieBase {
   reviews: Review[];
 }
 
+export interface WatchedMovieInsert {
+  movieId: number; // Movies ID
+  watched_on: string | null;
+  chosenBy: string | null;
+}
+
 export interface ShortlistedMovie extends MovieBase {
   id: number;
   tmdbId: number;
@@ -66,14 +72,16 @@ export interface LoggedInUser {
 
 export type UserId = number;
 
-export interface IconClassNameProps {
-  className?: string;
-  fill?: string;
-}
-
 export interface StarRatingProps {
   rating: number | null | undefined;
   max?: number;
   onClick?: (rating: number) => void;
   isEditing: boolean;
+}
+
+export type IconProps = React.SVGProps<SVGSVGElement>;
+
+export interface IconClassNameProps {
+  className?: string;
+  fill?: string;
 }

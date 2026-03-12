@@ -3,6 +3,7 @@
 import { ReviewInsert } from "@/lib/types/domain";
 
 export async function saveReview(movieId: number, review: ReviewInsert) {
+  console.log("tried to save", movieId, review)
   await fetch(`/api/movies/watched/${movieId}/reviews`, {
     method: "POST",
     headers: {
