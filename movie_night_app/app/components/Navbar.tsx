@@ -1,13 +1,13 @@
-import Link from "next/link";
-import { auth } from "@/app/auth";
-import Image from "next/image";
-import LogoutButton from "./watched-movies/LogoutButton";
+import Link from 'next/link';
+import { auth } from '@/app/auth';
+import Image from 'next/image';
+import LogoutButton from './watched-movies/LogoutButton';
 
 export default async function Navbar() {
   const session = await auth();
 
   let loggedIn = (
-    <Link href={"/login"} className="btn btn-outline btn-primary m-2 ">
+    <Link href={'/login'} className="btn btn-outline btn-primary m-2 ">
       Log In
     </Link>
   );
@@ -17,7 +17,7 @@ export default async function Navbar() {
       <div className="m-2 p-2 flex gap-2 items-center justify-center transform transition-transform duration-200 hover:scale-120  ">
         <Image
           src={`${session.user.image}`}
-          alt={""}
+          alt={''}
           width={30}
           height={30}
           className="rounded-2xl h-auto w-auto "
@@ -71,7 +71,7 @@ export default async function Navbar() {
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
-          <Link href={"/search-movie"}>
+          <Link href={'/search-movie'}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"

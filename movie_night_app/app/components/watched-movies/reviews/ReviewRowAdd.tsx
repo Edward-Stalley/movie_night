@@ -1,22 +1,19 @@
-"use client";
+'use client';
 
-import { LoggedInUser, ReviewInsert, WatchedMovie } from "@/lib/types/domain";
-import StarRating from "@/app/components/StarRating";
-import { useState } from "react";
-import { InvertedCommas } from "@/app/components/icons";
-import { useRouter } from "next/navigation";
-import { saveReview } from "@/lib/api/reviews";
+import { LoggedInUser, ReviewInsert, WatchedMovie } from '@/lib/types/domain';
+import StarRating from '@/app/components/StarRating';
+import { useState } from 'react';
+import { InvertedCommas } from '@/app/components/icons';
+import { useRouter } from 'next/navigation';
+import { saveReview } from '@/lib/api/reviews';
 
 type AddReviewRowProps = {
   loggedInUser?: LoggedInUser;
   movie: WatchedMovie;
 };
 
-export function ReviewRowAdd({
-  loggedInUser,
-  movie,
-}: AddReviewRowProps) {
-  const [reviewComment, setReviewComment] = useState<string>("");
+export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
+  const [reviewComment, setReviewComment] = useState<string>('');
   const [rating, setRating] = useState<number | null>(null);
   const router = useRouter();
 
@@ -65,17 +62,10 @@ export function ReviewRowAdd({
   );
 
   return (
-    <div
-      key={`${movie.id}`}
-      className=" flex gap-4 bg-accent-content m-1 rounded-2xl p-2"
-    >
-      <div className={"w-25"}>{loggedInUser?.name}</div>
+    <div key={`${movie.id}`} className=" flex gap-4 bg-accent-content m-1 rounded-2xl p-2">
+      <div className={'w-25'}>{loggedInUser?.name}</div>
       <div className="flex-col">
-        <StarRating
-          rating={rating}
-          onClick={handleRatingClick}
-          isEditing={true}
-        />
+        <StarRating rating={rating} onClick={handleRatingClick} isEditing={true} />
         <div className="flex pl-2 pt-2">
           <InvertedCommas />
           <div className="w-96">{textArea}</div>

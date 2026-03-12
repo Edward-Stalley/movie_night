@@ -1,8 +1,8 @@
 // # Reorganises data from either Database or API into correct data structure / shape.
 
-import type { MovieRow } from "@/lib/types/db";
-import { TMDBMovie } from "@/lib/types/tmdb";
-import { SearchedMovie, StoredMovie, WatchedMovie } from "@/lib/types/domain";
+import type { MovieRow } from '@/lib/types/db';
+import { TMDBMovie } from '@/lib/types/tmdb';
+import { SearchedMovie, StoredMovie, WatchedMovie } from '@/lib/types/domain';
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 
@@ -68,9 +68,7 @@ export function groupMovies(rows: MovieRow[]): StoredMovie[] {
 
 // #2 External API → Domain objects
 
-export function transformSearchedMovies(
-  movieResults: TMDBMovie[],
-): SearchedMovie[] {
+export function transformSearchedMovies(movieResults: TMDBMovie[]): SearchedMovie[] {
   const moviesMap = new Map<number, SearchedMovie>();
 
   for (const movie of movieResults) {

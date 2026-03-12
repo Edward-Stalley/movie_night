@@ -1,5 +1,5 @@
-import { addWatchedMovie } from "@/lib/queries/watched-movies";
-import { NextRequest, NextResponse } from "next/server";
+import { addWatchedMovie } from '@/lib/queries/watched-movies';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();

@@ -1,12 +1,8 @@
-import MovieCard from "@/app/components/MovieCard";
-import { getMovie } from "@/lib/queries/movies";
-import { groupMovies } from "@/lib/transform";
+import MovieCard from '@/app/components/MovieCard';
+import { getMovie } from '@/lib/queries/movies';
+import { groupMovies } from '@/lib/transform';
 
-export default async function MovieDetail({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function MovieDetail({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
 
   const numericId = Number(id);

@@ -1,8 +1,8 @@
 // # Table: users
 
-import { DBUser, DBUserRow } from "@/lib/types/db";
-import { ResultSetHeader, RowDataPacket } from "mysql2";
-import { pool } from "../db";
+import { DBUser, DBUserRow } from '@/lib/types/db';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { pool } from '../db';
 
 // # CREATE USER
 // # IF USER DOES NOT EXIST IN DB → CREATE USER
@@ -22,7 +22,7 @@ export async function getUserByProviderAccountId(
   providerAccountId: string,
 ): Promise<DBUserRow | null> {
   const [rows] = await pool.query<RowDataPacket[]>(
-  `
+    `
   SELECT id, name, image
   FROM users
   WHERE provider_account_id = ?

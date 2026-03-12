@@ -1,6 +1,6 @@
-import { pool } from "@/lib/db";
-import { ResultSetHeader } from "mysql2";
-import { ReviewInsert } from "@/lib/types/domain";
+import { pool } from '@/lib/db';
+import { ResultSetHeader } from 'mysql2';
+import { ReviewInsert } from '@/lib/types/domain';
 
 //  ## POST / UPDATE review in movie_ratings table.
 

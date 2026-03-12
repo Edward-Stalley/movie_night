@@ -53,7 +53,7 @@ export interface StoredMovie extends MovieBase {
   tmdbId: number;
 }
 
-export type MovieInsert = Omit<StoredMovie, "id">;
+export type MovieInsert = Omit<StoredMovie, 'id'>;
 
 export interface WatchedMovieCardProps {
   movie: WatchedMovie;

@@ -1,9 +1,9 @@
 // # Table: watched_movies
 
-import { ResultSetHeader, RowDataPacket } from "mysql2";
-import { MovieRow } from "@/lib/types/db";
-import { pool } from "../db";
-import { WatchedMovieInsert } from "../types/domain";
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { MovieRow } from '@/lib/types/db';
+import { pool } from '../db';
+import { WatchedMovieInsert } from '../types/domain';
 
 // ## (GET) : Get List of Movies from watched_movies.
 export async function getWatchedMoviesRaw(): Promise<MovieRow[]> {

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -16,7 +16,7 @@ export default function Home() {
       <div className="col-span-1 col-start-1 row-start-1 row-span-6 relative rounded-2xl ">
         <Image
           src={`https://image.tmdb.org/t/p/original/12EeSboRofP3CI4SPmMFNNXCbtY.jpg`}
-          alt={""}
+          alt={''}
           fill
           quality={100}
           className=" h-auto w-auto object-cover rounded-2xl"
@@ -25,7 +25,7 @@ export default function Home() {
       <div className="bg-base-content col-span-3 col-start-3 row-start-3 row-span-2 relative rounded-2xl">
         <Image
           src={`https://image.tmdb.org/t/p/original/gl0jzn4BupSbL2qMVeqrjKkF9Js.jpg`}
-          alt={""}
+          alt={''}
           fill
           className=" h-auto w-auto object-cover object-top rounded-2xl"
         />
@@ -33,7 +33,7 @@ export default function Home() {
       <div className="bg-base-content col-span-1 col-start-2 row-start-3 row-span-2 relative rounded-2xl ">
         <Image
           src={`https://media.themoviedb.org/t/p/w220_and_h330_face/15uOEfqBNTVtDUT7hGBVCka0rZz.jpg`}
-          alt={""}
+          alt={''}
           fill
           className=" h-auto w-auto object-top rounded-2xl"
         />
@@ -41,7 +41,7 @@ export default function Home() {
       <div className=" col-span-1 col-start-2 row-start-5 row-span-2 relative rounded-2xl ">
         <Image
           src={`https://image.tmdb.org/t/p/original/neVhDxYVsmMMSuhXpHMT3LMK9f.jpg`}
-          alt={""}
+          alt={''}
           fill
           quality={100}
           className=" h-auto w-auto object-cover rounded-2xl"
@@ -52,7 +52,7 @@ export default function Home() {
           <div className="relative h-1/2">
             <Image
               src={`https://image.tmdb.org/t/p/original/tH4Jvr2Rg7UQFqcndE6Mws4p7sP.jpg`}
-              alt={""}
+              alt={''}
               fill
               quality={100}
               className=" w-auto  object-cover rounded-tl-2xl rounded-tr-2xl"
@@ -61,7 +61,7 @@ export default function Home() {
           <div className="relative h-1/2">
             <Image
               src={`https://media.themoviedb.org/t/p/w220_and_h330_face/sMWPuhgtuUuFHcwSlp73EGACNrl.jpg`}
-              alt={""}
+              alt={''}
               fill
               quality={100}
               className=" w-auto object-cover  rounded-bl-2xl rounded-br-2xl "
@@ -69,13 +69,11 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className=" col-span-3 col-start-4 row-start-5 row-span-2 relative rounded-2xl">
-        Box
-      </div>
+      <div className=" col-span-3 col-start-4 row-start-5 row-span-2 relative rounded-2xl">Box</div>
       <div className=" col-span-3 col-start-4 row-start-5 row-span-2 relative rounded-2xl">
         <Image
           src={`https://image.tmdb.org/t/p/original/eFth6zw4PEInzr2Y64mYVN1zbBi.jpg`}
-          alt={""}
+          alt={''}
           fill
           quality={100}
           className=" h-auto w-auto object-cover rounded-2xl"

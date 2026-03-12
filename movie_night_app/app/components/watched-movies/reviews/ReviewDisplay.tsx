@@ -1,4 +1,4 @@
-import { Review } from "@/lib/types/domain";
+import { Review } from '@/lib/types/domain';
 
 export function ReviewDisplay({ review }: { review: Review }) {
   return (

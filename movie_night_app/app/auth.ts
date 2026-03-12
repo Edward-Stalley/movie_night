@@ -1,8 +1,8 @@
-import { getUserByProviderAccountId, upsertUser } from "@/lib/queries/users";
-import { DBUser } from "@/lib/types/db";
-import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
+import { getUserByProviderAccountId, upsertUser } from '@/lib/queries/users';
+import { DBUser } from '@/lib/types/db';
+import NextAuth from 'next-auth';
+import GitHub from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
@@ -19,8 +19,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
 
       const dbUser: DBUser = {
-        name: user.name ?? "Unkwown User",
-        image: user.image ?? "",
+        name: user.name ?? 'Unkwown User',
+        image: user.image ?? '',
         provider: account.provider,
         providerAccountId: account.providerAccountId,
       };
@@ -32,9 +32,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     async jwt({ token, user, account }) {
       // On first sign in, user and account are available
       if (account && user) {
-        const dbUser = await getUserByProviderAccountId(
-          account.providerAccountId,
-        );
+        const dbUser = await getUserByProviderAccountId(account.providerAccountId);
         if (dbUser) {
           token.userId = dbUser.id; // attach numeric DB ID to token
         }

@@ -1,11 +1,11 @@
-import { groupWatchedMovies } from "@/lib/transform";
-import type { WatchedMovie } from "@/lib/types/domain";
-import WatchedMoviesLayout from "../components/watched-movies/WatchedMoviesLayout";
-import { auth } from "@/app/auth";
-import { mapSessionToLoggedInUser } from "@/lib/auth/session";
-import { getWatchedMoviesRaw } from "@/lib/queries/watched-movies";
+import { groupWatchedMovies } from '@/lib/transform';
+import type { WatchedMovie } from '@/lib/types/domain';
+import WatchedMoviesLayout from '../components/watched-movies/WatchedMoviesLayout';
+import { auth } from '@/app/auth';
+import { mapSessionToLoggedInUser } from '@/lib/auth/session';
+import { getWatchedMoviesRaw } from '@/lib/queries/watched-movies';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export default async function WatchedMovies() {
   const session = await auth();

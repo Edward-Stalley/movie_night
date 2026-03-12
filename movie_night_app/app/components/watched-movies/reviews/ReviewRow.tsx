@@ -1,17 +1,12 @@
-"use client";
+'use client';
 
-import {
-  LoggedInUser,
-  Review,
-  ReviewInsert,
-  WatchedMovie,
-} from "@/lib/types/domain";
-import StarRating from "@/app/components/StarRating";
-import { useState } from "react";
-import { InvertedCommas } from "@/app/components/icons";
-import { EditPen } from "@/app/components/icons";
-import { useRouter } from "next/navigation";
-import { saveReview } from "@/lib/api/reviews";
+import { LoggedInUser, Review, ReviewInsert, WatchedMovie } from '@/lib/types/domain';
+import StarRating from '@/app/components/StarRating';
+import { useState } from 'react';
+import { InvertedCommas } from '@/app/components/icons';
+import { EditPen } from '@/app/components/icons';
+import { useRouter } from 'next/navigation';
+import { saveReview } from '@/lib/api/reviews';
 
 type EditableReviewRowProps = {
   loggedInUser?: LoggedInUser;
@@ -19,17 +14,13 @@ type EditableReviewRowProps = {
   review: Review;
 };
 
-export function ReviewRow({
-  loggedInUser,
-  movie,
-  review,
-}: EditableReviewRowProps) {
+export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProps) {
   const [editing, setEditing] = useState(false);
   const isAuthor = review.ratedBy === loggedInUser?.name;
   const [rating, setRating] = useState<number | null>(review.rating ?? null);
 
   const isChooser = review.ratedBy === movie.chosenBy;
-  const [reviewComment, setReviewComment] = useState(review.comment ?? "");
+  const [reviewComment, setReviewComment] = useState(review.comment ?? '');
 
   const router = useRouter();
 
@@ -91,7 +82,7 @@ export function ReviewRow({
   const editToggleButton = (
     <div className="flex justify-center items-center">
       <button className=" " onClick={toggleEditMode}>
-        <EditPen className={"btn btn-primary btn-circle "} fill={""} />
+        <EditPen className={'btn btn-primary btn-circle '} fill={''} />
       </button>
     </div>
   );
@@ -101,9 +92,7 @@ export function ReviewRow({
       key={`${review.ratedBy}-${movie.id}`}
       className=" flex gap-4 bg-accent-content m-1 rounded-2xl p-2"
     >
-      <div className={`${isChooser ? "text-accent font-bold" : ""} w-25`}>
-        {review.ratedBy}
-      </div>
+      <div className={`${isChooser ? 'text-accent font-bold' : ''} w-25`}>{review.ratedBy}</div>
       <div className="flex-col">
         <StarRating
           rating={rating}

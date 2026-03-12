@@ -1,7 +1,6 @@
-import { IconProps } from "@/lib/types/domain";
+import { IconProps } from '@/lib/types/domain';
 
-export function Glasses
-({ className }: IconProps) {
+export function Glasses({ className }: IconProps) {
   return (
     <svg
       className={className}

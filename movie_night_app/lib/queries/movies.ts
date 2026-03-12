@@ -1,9 +1,9 @@
 //  ## General Movies
 
-import { ResultSetHeader, RowDataPacket } from "mysql2";
-import { pool } from "@/lib/db";
-import { MovieRow } from "@/lib/types/db";
-import { MovieInsert, StoredMovie } from "../types/domain";
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { pool } from '@/lib/db';
+import { MovieRow } from '@/lib/types/db';
+import { MovieInsert, StoredMovie } from '../types/domain';
 
 export async function getMovies(): Promise<MovieRow[]> {
   const [rows] = await pool.query<RowDataPacket[]>(`

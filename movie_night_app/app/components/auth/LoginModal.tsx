@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import LoginCard from "./LoginCard";
+import { useRouter } from 'next/navigation';
+import LoginCard from './LoginCard';
 
 export default function LoginModal() {
   const router = useRouter();

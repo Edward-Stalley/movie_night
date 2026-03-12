@@ -8,16 +8,16 @@ export async function searchMovie(query: string) {
   const res = await fetch(
     `${tmdbBaseUrl}/search/movie?include_adult=false&language=en-US&page=1&query=${encodeURIComponent(query)}&api_key=${apiKey}`,
     {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     },
   );
 
   if (!res.ok) {
-    throw new Error("Fails to fetch popular movies");
+    throw new Error('Fails to fetch popular movies');
   }
 
   const data = await res.json();

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-type Layout = "list" | "grid";
+type Layout = 'list' | 'grid';
 
 type Props = {
   layout: Layout;
@@ -15,7 +15,7 @@ export default function LayoutToggle({ layout, onChange }: Props) {
           type="checkbox"
           defaultChecked
           className="toggle"
-          onClick={() => onChange(layout === "list" ? "grid" : "list")}
+          onClick={() => onChange(layout === 'list' ? 'grid' : 'list')}
         />
         List / Grid
       </label>

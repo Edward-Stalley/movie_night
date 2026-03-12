@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { StoredMovie, WatchedMovieInsert } from "@/lib/types/domain";
-import { deleteMovieFromMovies } from "@/lib/api/movies";
-import { addMovieToWatched } from "@/lib/api/watched-movies";
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { StoredMovie, WatchedMovieInsert } from '@/lib/types/domain';
+import { deleteMovieFromMovies } from '@/lib/api/movies';
+import { addMovieToWatched } from '@/lib/api/watched-movies';
 
 export default function MovieCard(movie: StoredMovie) {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function MovieCard(movie: StoredMovie) {
     <li className="group relative transition-transform duration-300 ease-in-out hover:scale-103">
       <Image
         src={`https://image.tmdb.org/t/p/w500/${movie.posterPath}`}
-        alt={movie.originalTitle ?? "Movie"}
+        alt={movie.originalTitle ?? 'Movie'}
         width={200}
         height={315}
         className="rounded-2xl h-auto w-auto"

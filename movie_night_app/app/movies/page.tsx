@@ -1,8 +1,8 @@
-import { groupMovies } from "@/lib/transform";
-import { StoredMovie } from "@/lib/types/domain";
-import { getMovies } from "@/lib/queries/movies";
-import MovieCard from "../components/MovieCard";
-export const dynamic = "force-dynamic";
+import { groupMovies } from '@/lib/transform';
+import { StoredMovie } from '@/lib/types/domain';
+import { getMovies } from '@/lib/queries/movies';
+import MovieCard from '../components/MovieCard';
+export const dynamic = 'force-dynamic';
 
 export default async function GeneralMovieList() {
   const data = await getMovies();

@@ -1,20 +1,14 @@
-import { showWatchedMovie } from "@/lib/queries/watched-movies";
-import { NextRequest, NextResponse } from "next/server";
+import { showWatchedMovie } from '@/lib/queries/watched-movies';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> },
-) {
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
     const numericId = Number(id);
     await showWatchedMovie(numericId);
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("GET Failed", error);
-    return NextResponse.json({ error: "GET Failed" }, { status: 500 });
+    console.error('GET Failed', error);
+    return NextResponse.json({ error: 'GET Failed' }, { status: 500 });
   }
 }
-
-
-
