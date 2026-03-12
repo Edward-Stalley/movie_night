@@ -1,4 +1,4 @@
-export default function GithubIcon() {
+export function Github() {
   return (
     <svg
       className="rounded w-6 h-6 bg-base-content"

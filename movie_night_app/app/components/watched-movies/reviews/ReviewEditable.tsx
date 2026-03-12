@@ -1,4 +1,4 @@
-export default function ReviewEditable() {
+export function ReviewEditable() {
   return (
     <div>
       <form className="">

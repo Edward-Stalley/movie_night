@@ -8,8 +8,8 @@ import {
 } from "@/lib/types/domain";
 import StarRating from "@/app/components/StarRating";
 import { useState } from "react";
-import InvertedCommas from "@/app/components/icons/InvertedCommas";
-import EditPen from "@/app/components/icons/editPen";
+import { InvertedCommas } from "@/app/components/icons";
+import { EditPen } from "@/app/components/icons";
 import { useRouter } from "next/navigation";
 import { saveReview } from "@/lib/api/reviews";
 
@@ -19,7 +19,7 @@ type EditableReviewRowProps = {
   review: Review;
 };
 
-export default function ReviewRow({
+export function ReviewRow({
   loggedInUser,
   movie,
   review,

@@ -3,7 +3,7 @@
 import { LoggedInUser, ReviewInsert, WatchedMovie } from "@/lib/types/domain";
 import StarRating from "@/app/components/StarRating";
 import { useState } from "react";
-import InvertedCommas from "@/app/components/icons/InvertedCommas";
+import { InvertedCommas } from "@/app/components/icons";
 import { useRouter } from "next/navigation";
 import { saveReview } from "@/lib/api/reviews";
 
@@ -12,7 +12,7 @@ type AddReviewRowProps = {
   movie: WatchedMovie;
 };
 
-export default function ReviewRowAdd({
+export function ReviewRowAdd({
   loggedInUser,
   movie,
 }: AddReviewRowProps) {

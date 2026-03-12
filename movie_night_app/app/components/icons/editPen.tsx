@@ -1,6 +1,6 @@
 import { IconClassNameProps } from "@/lib/types/domain";
 
-export default function EditPen({ className, fill }: IconClassNameProps) {
+export function EditPen({ className, fill }: IconClassNameProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

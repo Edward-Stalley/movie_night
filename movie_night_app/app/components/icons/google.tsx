@@ -1,4 +1,4 @@
-export default function GoogleIcon() {
+export function Google() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

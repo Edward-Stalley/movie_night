@@ -1,4 +1,4 @@
-export default function InvertedCommas() {
+export function InvertedCommas() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
