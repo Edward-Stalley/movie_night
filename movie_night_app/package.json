@@ -2,12 +2,16 @@
   "name": "movie_night",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "types": "tsc --noEmit"
+    "types": "tsc --noEmit",
+    "format": "prettier --write \"app/**/*.{ts,tsx,js,jsx}\" \"lib/**/*.{ts,tsx,js,jsx}\" \"*.json\"",
+    "format:check": "prettier --check .",
+    "check-all": "NODE_NO_WARNINGS=1 ts-node --esm scripts/check-all.cjs"
   },
   "dependencies": {
     "daisyui": "^5.5.19",
@@ -31,6 +35,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "prettier": "^3.8.1",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   },
   "browserslist": "> 1%"
