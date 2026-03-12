@@ -6,7 +6,6 @@ export async function GET(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    console.log("in trhis folder")
     const { id } = await context.params;
     const numericId = Number(id);
     await getWatchedMovie(numericId);

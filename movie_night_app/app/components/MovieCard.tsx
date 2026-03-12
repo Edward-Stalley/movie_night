@@ -16,7 +16,7 @@ export default function MovieCard(movie: StoredMovie) {
 
   // NOT IMPLEMENTED YET
   const handleAdd = async () => {
-    console.log("inside mopvie card");
+    console.log("inside movie card");
 
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,
