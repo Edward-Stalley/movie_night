@@ -16,8 +16,6 @@ export default function MovieCard(movie: StoredMovie) {
 
   // NOT IMPLEMENTED YET
   const handleAdd = async () => {
-    console.log("inside movie card");
-
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,
       watched_on: new Date().toISOString(),

@@ -12,7 +12,6 @@ export default async function WatchedMovies() {
   const loggedInUser = mapSessionToLoggedInUser(session);
 
   const data = await getWatchedMoviesRaw();
-
   const rows = await data;
 
   const movies: WatchedMovie[] = groupWatchedMovies(rows);

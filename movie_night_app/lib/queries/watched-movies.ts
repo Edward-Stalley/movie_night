@@ -34,16 +34,16 @@ LEFT JOIN movie_ratings mr
   ON wm.movie_id = mr.watched_movie_id
 LEFT JOIN users rater
   ON mr.user_id = rater.id
-JOIN users chooser
+LEFT JOIN users chooser
   ON wm.chosen_by = chooser.id
     `);
 
   return rows as MovieRow[];
 }
 
-// ## (DETAIL) Show individual movie from watched_movies.
+// ## (DETAIL) SHOW: get individual movie from watched_movies.
 
-export async function getWatchedMovie(id: number): Promise<MovieRow[] | null> {
+export async function showWatchedMovie(id: number): Promise<MovieRow[] | null> {
   const [rows] = await pool.query<RowDataPacket[]>(
     `
 SELECT

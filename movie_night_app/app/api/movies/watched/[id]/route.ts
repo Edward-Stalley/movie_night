@@ -1,4 +1,4 @@
-import { getWatchedMovie } from "@/lib/queries/watched-movies";
+import { showWatchedMovie } from "@/lib/queries/watched-movies";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -8,7 +8,7 @@ export async function GET(
   try {
     const { id } = await context.params;
     const numericId = Number(id);
-    await getWatchedMovie(numericId);
+    await showWatchedMovie(numericId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("GET Failed", error);
