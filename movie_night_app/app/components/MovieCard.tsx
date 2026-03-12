@@ -13,7 +13,7 @@ export default function MovieCard(movie: StoredMovie) {
     await deleteMovieFromMovies(movie);
     router.refresh();
   };
-
+""
   // NOT IMPLEMENTED YET
   const handleAdd = async () => {
     const watchedMovieData: WatchedMovieInsert = {

@@ -5,8 +5,7 @@ export default function Home() {
     <div className="relative p-10 grid grid-cols-10 grid-rows-10 gap-1 flex-1 min-h-0">
       <div className="absolute top-0 left-0 w-full h-full bg-primary-content bg-linear-to-tr from-black via-gray-800 to-slate-800 [clip-path:polygon(0%_0%,90%_20%,0%_500%)] pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 w-full h-full bg-primary bg-linear-to-br from-orange-300 via-orange-500 to-bg-primary  [clip-path:polygon(-60%_0%,66%_55%,50%_0%)] pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-fu/ll h-full bg-primary bg-linear-to-br from-orange-300 via-bg-primary  [clip-path:polygon(-100%_0%,10%_60%,50%_0%)] pointer-events-none"></div>
-      <div className="col-span-4 col-start-6 row-start-1 row-span-8 relative rounded-2xl z-10 ">
+      <div className="col-span-4 col-start-6 row-start-1 row-span-8 relative rounded-2xl z-10  ">
         <Image
           src="/movie-night-logo-padding.svg"
           alt="Movie Night"

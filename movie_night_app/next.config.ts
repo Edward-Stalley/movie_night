@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
       { protocol: "https", hostname: "media.themoviedb.org" },
     ],
+    qualities: [100, 75],
   },
   reactCompiler: true,
 };

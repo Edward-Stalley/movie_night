@@ -14,13 +14,13 @@ export default async function Navbar() {
 
   if (session?.user) {
     loggedIn = (
-      <div className="m-2 p-2 flex gap-2 items-center justify-center ">
+      <div className="m-2 p-2 flex gap-2 items-center justify-center transform transition-transform duration-200 hover:scale-120  ">
         <Image
           src={`${session.user.image}`}
           alt={""}
           width={30}
           height={30}
-          className="rounded-2xl h-auto w-auto"
+          className="rounded-2xl h-auto w-auto "
         />
         <LogoutButton />
       </div>
