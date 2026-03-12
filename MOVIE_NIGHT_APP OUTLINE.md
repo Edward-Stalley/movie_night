@@ -46,3 +46,12 @@ IDEAS
 - Then just look up database to work with my data.
 - Add to watched_movies
 
+
+---------------
+Testing
+---------------
+
+- Cypress or Playwright ?
+- Linting 
+- Prettier etc.
+- Before PR submit do all checks (make a script)

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "types": "tsc --noEmit"
   },
   "dependencies": {
     "daisyui": "^5.5.19",

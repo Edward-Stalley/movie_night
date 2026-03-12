@@ -6,7 +6,7 @@ import { StoredMovie, WatchedMovieInsert } from "@/lib/types/domain";
 import { deleteMovieFromMovies } from "@/lib/api/movies";
 import { addMovieToWatched } from "@/lib/api/watched-movies";
 
-export default function MovieCard({ movie }: { movie: StoredMovie }) {
+export default function MovieCard(movie: StoredMovie) {
   const router = useRouter();
 
   const handleDelete = async () => {
