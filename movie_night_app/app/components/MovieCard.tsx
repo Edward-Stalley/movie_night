@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { StoredMovie, WatchedMovieInsert } from '@/lib/types/domain';
+import { WatchedMovieInsert } from '@/lib/types/db';
+import { StoredMovie } from '@/lib/types/domain';
 import { deleteMovieFromMovies } from '@/lib/api/movies';
 import { addMovieToWatched } from '@/lib/api/watched-movies';
 

@@ -1,12 +1,13 @@
 'use client';
 
-import { LoggedInUser, Review, ReviewInsert, WatchedMovie } from '@/lib/types/domain';
+import { LoggedInUser, Review, WatchedMovie } from '@/lib/types/domain';
 import StarRating from '@/app/components/StarRating';
 import { useState } from 'react';
 import { InvertedCommas } from '@/app/components/icons';
 import { EditPen } from '@/app/components/icons';
 import { useRouter } from 'next/navigation';
 import { saveReview } from '@/lib/api/reviews';
+import { ReviewInsert } from '@/lib/types/db';
 
 type EditableReviewRowProps = {
   loggedInUser?: LoggedInUser;
@@ -69,7 +70,7 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
       <textarea
         value={reviewComment}
         onChange={(e) => setReviewComment(e.target.value)}
-        className="flex-1 p-2 m-2 bg-accent-content rounded-2xl text-base-content"
+        className="overflow-hidden max-h-20 flex-1 p-2 m-2 bg-accent-content rounded-2xl text-base-content"
         placeholder="Write Review Here..."
       />
 
@@ -77,7 +78,7 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
     </form>
   );
 
-  const displayComment = <div className="pl-2"> {review.comment}</div>;
+  const displayComment = <div className="pl-2 overflow-scroll max-h-10"> {review.comment}</div>;
 
   const editToggleButton = (
     <div className="flex justify-center items-center">
@@ -101,7 +102,7 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
         />
         <div className="flex pl-2 pt-2">
           <InvertedCommas />
-          <div className="w-96">
+          <div className="w-96 ">
             {isAuthor ? (editing ? textArea : displayComment) : displayComment}
           </div>
         </div>

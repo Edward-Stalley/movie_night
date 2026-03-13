@@ -1,12 +1,22 @@
 // # Table: users
 
-import { DBUser, DBUserRow } from '@/lib/types/db';
+import { DBUserInsert, DBUserRow } from '@/lib/types/db';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { pool } from '../db';
 
+// # GET USERS (LIST)
+export async function getUsers(): Promise<DBUserRow[]> {
+  const [rows] = await pool.query<RowDataPacket[]>(`
+    SELECT id, name , image
+    FROM users
+    `);
+
+  return rows as DBUserRow[];
+}
+
 // # CREATE USER
 // # IF USER DOES NOT EXIST IN DB → CREATE USER
-export async function upsertUser(user: DBUser) {
+export async function upsertUser(user: DBUserInsert) {
   await pool.query<ResultSetHeader>(
     `
     INSERT INTO users(name, image, provider, provider_account_id)
@@ -17,7 +27,8 @@ export async function upsertUser(user: DBUser) {
   );
 }
 
-// # GET USER by "provider_account_id"
+// # GET USER (SHOW)
+// ## ( Get Individual USER by "provider_account_id" )
 export async function getUserByProviderAccountId(
   providerAccountId: string,
 ): Promise<DBUserRow | null> {

@@ -1,25 +1,27 @@
-import { groupWatchedMovies } from '@/lib/transform';
-import type { WatchedMovie } from '@/lib/types/domain';
+import { toWatchedMovies, toUser } from '@/lib/transform';
+import type { User, WatchedMovie } from '@/lib/types/domain';
 import { showWatchedMovie } from '@/lib/queries/watched-movies';
 import WatchedMovieCard from '@/app/components/WatchedMovieCard';
 import { auth } from '@/app/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
+import { getUsers } from '@/lib/queries/users';
 
 export const dynamic = 'force-dynamic';
 
 export default async function WatchedMovieDetail({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
-  // const loggedInUser = session?.user
   const loggedInUser = mapSessionToLoggedInUser(session);
 
   const id = (await params).id;
 
   const numericId = Number(id);
-  const rows = await showWatchedMovie(numericId);
 
-  if (rows === null) return <div>Movie Not Found</div>;
+  const watchedMovierows = await showWatchedMovie(numericId);
+  if (watchedMovierows === null) return <div>Movie Not Found</div>;
+  const m: WatchedMovie = toWatchedMovies(watchedMovierows)[0];
 
-  const m: WatchedMovie = groupWatchedMovies(rows)[0];
+  const userRows = await getUsers();
+  const users: User[] = userRows.map(toUser);
 
   return (
     <ul className="list bg-base-100 rounded-box shadow-md">
@@ -32,6 +34,7 @@ export default async function WatchedMovieDetail({ params }: { params: Promise<{
         layout={'list'}
         isDetailScreen={true}
         loggedInUser={loggedInUser}
+        users={users}
       />
     </ul>
   );

@@ -1,89 +1,99 @@
 // # Reorganises data from either Database or API into correct data structure / shape.
 
-import type { MovieRow } from '@/lib/types/db';
+import type { DBUserRow, MovieRow, WatchedMovieRow } from '@/lib/types/db';
 import { TMDBMovie } from '@/lib/types/tmdb';
-import { SearchedMovie, StoredMovie, WatchedMovie } from '@/lib/types/domain';
+import { SearchedMovie, StoredMovie, User, WatchedMovie } from '@/lib/types/domain';
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 
-// ## Watched Movies
+// ## Watched Movies (Movie Row + JOIN Review)
 
 // Takes Array of SAME WATCHED MOVIE and restructures it for Domain Display.
-export function groupWatchedMovies(rows: MovieRow[]): WatchedMovie[] {
+
+export function toWatchedMovieBase(row: WatchedMovieRow): WatchedMovie {
+  return {
+    id: row.id,
+    movieId: row.movieId,
+    tmdbId: row.tmdbId,
+    watchedOn: new Date(row.watchedOn),
+    username: row.username,
+    chosenBy: row.chosenBy,
+    reviews: [],
+    overview: row.overview,
+    genreIds: row.genreIds,
+    originalTitle: row.originalTitle,
+    posterPath: row.posterPath,
+    releaseDate: new Date(row.releaseDate),
+  };
+}
+
+export function toReview(row: WatchedMovieRow) {
+  return {
+    ratedBy: row.ratedBy!,
+    rating: row.rating!,
+    comment: row.comment!,
+  };
+}
+
+export function toWatchedMovies(rows: WatchedMovieRow[]): WatchedMovie[] {
   const moviesMap = new Map<number, WatchedMovie>();
 
   for (const row of rows) {
     if (!moviesMap.has(row.id)) {
-      moviesMap.set(row.id, {
-        id: row.id,
-        movieId: row.movieId,
-        tmdbId: row.tmdbId,
-        watchedOn: new Date(row.watchedOn),
-        username: row.username,
-        chosenBy: row.chosenBy,
-        reviews: [],
-        overview: row.overview,
-        genreIds: row.genreIds,
-        originalTitle: row.originalTitle,
-        posterPath: row.posterPath,
-        releaseDate: new Date(row.releaseDate),
-      });
+      moviesMap.set(row.id, toWatchedMovieBase(row));
     }
 
     if (row.ratedBy) {
-      const review = {
-        ratedBy: row.ratedBy,
-        rating: row.rating!,
-        comment: row.comment!,
-      };
-      moviesMap.get(row.id)!.reviews.push(review);
+      moviesMap.get(row.id)!.reviews.push(toReview(row));
     }
   }
 
-  const watchedMovieList = Array.from(moviesMap.values());
-  return watchedMovieList;
+  return Array.from(moviesMap.values());
 }
 
-// ## General Movies (Movie List)
+// ## General Movies (MovieRow → StoredMovie)
 
-export function groupMovies(rows: MovieRow[]): StoredMovie[] {
-  const moviesMap = new Map<number, StoredMovie>();
-  for (const row of rows) {
-    if (!moviesMap.has(row.tmdbId)) {
-      moviesMap.set(row.id, {
-        id: row.id,
-        tmdbId: row.tmdbId,
-        overview: row.overview,
-        genreIds: row.genreIds,
-        originalTitle: row.originalTitle,
-        posterPath: row.posterPath,
-        releaseDate: new Date(row.releaseDate),
-      });
-    }
-  }
-
-  const movieList = Array.from(moviesMap.values());
-  return movieList;
+export function toStoredMovies(row: MovieRow): StoredMovie {
+  return {
+    id: row.id,
+    tmdbId: row.tmdbId,
+    overview: row.overview,
+    genreIds: row.genreIds,
+    originalTitle: row.originalTitle,
+    posterPath: row.posterPath,
+    releaseDate: new Date(row.releaseDate),
+  };
 }
 
-// #2 External API → Domain objects
+// ## Searched Movies (TMDB Movie → SearchedMovie )
 
-export function transformSearchedMovies(movieResults: TMDBMovie[]): SearchedMovie[] {
-  const moviesMap = new Map<number, SearchedMovie>();
+export function toSearchedMovie(movie: TMDBMovie): SearchedMovie {
+  return {
+    id: movie.id,
+    originalTitle: movie.original_title,
+    overview: movie.overview,
+    releaseDate: new Date(movie.release_date),
+    posterPath: movie.poster_path,
+    genreIds: movie.genre_ids,
+  };
+}
 
-  for (const movie of movieResults) {
-    if (!moviesMap.has(movie.id)) {
-      moviesMap.set(movie.id, {
-        id: movie.id, // === tmdb_id
-        originalTitle: movie.original_title,
-        overview: movie.overview,
-        releaseDate: new Date(movie.release_date),
-        posterPath: movie.poster_path,
-        genreIds: movie.genre_ids,
-      });
-    }
-  }
+// ## User (DBUserRow → User)
 
-  const searchdMovieList = Array.from(moviesMap.values());
-  return searchdMovieList;
+export function toUser(row: DBUserRow): User {
+  return {
+    id: String(row.id),
+    name: row.name,
+    image: row.image,
+  };
+}
+
+// ## Dates (Date → String: 2025-09-20)
+
+// Fri Mar 06 2026 09:00:00 GMT+0900 (Japan Standard Time)
+// →
+// 2026-03-06
+
+export function toIso(date: Date) {
+  return date.toISOString().split('T')[0];
 }

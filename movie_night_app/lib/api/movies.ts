@@ -1,6 +1,7 @@
 // lib/api/movies.ts
 
-import { MovieInsert, StoredMovie } from '../types/domain';
+import { StoredMovie } from '../types/domain';
+import { MovieInsert } from '../types/db';
 
 export async function deleteMovieFromMovies(movie: StoredMovie) {
   await fetch(`/api/movies/${movie.id}`, {

@@ -1,5 +1,4 @@
-import { getMovies } from '@/lib/queries/movies';
-import { addWatchedMovie } from '@/lib/queries/watched-movies';
+import { getMovies, addMovie } from '@/lib/queries/movies';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
@@ -9,7 +8,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const newMovie = await addWatchedMovie(body);
+  const newMovie = await addMovie(body);
 
   return NextResponse.json(newMovie);
 }
