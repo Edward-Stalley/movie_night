@@ -1,6 +1,6 @@
 // lib/api/reviews.ts
 
-import { ReviewInsert } from '@/lib/types/domain';
+import { ReviewInsert } from '@/lib/types/db';
 
 export async function saveReview(movieId: number, review: ReviewInsert) {
   await fetch(`/api/movies/watched/${movieId}/reviews`, {

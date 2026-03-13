@@ -18,13 +18,6 @@ export interface Review {
   comment: string | null;
 }
 
-export interface ReviewInsert {
-  watchedMovieId: number;
-  userId: number; // ratedBy on Client Side // this is actually name on client side. convert to id later.
-  rating: number | null;
-  comment: string | null;
-}
-
 export interface WatchedMovie extends MovieBase {
   id: number; // Watched Movie ID
   tmdbId: number; // TMDB ID
@@ -33,12 +26,6 @@ export interface WatchedMovie extends MovieBase {
   chosenBy: string;
   username: string;
   reviews: Review[];
-}
-
-export interface WatchedMovieInsert {
-  movieId: number; // Movies ID
-  watched_on: string | null;
-  chosenBy: string | null;
 }
 
 export interface ShortlistedMovie extends MovieBase {
@@ -53,24 +40,27 @@ export interface StoredMovie extends MovieBase {
   tmdbId: number;
 }
 
-export type MovieInsert = Omit<StoredMovie, 'id'>;
-
-export interface WatchedMovieCardProps {
-  movie: WatchedMovie;
-  isDetailScreen: boolean;
-  layout: string | null;
-  loggedInUser?: LoggedInUser;
-}
-
 // export type LoggedInUser = string | null | undefined;
 
-export interface LoggedInUser {
+export interface LoggedInUser extends User {
+  // May Need to Add Extra Fields Later...
+}
+export interface User {
   id: string;
   name: string;
   image: string;
 }
 
 export type UserId = number;
+
+// -------------
+// PROPS
+// -------------
+
+export interface IconClassNameProps {
+  className?: string;
+  fill?: string;
+}
 
 export interface StarRatingProps {
   rating: number | null | undefined;
@@ -79,9 +69,18 @@ export interface StarRatingProps {
   isEditing: boolean;
 }
 
+export interface WatchedMovieCardProps {
+  movie: WatchedMovie;
+  isDetailScreen: boolean;
+  layout: string | null;
+  loggedInUser?: LoggedInUser;
+  users: User[];
+}
+
 export type IconProps = React.SVGProps<SVGSVGElement>;
 
-export interface IconClassNameProps {
-  className?: string;
-  fill?: string;
+export interface WatchedMoviesProps {
+  movies: WatchedMovie[];
+  loggedInUser?: LoggedInUser;
+  users: User[];
 }

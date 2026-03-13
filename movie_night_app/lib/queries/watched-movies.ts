@@ -1,12 +1,13 @@
 // # Table: watched_movies
 
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
-import { MovieRow } from '@/lib/types/db';
-import { pool } from '../db';
-import { WatchedMovieInsert } from '../types/domain';
+import { WatchedMovieRow } from '@/lib/types/db';
+import { pool } from '@/lib/db';
+import { WatchedMovieInsert } from '@/lib/types/db';
+import { UserId } from '../types/domain';
 
 // ## (GET) : Get List of Movies from watched_movies.
-export async function getWatchedMoviesRaw(): Promise<MovieRow[]> {
+export async function getWatchedMovies(): Promise<WatchedMovieRow[]> {
   const [rows] = await pool.query<RowDataPacket[]>(`
 SELECT
     wm.id,
@@ -33,12 +34,12 @@ LEFT JOIN users chooser
   ON wm.chosen_by = chooser.id
     `);
 
-  return rows as MovieRow[];
+  return rows as WatchedMovieRow[];
 }
 
 // ## (DETAIL) SHOW: get individual movie from watched_movies.
 
-export async function showWatchedMovie(id: number): Promise<MovieRow[] | null> {
+export async function showWatchedMovie(id: number): Promise<WatchedMovieRow[] | null> {
   const [rows] = await pool.query<RowDataPacket[]>(
     `
 SELECT
@@ -61,7 +62,7 @@ LEFT JOIN movie_ratings mr
   ON wm.movie_id = mr.watched_movie_id
 LEFT JOIN users rater
   ON mr.user_id = rater.id
-JOIN users chooser
+LEFT JOIN users chooser
   ON wm.chosen_by = chooser.id
 WHERE m.id = ?
     `,
@@ -70,7 +71,7 @@ WHERE m.id = ?
 
   if (rows.length === 0) return null;
 
-  return rows as MovieRow[];
+  return rows as WatchedMovieRow[];
 }
 
 // ## (POST) : Add individual Movie to watched_movies.
@@ -90,4 +91,17 @@ export async function addWatchedMovie(
     ...movie,
     id: result.insertId,
   };
+}
+
+// ##  Update Watched Movie (chosen_by)
+
+export async function updateChosenBy(watchedMovieId: number, userId: UserId) {
+  await pool.query(
+    `
+    UPDATE watched_movies
+    SET chosen_by = ?
+    WHERE id = ?
+    `,
+    [userId, watchedMovieId],
+  );
 }

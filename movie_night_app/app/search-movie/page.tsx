@@ -3,8 +3,9 @@
 import Image from 'next/image';
 import { searchMovie } from '@/lib/external/tmdb';
 import { useState } from 'react';
-import { transformSearchedMovies } from '@/lib/transform';
-import { MovieInsert, SearchedMovie } from '@/lib/types/domain';
+import { toSearchedMovie } from '@/lib/transform';
+import { SearchedMovie } from '@/lib/types/domain';
+import { MovieInsert } from '@/lib/types/db';
 import { addMovieToMovies } from '@/lib/api/movies';
 
 export default function SearchMovie() {
@@ -15,8 +16,9 @@ export default function SearchMovie() {
   const searchForMovie = async () => {
     try {
       const data = await searchMovie(movieTitle);
-      const transformedMovieData = transformSearchedMovies(data.results);
-      setMovieResults(transformedMovieData || []);
+      const movies = data.results.map(toSearchedMovie);
+
+      setMovieResults(movies || []);
       setSearched(true);
     } catch (err) {
       console.error(err);
@@ -25,6 +27,7 @@ export default function SearchMovie() {
   };
 
   const addToMovieList = async (movie: SearchedMovie) => {
+    console.log('tried to add movie');
     const movieData: MovieInsert = {
       originalTitle: movie.originalTitle,
       tmdbId: movie.id, // <-- TMDB id maps to db tmdb_id

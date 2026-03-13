@@ -1,5 +1,5 @@
 import { getUserByProviderAccountId, upsertUser } from '@/lib/queries/users';
-import { DBUser } from '@/lib/types/db';
+import { DBUserInsert } from '@/lib/types/db';
 import NextAuth from 'next-auth';
 import GitHub from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
@@ -18,7 +18,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         return false;
       }
 
-      const dbUser: DBUser = {
+      const dbUser: DBUserInsert = {
         name: user.name ?? 'Unkwown User',
         image: user.image ?? '',
         provider: account.provider,

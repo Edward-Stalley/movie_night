@@ -1,29 +1,30 @@
 import MovieCard from '@/app/components/MovieCard';
 import { getMovie } from '@/lib/queries/movies';
-import { groupMovies } from '@/lib/transform';
+import { toStoredMovies } from '@/lib/transform';
 
 export default async function MovieDetail({ params }: { params: Promise<{ id: string }> }) {
   const id = (await params).id;
 
   const numericId = Number(id);
   const data = await getMovie(numericId);
+
   if (!data) {
     return <div>Movie Not Found</div>;
   }
 
-  const m = groupMovies([data])[0];
+  const movie = toStoredMovies(data);
 
   return (
     <div>
       <MovieCard
-        key={m.id}
-        id={m.id}
-        tmdbId={m.tmdbId}
-        originalTitle={m.originalTitle}
-        overview={m.overview}
-        releaseDate={m.releaseDate}
-        posterPath={m.posterPath}
-        genreIds={m.genreIds}
+        key={movie.id}
+        id={movie.id}
+        tmdbId={movie.tmdbId}
+        originalTitle={movie.originalTitle}
+        overview={movie.overview}
+        releaseDate={movie.releaseDate}
+        posterPath={movie.posterPath}
+        genreIds={movie.genreIds}
       />
     </div>
   );

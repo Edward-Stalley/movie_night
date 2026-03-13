@@ -1,4 +1,4 @@
-import { groupMovies } from '@/lib/transform';
+import { toStoredMovies } from '@/lib/transform';
 import { StoredMovie } from '@/lib/types/domain';
 import { getMovies } from '@/lib/queries/movies';
 import MovieCard from '../components/MovieCard';
@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export default async function GeneralMovieList() {
   const data = await getMovies();
 
-  const movies: StoredMovie[] = groupMovies(data);
+  const movies: StoredMovie[] = data.map(toStoredMovies)
 
   const movieList = movies.map((m) => {
     return (
