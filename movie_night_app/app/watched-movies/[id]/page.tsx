@@ -15,7 +15,7 @@ export default async function WatchedMovieDetail({ params }: { params: Promise<{
   const id = (await params).id;
 
   const numericId = Number(id);
-  
+
   const watchedMovierows = await showWatchedMovie(numericId);
   if (watchedMovierows === null) return <div>Movie Not Found</div>;
   const m: WatchedMovie = toWatchedMovies(watchedMovierows)[0];

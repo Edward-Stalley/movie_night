@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 type Props = {
   movies: WatchedMovie[];
   loggedInUser?: LoggedInUser;
-  users: User[]
+  users: User[];
 };
 
 export default function WatchedMoviesLayout({ movies, loggedInUser, users }: Props) {
@@ -23,7 +23,7 @@ export default function WatchedMoviesLayout({ movies, loggedInUser, users }: Pro
         isDetailScreen={false}
         layout={layout}
         loggedInUser={loggedInUser}
-        users ={users}
+        users={users}
       />
     );
   });

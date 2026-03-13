@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export default async function GeneralMovieList() {
   const data = await getMovies();
 
-  const movies: StoredMovie[] = data.map(toStoredMovies)
+  const movies: StoredMovie[] = data.map(toStoredMovies);
 
   const movieList = movies.map((m) => {
     return (

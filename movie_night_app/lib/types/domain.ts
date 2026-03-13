@@ -44,6 +44,7 @@ export interface StoredMovie extends MovieBase {
 
 export interface LoggedInUser extends User {
   // May Need to Add Extra Fields Later...
+  _futureFields?: never;
 }
 export interface User {
   id: string;

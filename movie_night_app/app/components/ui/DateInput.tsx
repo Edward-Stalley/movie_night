@@ -1,6 +1,5 @@
 'use client';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { EditPen } from '../icons';
+import { useState } from 'react';
 import { WatchedMovie } from '@/lib/types/domain';
 import { useRouter } from 'next/navigation';
 import { updateWatchedOn } from '@/lib/api/watched-movies';
