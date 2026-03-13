@@ -14,7 +14,6 @@ export default function WatchedMovieCard({
 }: WatchedMovieCardProps) {
   const userReview = movie.reviews.some((r) => r.ratedBy === loggedInUser?.name);
 
-
   return (
     <li key={`${movie.chosenBy}+${movie.id}`} className="list-row bg-neutral m-4">
       <div className="text-4xl font-thin opacity-30 tabular-nums"></div>
@@ -38,7 +37,7 @@ export default function WatchedMovieCard({
         )}
         {layout === 'list' && (
           <div>
-            <div className="flex">
+            <div className="flex gap-1">
               <div>
                 <DateInput movie={movie} />
               </div>

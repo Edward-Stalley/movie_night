@@ -11,6 +11,13 @@ export async function addMovieToWatched(movie: WatchedMovieInsert) {
 export async function updateChosenBy(movieId: number, user: User) {
   await fetch(`/api/movies/watched/${movieId}`, {
     method: 'PATCH',
-    body: JSON.stringify({ userId: user.id }),
+    body: JSON.stringify({ chosenBy: user.id }),
+  });
+}
+
+export async function updateWatchedOn(movieId: number, watchedOn: string) {
+  await fetch(`/api/movies/watched/${movieId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ watchedOn: watchedOn }),
   });
 }

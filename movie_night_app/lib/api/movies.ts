@@ -11,7 +11,6 @@ export async function deleteMovieFromMovies(movie: StoredMovie) {
 }
 
 export async function addMovieToMovies(movie: MovieInsert) {
-  console.log('is this running?');
   await fetch('/api/movies', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

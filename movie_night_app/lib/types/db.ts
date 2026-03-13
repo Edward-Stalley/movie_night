@@ -42,9 +42,9 @@ export interface DBUserRow {
   providerAccountId: string;
 }
 
-// ----------------
-// INSERTS
-// ----------------
+// ------------------
+// INSERTS / UPDATES
+// ------------------
 
 export type MovieInsert = Omit<StoredMovie, 'id'>;
 export interface DBUserInsert {
@@ -66,3 +66,7 @@ export interface WatchedMovieInsert {
   chosenBy: string | null;
 }
 
+export interface WatchedMovieUpdate {
+  chosenBy?: number;
+  watchedOn?: string;
+}

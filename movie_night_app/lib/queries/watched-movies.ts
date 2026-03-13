@@ -105,3 +105,14 @@ export async function updateChosenBy(watchedMovieId: number, userId: UserId) {
     [userId, watchedMovieId],
   );
 }
+
+export async function updateWatchedOn(watchedMovieId: number, watchedOn: string) {
+  await pool.query(
+    `
+    UPDATE watched_movies
+    SET watched_on = ?
+    WHERE id = ?
+    `,
+    [watchedOn, watchedMovieId],
+  );
+}

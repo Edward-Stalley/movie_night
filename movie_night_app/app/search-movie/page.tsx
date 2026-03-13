@@ -27,7 +27,6 @@ export default function SearchMovie() {
   };
 
   const addToMovieList = async (movie: SearchedMovie) => {
-    console.log('tried to add movie');
     const movieData: MovieInsert = {
       originalTitle: movie.originalTitle,
       tmdbId: movie.id, // <-- TMDB id maps to db tmdb_id

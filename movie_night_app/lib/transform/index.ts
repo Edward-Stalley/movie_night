@@ -87,3 +87,13 @@ export function toUser(row: DBUserRow): User {
     image: row.image,
   };
 }
+
+// ## Dates (Date → String: 2025-09-20)
+
+// Fri Mar 06 2026 09:00:00 GMT+0900 (Japan Standard Time)
+// →
+// 2026-03-06
+
+export function toIso(date: Date) {
+  return date.toISOString().split('T')[0];
+}
