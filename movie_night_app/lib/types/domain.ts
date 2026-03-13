@@ -40,10 +40,9 @@ export interface StoredMovie extends MovieBase {
   tmdbId: number;
 }
 
-// export type LoggedInUser = string | null | undefined;
-
 export interface LoggedInUser extends User {
-  // May Need to Add Extra Fields Later...
+  // May Need to Add Extra Fields Later...(currently identical to User. No new fields)
+  // For the time being have placeholder to stop linter error
   _futureFields?: never;
 }
 export interface User {
