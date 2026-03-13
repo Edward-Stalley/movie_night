@@ -1,12 +1,13 @@
 'use client';
 
-import { LoggedInUser, Review, ReviewInsert, WatchedMovie } from '@/lib/types/domain';
+import { LoggedInUser, Review, WatchedMovie } from '@/lib/types/domain';
 import StarRating from '@/app/components/StarRating';
 import { useState } from 'react';
 import { InvertedCommas } from '@/app/components/icons';
 import { EditPen } from '@/app/components/icons';
 import { useRouter } from 'next/navigation';
 import { saveReview } from '@/lib/api/reviews';
+import { ReviewInsert } from '@/lib/types/db';
 
 type EditableReviewRowProps = {
   loggedInUser?: LoggedInUser;

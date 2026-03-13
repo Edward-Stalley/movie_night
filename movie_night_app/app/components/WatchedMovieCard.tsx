@@ -2,14 +2,18 @@ import { WatchedMovieCardProps } from '@/lib/types/domain';
 import Image from 'next/image';
 import { ReviewRow, ReviewRowAdd } from '@/app/components/watched-movies/reviews';
 import Link from 'next/link';
+import DateInput from './ui/DateInput';
+import ChosenByInput from './ui/ChosenByInput';
 
 export default function WatchedMovieCard({
   movie,
   loggedInUser,
   isDetailScreen,
   layout,
+  users,
 }: WatchedMovieCardProps) {
   const userReview = movie.reviews.some((r) => r.ratedBy === loggedInUser?.name);
+
 
   return (
     <li key={`${movie.chosenBy}+${movie.id}`} className="list-row bg-neutral m-4">
@@ -34,6 +38,14 @@ export default function WatchedMovieCard({
         )}
         {layout === 'list' && (
           <div>
+            <div className="flex">
+              <div>
+                <DateInput movie={movie} />
+              </div>
+              <div>
+                <ChosenByInput movie={movie} users={users} />
+              </div>
+            </div>
             {movie.reviews.map((review) => (
               <ReviewRow
                 key={review.ratedBy}

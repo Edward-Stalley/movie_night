@@ -1,6 +1,6 @@
 'use client';
 
-import type { LoggedInUser, WatchedMovie } from '@/lib/types/domain';
+import type { LoggedInUser, User, WatchedMovie } from '@/lib/types/domain';
 import WatchedMovieCard from '@/app/components/WatchedMovieCard';
 import LayoutToggle from '../ui/LayoutToggle';
 import { useState } from 'react';
@@ -10,9 +10,10 @@ export const dynamic = 'force-dynamic';
 type Props = {
   movies: WatchedMovie[];
   loggedInUser?: LoggedInUser;
+  users: User[]
 };
 
-export default function WatchedMoviesLayout({ movies, loggedInUser }: Props) {
+export default function WatchedMoviesLayout({ movies, loggedInUser, users }: Props) {
   const [layout, setLayout] = useState<'list' | 'grid'>('grid');
   const movieList = movies.map((m: WatchedMovie) => {
     return (
@@ -22,6 +23,7 @@ export default function WatchedMoviesLayout({ movies, loggedInUser }: Props) {
         isDetailScreen={false}
         layout={layout}
         loggedInUser={loggedInUser}
+        users ={users}
       />
     );
   });
