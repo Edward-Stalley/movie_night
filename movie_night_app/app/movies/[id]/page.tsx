@@ -1,4 +1,4 @@
-import MovieCard from '@/app/components/MovieCard';
+import MovieCard from '@/app/components/movies/MovieCard';
 import { getMovie } from '@/lib/queries/movies';
 import { toStoredMovies } from '@/lib/transform';
 
@@ -14,18 +14,5 @@ export default async function MovieDetail({ params }: { params: Promise<{ id: st
 
   const movie = toStoredMovies(data);
 
-  return (
-    <div>
-      <MovieCard
-        key={movie.id}
-        id={movie.id}
-        tmdbId={movie.tmdbId}
-        originalTitle={movie.originalTitle}
-        overview={movie.overview}
-        releaseDate={movie.releaseDate}
-        posterPath={movie.posterPath}
-        genreIds={movie.genreIds}
-      />
-    </div>
-  );
+  return <MovieCard movie={movie} key={movie.id} layout="list" />;
 }

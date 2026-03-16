@@ -1,4 +1,4 @@
-import { StarRatingProps } from '@/lib/types/domain';
+import { StarRatingProps } from '@/lib/types/ui';
 import { useState } from 'react';
 
 export default function StarRating({ rating, max = 5, onClick, isEditing }: StarRatingProps) {

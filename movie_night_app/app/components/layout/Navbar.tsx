@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { auth } from '@/app/auth';
 import Image from 'next/image';
-import LogoutButton from './watched-movies/LogoutButton';
+import LogoutButton from '@/app/components//auth/LogoutButton';
 
 export default async function Navbar() {
   const session = await auth();

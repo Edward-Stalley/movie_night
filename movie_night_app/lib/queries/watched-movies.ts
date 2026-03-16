@@ -93,6 +93,12 @@ export async function addWatchedMovie(
   };
 }
 
+//  ## (DELETE): Delete watched movie
+
+export async function deleteWatchedMovie(id: number): Promise<void> {
+  await pool.query('DELETE from watched_movies WHERE id = ?', [id]);
+}
+
 // ##  Update Watched Movie (chosen_by)
 
 export async function updateChosenBy(watchedMovieId: number, userId: UserId) {

@@ -1,7 +1,7 @@
 'use client';
 
 import { LoggedInUser, Review, WatchedMovie } from '@/lib/types/domain';
-import StarRating from '@/app/components/StarRating';
+import StarRating from '@/app/components/shared/StarRating';
 import { useState } from 'react';
 import { InvertedCommas } from '@/app/components/icons';
 import { EditPen } from '@/app/components/icons';
@@ -81,9 +81,9 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
   const displayComment = <div className="pl-2 overflow-scroll max-h-10"> {review.comment}</div>;
 
   const editToggleButton = (
-    <div className="flex justify-center items-center">
+    <div className=" flex justify-start items-center">
       <button className=" " onClick={toggleEditMode}>
-        <EditPen className={'btn btn-primary btn-circle '} fill={''} />
+        <EditPen className={'btn btn-primary btn-circle h-5 '} fill={''} />
       </button>
     </div>
   );
@@ -93,7 +93,10 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
       key={`${review.ratedBy}-${movie.id}`}
       className=" flex gap-4 bg-accent-content m-1 rounded-2xl p-2"
     >
-      <div className={`${isChooser ? 'text-accent font-bold' : ''} w-25`}>{review.ratedBy}</div>
+      <div>
+        <div className={`${isChooser ? 'text-accent font-bold' : ''} w-25`}>{review.ratedBy}</div>
+        {isAuthor && editToggleButton}
+      </div>
       <div className="flex-col">
         <StarRating
           rating={rating}
@@ -107,7 +110,6 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
           </div>
         </div>
       </div>
-      {isAuthor && editToggleButton}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { IconClassNameProps } from '@/lib/types/domain';
+import { IconClassNameProps } from '@/lib/types/ui';
 
 export function EditPen({ className, fill }: IconClassNameProps) {
   return (
