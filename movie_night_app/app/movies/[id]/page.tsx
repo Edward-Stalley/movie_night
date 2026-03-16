@@ -16,9 +16,5 @@ export default async function MovieDetail({ params }: { params: Promise<{ id: st
 
   const movie = toStoredMovies(data);
 
-  return (
-    <div className="relative flex gap-4 bg-base-300 m-2 w-fit p-2 rounded-2xl ">
-      <MovieCard movie={movie} key={movie.id} layout="list" />
-    </div>
-  );
+  return <MovieCard movie={movie} key={movie.id} layout="list" />;
 }
