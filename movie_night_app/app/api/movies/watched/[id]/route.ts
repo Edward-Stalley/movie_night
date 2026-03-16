@@ -1,4 +1,9 @@
-import { showWatchedMovie, updateChosenBy, updateWatchedOn } from '@/lib/queries/watched-movies';
+import {
+  deleteWatchedMovie,
+  showWatchedMovie,
+  updateChosenBy,
+  updateWatchedOn,
+} from '@/lib/queries/watched-movies';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -32,5 +37,17 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
   } catch (error) {
     console.error('PATCH Failed', error);
     return NextResponse.json({ error: 'PATCH Failed' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await context.params;
+    const numericId = Number(id);
+    await deleteWatchedMovie(numericId);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Delete Failed:', error);
+    return NextResponse.json({ error: 'Delete Failed' }, { status: 500 });
   }
 }

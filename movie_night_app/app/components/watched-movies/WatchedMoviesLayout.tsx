@@ -1,49 +1,36 @@
 'use client';
 
-import type { LoggedInUser, User, WatchedMovie } from '@/lib/types/domain';
-import WatchedMovieCard from '@/app/components/WatchedMovieCard';
-import LayoutToggle from '../ui/LayoutToggle';
+import WatchedMovieCard from '@/app/components/watched-movies/WatchedMovieCard';
 import { useState } from 'react';
+import { GridOrList } from '../layout/GridOrList';
+import { WatchedMoviesLayoutProps } from '@/lib/types/ui';
 
-export const dynamic = 'force-dynamic';
-
-type Props = {
-  movies: WatchedMovie[];
-  loggedInUser?: LoggedInUser;
-  users: User[];
-};
-
-export default function WatchedMoviesLayout({ movies, loggedInUser, users }: Props) {
+export default function WatchedMoviesLayout({
+  movies,
+  loggedInUser,
+  users,
+}: WatchedMoviesLayoutProps) {
   const [layout, setLayout] = useState<'list' | 'grid'>('grid');
-  const movieList = movies.map((m: WatchedMovie) => {
+  const headerTitle = 'Watched Movies';
+  const movieList = movies.map((movie) => {
     return (
       <WatchedMovieCard
-        key={m.tmdbId}
-        movie={m}
-        isDetailScreen={false}
+        key={movie.tmdbId}
+        movie={movie}
         layout={layout}
         loggedInUser={loggedInUser}
         users={users}
+        isDetailScreen={false}
       />
     );
   });
 
   return (
-    <>
-      <LayoutToggle layout={layout} onChange={setLayout} />
-      {layout === 'list' && (
-        <ul className="list bg-base-100 rounded-box shadow-md">
-          <li className=" text-base-content text-4xl font-bold p-4 pb-2 opacity-40 tracking-wide">
-            Watched Movies
-          </li>
-          {movieList}
-        </ul>
-      )}
-      {layout === 'grid' && (
-        <ul className="bg-base-100 pt-2 pl-5 pr-5 grid gap-2 sm:grid-cols-2  md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-          {movieList}
-        </ul>
-      )}
-    </>
+    <GridOrList
+      children={movieList}
+      layout={layout}
+      setLayout={setLayout}
+      headerTitle={headerTitle}
+    />
   );
 }

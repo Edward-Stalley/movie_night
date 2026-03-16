@@ -1,7 +1,7 @@
 import { toWatchedMovies, toUser } from '@/lib/transform';
 import type { User, WatchedMovie } from '@/lib/types/domain';
 import { showWatchedMovie } from '@/lib/queries/watched-movies';
-import WatchedMovieCard from '@/app/components/WatchedMovieCard';
+import WatchedMovieCard from '@/app/components/watched-movies/WatchedMovieCard';
 import { auth } from '@/app/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getUsers } from '@/lib/queries/users';
@@ -32,9 +32,9 @@ export default async function WatchedMovieDetail({ params }: { params: Promise<{
         movie={m}
         key={`${m.id}+${m.movieId}`}
         layout={'list'}
-        isDetailScreen={true}
         loggedInUser={loggedInUser}
         users={users}
+        isDetailScreen={true}
       />
     </ul>
   );

@@ -1,5 +1,5 @@
 import { WatchedMovieInsert } from '@/lib/types/db';
-import { User } from '../types/domain';
+import { User, WatchedMovie } from '../types/domain';
 
 export async function addMovieToWatched(movie: WatchedMovieInsert) {
   await fetch(`/api/movies/watched`, {
@@ -19,5 +19,12 @@ export async function updateWatchedOn(movieId: number, watchedOn: string) {
   await fetch(`/api/movies/watched/${movieId}`, {
     method: 'PATCH',
     body: JSON.stringify({ watchedOn: watchedOn }),
+  });
+}
+
+export async function deleteMovieFromWatched(movie: WatchedMovie) {
+  await fetch(`/api/movies/watched/${movie.id}`, {
+    method: 'DELETE',
+    body: JSON.stringify(movie),
   });
 }

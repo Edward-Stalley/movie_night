@@ -1,4 +1,4 @@
-import { IconProps } from '@/lib/types/domain';
+import { IconProps } from '@/lib/types/ui';
 
 export function Popcorn(props: IconProps) {
   return (

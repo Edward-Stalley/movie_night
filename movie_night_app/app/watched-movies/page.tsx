@@ -16,6 +16,7 @@ export default async function WatchedMovies() {
   const watchedMovieRows = await getWatchedMovies();
 
   const rows = await watchedMovieRows;
+  console.log('rows', rows);
 
   const movies: WatchedMovie[] = toWatchedMovies(rows);
 

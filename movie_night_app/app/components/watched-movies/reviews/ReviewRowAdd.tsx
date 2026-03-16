@@ -2,7 +2,7 @@
 
 import { LoggedInUser, WatchedMovie } from '@/lib/types/domain';
 import { ReviewInsert } from '@/lib/types/db';
-import StarRating from '@/app/components/StarRating';
+import StarRating from '@/app/components/shared/StarRating';
 import { useState } from 'react';
 import { InvertedCommas } from '@/app/components/icons';
 import { useRouter } from 'next/navigation';
