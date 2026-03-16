@@ -7,6 +7,7 @@ import { addMovieToWatched } from '@/lib/api/watched-movies';
 import { MovieGridItem } from '../shared/MovieGridItem';
 import { MovieCardProps } from '@/lib/types/ui';
 import { MovieListItem } from './MovieListItem';
+import { BackButton } from '../ui/BackButton';
 
 export default function MovieCard({ movie, layout }: MovieCardProps) {
   const router = useRouter();
