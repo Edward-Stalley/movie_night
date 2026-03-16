@@ -1,5 +1,4 @@
 import MovieCard from '@/app/components/movies/MovieCard';
-import { BackButton } from '@/app/components/ui/BackButton';
 import { getMovie } from '@/lib/queries/movies';
 import { toStoredMovies } from '@/lib/transform';
 
@@ -17,7 +16,6 @@ export default async function MovieDetail({ params }: { params: Promise<{ id: st
 
   return (
     <div>
-      <BackButton />
       <MovieCard movie={movie} key={movie.id} layout="list" />
     </div>
   );
