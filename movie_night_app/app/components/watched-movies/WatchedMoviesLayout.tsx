@@ -26,11 +26,8 @@ export default function WatchedMoviesLayout({
   });
 
   return (
-    <GridOrList
-      children={movieList}
-      layout={layout}
-      setLayout={setLayout}
-      headerTitle={headerTitle}
-    />
+    <GridOrList layout={layout} setLayout={setLayout} headerTitle={headerTitle}>
+      {movieList}
+    </GridOrList>
   );
 }

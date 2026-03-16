@@ -1,6 +1,4 @@
 import MovieCard from '@/app/components/movies/MovieCard';
-import { DeleteMovieButton } from '@/app/components/shared/DeleteMovieButton';
-import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { getMovie } from '@/lib/queries/movies';
 import { toStoredMovies } from '@/lib/transform';
 
