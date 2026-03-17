@@ -3,10 +3,12 @@
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { pool } from '@/lib/db';
 import { MovieRow, MovieInsert } from '@/lib/types/db';
+import { PaginatedResult } from '@/lib/types/pagination';
 import { StoredMovie } from '../types/domain';
 
-export async function getMovies(): Promise<MovieRow[]> {
-  const [rows] = await pool.query<RowDataPacket[]>(`
+export async function getMovies(limit: number, offset: number): Promise<PaginatedResult<MovieRow>> {
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `
 SELECT
     m.id AS id,
     m.original_title AS originalTitle,
@@ -15,11 +17,29 @@ SELECT
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
     m.tmdb_id
-FROM movies m
+FROM movies m 
+ORDER BY releaseDate
+LIMIT ?
+OFFSET ?
+    `,
+    [limit, offset],
+  );
+
+  const [countRows] = await pool.query<RowDataPacket[]>(`
+    SELECT COUNT(*) as total
+    FROM movies
     `);
 
-  return rows as MovieRow[];
+  const total = countRows[0].total;
+
+  return { data: rows as MovieRow[], total };
 }
+
+// PARAMS NEEDED: releaseDate, alphabetical, genres
+
+// ORDER BY ID DESC;
+// LIMIT
+// OFFSET
 
 export async function deleteMovie(id: number): Promise<void> {
   await pool.query(`DELETE from movies WHERE id = ?`, [id]);

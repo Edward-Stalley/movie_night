@@ -5,21 +5,37 @@ import { auth } from '@/app/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getWatchedMovies } from '@/lib/queries/watched-movies';
 import { getUsers } from '@/lib/queries/users';
+import { buildPagination } from '@/lib/utils/pagination';
+import { PAGE_SIZES } from '@/lib/config/pagination';
 
 export const dynamic = 'force-dynamic';
 
-export default async function WatchedMovies() {
+export default async function WatchedMovies({ searchParams }: { searchParams: { page?: string } }) {
+  const params = await searchParams;
+  // PAGINATION
+  const { page, pageSize, offset } = buildPagination(PAGE_SIZES.watchedMovies, params.page);
+
+  // QUERY
+  const { data: watchedMovieRows, total } = await getWatchedMovies(pageSize, offset);
+  const movies: WatchedMovie[] = toWatchedMovies(watchedMovieRows);
+
+  // TRANSFORM
+  const userRows = await getUsers();
+  const users: User[] = userRows.map(toUser);
+
+  // PAGINATION META
+  const totalPages = Math.ceil(total / pageSize);
+
+  // AUTH
   const session = await auth();
   const loggedInUser = mapSessionToLoggedInUser(session);
 
-  const userRows = await getUsers();
-  const watchedMovieRows = await getWatchedMovies();
-
-  const rows = await watchedMovieRows;
-
-  const movies: WatchedMovie[] = toWatchedMovies(rows);
-
-  const users: User[] = userRows.map(toUser);
-
-  return <WatchedMoviesLayout movies={movies} loggedInUser={loggedInUser} users={users} />;
+  return (
+    <WatchedMoviesLayout
+      movies={movies}
+      loggedInUser={loggedInUser}
+      users={users}
+      pagination={{ page, totalPages }}
+    />
+  );
 }

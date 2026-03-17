@@ -54,21 +54,29 @@ export interface GridOrListProps {
   layout: Layout;
   setLayout: (layout: Layout) => void;
   headerTitle: string;
+  pagination: PaginationProps;
 }
 
 export interface WatchedMoviesLayoutProps {
   movies: WatchedMovie[];
   loggedInUser?: LoggedInUser;
   users: User[];
+  pagination: PaginationProps;
 }
 
 export interface MoviesLayoutProps {
   movies: StoredMovie[];
   loggedInUser?: LoggedInUser;
+  pagination: PaginationProps;
 }
 
 export interface MovieCardProps {
   movie: StoredMovie;
   layout?: Layout;
   isDetailScreen?: boolean;
+}
+
+export interface PaginationProps {
+  page: number;
+  totalPages: number;
 }

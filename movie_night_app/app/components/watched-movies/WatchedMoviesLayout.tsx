@@ -9,6 +9,7 @@ export default function WatchedMoviesLayout({
   movies,
   loggedInUser,
   users,
+  pagination,
 }: WatchedMoviesLayoutProps) {
   const [layout, setLayout] = useState<'list' | 'grid'>('grid');
   const headerTitle = 'Watched Movies';
@@ -26,7 +27,12 @@ export default function WatchedMoviesLayout({
   });
 
   return (
-    <GridOrList layout={layout} setLayout={setLayout} headerTitle={headerTitle}>
+    <GridOrList
+      layout={layout}
+      setLayout={setLayout}
+      headerTitle={headerTitle}
+      pagination={pagination}
+    >
       {movieList}
     </GridOrList>
   );

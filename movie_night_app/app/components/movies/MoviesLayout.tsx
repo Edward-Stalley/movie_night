@@ -5,7 +5,7 @@ import MovieCard from '@/app/components/movies/MovieCard';
 import { GridOrList } from '@/app/components/layout/GridOrList';
 import { Layout, MoviesLayoutProps } from '@/lib/types/ui';
 
-export default function MoviesLayout({ movies }: MoviesLayoutProps) {
+export default function MoviesLayout({ movies, pagination }: MoviesLayoutProps) {
   const [layout, setLayout] = useState<Layout>('grid');
   const headerTitle = 'Movies';
 
@@ -14,7 +14,12 @@ export default function MoviesLayout({ movies }: MoviesLayoutProps) {
   ));
 
   return (
-    <GridOrList layout={layout} setLayout={setLayout} headerTitle={headerTitle}>
+    <GridOrList
+      layout={layout}
+      setLayout={setLayout}
+      headerTitle={headerTitle}
+      pagination={pagination}
+    >
       {movieList}
     </GridOrList>
   );

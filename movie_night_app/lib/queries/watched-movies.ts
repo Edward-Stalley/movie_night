@@ -5,10 +5,15 @@ import { WatchedMovieRow } from '@/lib/types/db';
 import { pool } from '@/lib/db';
 import { WatchedMovieInsert } from '@/lib/types/db';
 import { UserId } from '../types/domain';
+import { PaginatedResult } from '@/lib/types/pagination';
 
 // ## (GET) : Get List of Movies from watched_movies.
-export async function getWatchedMovies(): Promise<WatchedMovieRow[]> {
-  const [rows] = await pool.query<RowDataPacket[]>(`
+export async function getWatchedMovies(
+  limit: number,
+  offset: number,
+): Promise<PaginatedResult<WatchedMovieRow>> {
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `
 SELECT
     wm.id,
     wm.movie_id AS movieId,
@@ -32,11 +37,19 @@ LEFT JOIN users rater
   ON mr.user_id = rater.id
 LEFT JOIN users chooser
   ON wm.chosen_by = chooser.id
-    `);
+LIMIT ?
+OFFSET ?
+    `,
+    [limit, offset],
+  );
 
-  return rows as WatchedMovieRow[];
+  const [countRows] = await pool.query<RowDataPacket[]>(`
+    SELECT COUNT (*) as total FROM watched_movies`);
+
+  const total = countRows[0].total;
+
+  return { data: rows as WatchedMovieRow[], total };
 }
-
 // ## (DETAIL) SHOW: get individual movie from watched_movies.
 
 export async function showWatchedMovie(id: number): Promise<WatchedMovieRow[] | null> {

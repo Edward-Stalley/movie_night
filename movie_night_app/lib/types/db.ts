@@ -34,6 +34,7 @@ export interface MovieRow {
   tmdbId: number;
   // addedBy: string;
 }
+
 export interface DBUserRow {
   id: number;
   name: string;
