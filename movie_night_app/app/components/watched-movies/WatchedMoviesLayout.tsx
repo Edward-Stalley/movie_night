@@ -3,8 +3,7 @@
 import WatchedMovieCard from '@/app/components/watched-movies/WatchedMovieCard';
 import { useState } from 'react';
 import { GridOrList } from '../layout/GridOrList';
-import { WatchedMoviesLayoutProps } from '@/lib/types/ui';
-import { Sort } from '../layout/Sort';
+import { Layout, WatchedMoviesLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_WATCHED_MOVIES } from '@/lib/config/sorts';
 
 export default function WatchedMoviesLayout({
@@ -12,8 +11,10 @@ export default function WatchedMoviesLayout({
   loggedInUser,
   users,
   pagination,
+  sortValue,
+  sortOrder,
 }: WatchedMoviesLayoutProps) {
-  const [layout, setLayout] = useState<'list' | 'grid'>('grid');
+  const [layout, setLayout] = useState<Layout>('grid');
   const headerTitle = 'Watched Movies';
   const movieList = movies.map((movie) => {
     return (
@@ -35,6 +36,9 @@ export default function WatchedMoviesLayout({
         setLayout={setLayout}
         headerTitle={headerTitle}
         pagination={pagination}
+        sortValue={sortValue}
+        sortOrder={sortOrder}
+        sortOptions={SORT_OPTIONS_WATCHED_MOVIES}
       >
         {movieList}
       </GridOrList>

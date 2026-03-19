@@ -13,6 +13,7 @@ export interface WatchedMovieRow {
   tmdbId: number;
   watchedOn: Date;
   chosenBy: string;
+  chosenByImage: string;
   username: string;
   rating: number | null;
   ratedBy: string | null;
@@ -32,7 +33,8 @@ export interface MovieRow {
   releaseDate: Date;
   posterPath: string | null;
   tmdbId: number;
-  // addedBy: string;
+  // addedBy: string; // Need to implement
+  // trailerUrl: string; // Need to implement
 }
 
 export interface DBUserRow {

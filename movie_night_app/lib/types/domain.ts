@@ -23,6 +23,7 @@ export interface WatchedMovie extends MovieBase {
   movieId: number; // Movies ID
   watchedOn: Date;
   chosenBy: string;
+  chosenByImage: string;
   username: string;
   reviews: Review[];
   tmdbId: number; // TMDB ID

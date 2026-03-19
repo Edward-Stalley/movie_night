@@ -1,5 +1,12 @@
 import { LoggedInUser, MovieBase, StoredMovie, User, WatchedMovie } from '@/lib/types/domain';
 import { QueryParams } from './db';
+import {
+  MovieSortValue,
+  SortOption,
+  SortOrder,
+  WatchedMovieSortValue,
+} from '@/lib/types/pagination';
+import { SearchParams } from 'next/dist/server/request/search-params';
 
 export type MoviePoster = Pick<MovieBase, 'posterPath' | 'originalTitle'> & {
   id?: number;
@@ -56,6 +63,9 @@ export interface GridOrListProps {
   setLayout: (layout: Layout) => void;
   headerTitle: string;
   pagination: PaginationProps;
+  sortOptions: SortOption[];
+  sortValue: string;
+  sortOrder: SortOrder;
 }
 
 export interface WatchedMoviesLayoutProps {
@@ -63,12 +73,16 @@ export interface WatchedMoviesLayoutProps {
   loggedInUser?: LoggedInUser;
   users: User[];
   pagination: PaginationProps;
+  sortValue: WatchedMovieSortValue;
+  sortOrder: SortOrder;
 }
 
 export interface MoviesLayoutProps {
   movies: StoredMovie[];
   loggedInUser?: LoggedInUser;
   pagination: PaginationProps;
+  sortValue: MovieSortValue;
+  sortOrder: SortOrder;
 }
 
 export interface MovieCardProps {
@@ -80,4 +94,6 @@ export interface MovieCardProps {
 export interface PaginationProps {
   page: number;
   totalPages: number;
+  sort: string;
+  order: SortOrder;
 }

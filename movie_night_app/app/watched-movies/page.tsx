@@ -8,16 +8,26 @@ import { getUsers } from '@/lib/queries/users';
 import { buildPagination } from '@/lib/utils/pagination';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { buildQuery } from '@/lib/utils/query';
+import { WatchedMovieSortValue, SortOrder } from '@/lib/types/pagination';
 
 export const dynamic = 'force-dynamic';
 
-export default async function WatchedMovies({ searchParams }: { searchParams: { page?: string } }) {
+type SearchParams = {
+  page?: string;
+  sort?: WatchedMovieSortValue;
+  order?: SortOrder;
+};
+
+export default async function WatchedMovies({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
+  const sort: WatchedMovieSortValue = params.sort ?? 'watchedOn';
+  const order: SortOrder = params.order ?? 'desc';
+
   // PAGINATION
   const { page, pageSize, offset } = buildPagination(PAGE_SIZES.watchedMovies, params.page);
 
   // QUERY
-  const query = buildQuery(params, PAGE_SIZES.movies, 'watchedOn');
+  const query = buildQuery(params, PAGE_SIZES.watchedMovies, 'watchedOn');
   const { data: watchedMovieRows, total } = await getWatchedMovies(query);
   const movies: WatchedMovie[] = toWatchedMovies(watchedMovieRows);
 
@@ -37,7 +47,9 @@ export default async function WatchedMovies({ searchParams }: { searchParams: { 
       movies={movies}
       loggedInUser={loggedInUser}
       users={users}
-      pagination={{ page, totalPages }}
+      pagination={{ page, totalPages, sort, order }}
+      sortValue={sort}
+      sortOrder={order}
     />
   );
 }

@@ -18,6 +18,7 @@ export function toWatchedMovieBase(row: WatchedMovieRow): WatchedMovie {
     watchedOn: new Date(row.watchedOn),
     username: row.username,
     chosenBy: row.chosenBy,
+    chosenByImage: row.chosenByImage,
     reviews: [],
     overview: row.overview,
     genreIds: row.genreIds,

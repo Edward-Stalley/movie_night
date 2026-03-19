@@ -30,7 +30,6 @@ export async function getWatchedMovies({
 }: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> {
   const sortColumn = SORT_MAP[sortBy as SortKey] ?? SORT_MAP.watchedOn;
   const sortDirection = ORDER_MAP[order as keyof typeof ORDER_MAP] ?? ORDER_MAP.desc;
-  console.log('sortColumn', sortColumn);
   const [rows] = await pool.query<RowDataPacket[]>(
     `
 SELECT
@@ -46,6 +45,7 @@ SELECT
     m.poster_path AS posterPath,
     m.tmdb_id AS tmdbId,
     chooser.name AS chosenBy,
+    chooser.image AS chosenByImage,
     rater.name AS ratedBy
 FROM watched_movies wm
 JOIN movies m

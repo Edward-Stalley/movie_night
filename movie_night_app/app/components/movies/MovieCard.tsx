@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { WatchedMovieInsert } from '@/lib/types/db';
 import { deleteMovieFromMovies } from '@/lib/api/movies';
 import { addMovieToWatched } from '@/lib/api/watched-movies';
-import { MovieGridItem } from '../shared/MovieGridItem';
+import { MovieGridItem } from './MovieGridItem';
 import { MovieCardProps } from '@/lib/types/ui';
 import { MovieListItem } from './MovieListItem';
 

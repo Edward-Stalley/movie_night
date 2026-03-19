@@ -1,11 +1,15 @@
 import { PaginationProps } from '@/lib/types/ui';
+import { buildPageHref } from '@/lib/utils/pagination';
 import Link from 'next/link';
 
-export default function Pagination({ page, totalPages }: PaginationProps) {
+export default function Pagination({ page, totalPages, sort, order }: PaginationProps) {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
   const pageButtons = pages.map((p, i) => (
-    <Link href={`?page=${p}`} key={p} className={`join-item btn ${p === page && 'btn-active'}`}>
+    <Link
+      href={buildPageHref(p, sort, order)}
+      key={p}
+      className={`join-item btn ${p === page && 'btn-active'}`}
+    >
       {p}
     </Link>
   ));
@@ -16,7 +20,7 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
   return (
     <div className="flex items-center p-0 w-fit rounded-2xl">
       <Link
-        href={`?page=${prevPage}`}
+        href={buildPageHref(prevPage, sort, order)}
         className={`btn ${page === 1 && 'btn-disabled'}`}
         aria-disabled={page === 1}
       >
@@ -24,7 +28,7 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
       </Link>
       <div className="join">{pageButtons}</div>
       <Link
-        href={`?page=${nextPage}`}
+        href={buildPageHref(nextPage, sort, order)}
         className={`btn ${page === totalPages && 'btn-disabled'}`}
         aria-disabled={page === totalPages}
       >

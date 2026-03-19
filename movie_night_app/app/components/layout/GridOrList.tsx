@@ -10,14 +10,22 @@ export function GridOrList({
   setLayout,
   headerTitle,
   pagination,
+  sortValue,
+  sortOrder,
+  sortOptions,
 }: GridOrListProps) {
   return (
     <div>
       <div className="bg-base-200 p-2">
         <div className="navbar gap-2">
           <LayoutToggle layout={layout} onChange={setLayout} />
-          <Pagination page={pagination.page} totalPages={pagination.totalPages} />
-          <Sort options={SORT_OPTIONS_WATCHED_MOVIES} value="rating" order="desc" />
+          <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            sort={sortValue}
+            order={sortOrder}
+          />
+          <Sort options={sortOptions} value={sortValue} order={sortOrder} />
         </div>
       </div>
 

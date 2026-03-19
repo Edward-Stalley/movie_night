@@ -8,3 +8,11 @@ export function buildPagination(pageSize: number, pageParam?: string) {
     offset,
   };
 }
+
+export function buildPageHref(page: number, sort: string, order: string) {
+  const params = new URLSearchParams();
+  params.set('page', String(page));
+  params.set('sort', sort);
+  params.set('order', order);
+  return `?${params.toString()}`;
+}
