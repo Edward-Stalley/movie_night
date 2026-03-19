@@ -1,4 +1,5 @@
 import { LoggedInUser, MovieBase, StoredMovie, User, WatchedMovie } from '@/lib/types/domain';
+import { QueryParams } from './db';
 
 export type MoviePoster = Pick<MovieBase, 'posterPath' | 'originalTitle'> & {
   id?: number;

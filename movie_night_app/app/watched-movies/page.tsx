@@ -7,6 +7,7 @@ import { getWatchedMovies } from '@/lib/queries/watched-movies';
 import { getUsers } from '@/lib/queries/users';
 import { buildPagination } from '@/lib/utils/pagination';
 import { PAGE_SIZES } from '@/lib/config/pagination';
+import { buildQuery } from '@/lib/utils/query';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +17,8 @@ export default async function WatchedMovies({ searchParams }: { searchParams: { 
   const { page, pageSize, offset } = buildPagination(PAGE_SIZES.watchedMovies, params.page);
 
   // QUERY
-  const { data: watchedMovieRows, total } = await getWatchedMovies(pageSize, offset);
+  const query = buildQuery(params, PAGE_SIZES.movies, 'watchedOn');
+  const { data: watchedMovieRows, total } = await getWatchedMovies(query);
   const movies: WatchedMovie[] = toWatchedMovies(watchedMovieRows);
 
   // TRANSFORM

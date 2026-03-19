@@ -1,6 +1,8 @@
 import { GridOrListProps } from '@/lib/types/ui';
 import LayoutToggle from '@/app/components/ui/LayoutToggle';
 import Pagination from './Pagination';
+import { Sort } from './Sort';
+import { SORT_OPTIONS_WATCHED_MOVIES } from '@/lib/config/sorts';
 
 export function GridOrList({
   children,
@@ -11,8 +13,14 @@ export function GridOrList({
 }: GridOrListProps) {
   return (
     <div>
-      <LayoutToggle layout={layout} onChange={setLayout} />
-      <Pagination page={pagination.page} totalPages={pagination.totalPages} />
+      <div className="bg-base-200 p-2">
+        <div className="navbar gap-2">
+          <LayoutToggle layout={layout} onChange={setLayout} />
+          <Pagination page={pagination.page} totalPages={pagination.totalPages} />
+          <Sort options={SORT_OPTIONS_WATCHED_MOVIES} value="rating" order="desc" />
+        </div>
+      </div>
+
       {layout === 'list' && (
         <ul className="list bg-base-100 rounded-box shadow-md">
           <li className=" text-base-content text-4xl font-bold p-4 pb-2 opacity-40 tracking-wide">

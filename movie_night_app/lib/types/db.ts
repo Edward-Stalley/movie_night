@@ -71,3 +71,16 @@ export interface WatchedMovieUpdate {
   chosenBy?: number;
   watchedOn?: string;
 }
+
+export interface WatchedMoviesQuery {
+  limit: number;
+  offset: number;
+  sortBy: string;
+  order: string;
+}
+
+export type QueryParams = {
+  page?: string;
+  sort?: string;
+  order?: string;
+};

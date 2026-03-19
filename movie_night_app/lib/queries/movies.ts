@@ -18,7 +18,6 @@ SELECT
     m.poster_path AS posterPath,
     m.tmdb_id
 FROM movies m 
-ORDER BY releaseDate
 LIMIT ?
 OFFSET ?
     `,
