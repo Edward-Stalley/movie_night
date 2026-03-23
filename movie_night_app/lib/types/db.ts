@@ -36,6 +36,7 @@ export interface MovieRow {
   tmdbId: number;
   addedBy: number;
   trailerUrl: string; // 未実装 Need to implement
+  addedOn: Date;
 }
 
 export interface DBUserRow {
@@ -56,6 +57,13 @@ export interface DBUserInsert {
   image: string;
   provider: string;
   providerAccountId: string;
+}
+
+export interface MoviesQuery {
+  limit: number;
+  offset: number;
+  sortBy: string;
+  order: 'asc' | 'desc';
 }
 export interface ReviewInsert {
   watchedMovieId: number;

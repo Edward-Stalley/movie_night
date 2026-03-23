@@ -1,4 +1,5 @@
 import { QueryParams } from '../types/db';
+import { SortOrder } from '../types/pagination';
 
 export function buildQuery(params: QueryParams, defaultLimit: number, defaultSort: string) {
   // Pagination
@@ -8,8 +9,8 @@ export function buildQuery(params: QueryParams, defaultLimit: number, defaultSor
 
   // Sorting (safe defaults)
   const sortBy = params.sort ?? defaultSort;
-  const order = params.order === 'asc' ? 'asc' : 'desc';
-
+  // const order = params.order === 'asc' ? 'asc' : 'desc';
+  const order: SortOrder = params.order === 'asc' ? 'asc' : 'desc';
   return {
     page,
     limit,

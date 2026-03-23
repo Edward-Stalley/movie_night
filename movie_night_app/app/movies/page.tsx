@@ -4,7 +4,6 @@ import { getMovies } from '@/lib/queries/movies';
 import MoviesLayout from '../components/movies/MoviesLayout';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { auth } from '@/app/auth';
-import { buildPagination } from '@/lib/utils/pagination';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { MovieSortValue, SortOrder } from '@/lib/types/pagination';
 import { buildQuery } from '@/lib/utils/query';
@@ -18,28 +17,26 @@ type SearchParams = {
 
 export default async function Movies({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
-  const sort: MovieSortValue = params.sort ?? 'title';
-  const order: SortOrder = params.order ?? 'desc';
-  // PAGINATION
-  const { page, pageSize, offset } = buildPagination(PAGE_SIZES.movies, params.page);
+  const sort: MovieSortValue = params.sort ?? 'addedOn';
+  const order: 'asc' | 'desc' = params.order === 'asc' ? 'asc' : 'desc';
 
   // AUTH
   const session = await auth();
   const loggedInUser = mapSessionToLoggedInUser(session);
 
   // QUERY
-  const query = buildQuery(params, PAGE_SIZES.movies, 'title');
-  const { data: movieRows, total } = await getMovies(pageSize, offset);
+  const query = buildQuery(params, PAGE_SIZES.movies, 'addedOn');
+  const { data: movieRows, total } = await getMovies(query);
   const movies: StoredMovie[] = movieRows.map(toStoredMovies);
 
   // PAGINATION META
-  const totalPages = Math.ceil(total / pageSize);
+  const totalPages = Math.ceil(total / query.limit);
 
   return (
     <MoviesLayout
       movies={movies}
       loggedInUser={loggedInUser}
-      pagination={{ page, totalPages }}
+      pagination={{ page: query.page, totalPages }}
       sortValue={sort}
       sortOrder={order}
     />

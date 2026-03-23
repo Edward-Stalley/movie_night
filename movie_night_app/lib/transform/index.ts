@@ -66,6 +66,7 @@ export function toStoredMovies(row: MovieRow): StoredMovie {
     releaseDate: new Date(row.releaseDate),
     addedBy: row.addedBy,
     trailerUrl: row.trailerUrl,
+    addedOn: row.addedOn,
   };
 }
 

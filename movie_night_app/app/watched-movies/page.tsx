@@ -5,7 +5,6 @@ import { auth } from '@/app/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getWatchedMovies } from '@/lib/queries/watched-movies';
 import { getUsers } from '@/lib/queries/users';
-import { buildPagination } from '@/lib/utils/pagination';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { buildQuery } from '@/lib/utils/query';
 import { WatchedMovieSortValue, SortOrder } from '@/lib/types/pagination';
@@ -23,9 +22,6 @@ export default async function WatchedMovies({ searchParams }: { searchParams: Se
   const sort: WatchedMovieSortValue = params.sort ?? 'watchedOn';
   const order: SortOrder = params.order ?? 'desc';
 
-  // PAGINATION
-  const { page, pageSize, offset } = buildPagination(PAGE_SIZES.watchedMovies, params.page);
-
   // QUERY
   const query = buildQuery(params, PAGE_SIZES.watchedMovies, 'watchedOn');
   const { data: watchedMovieRows, total } = await getWatchedMovies(query);
@@ -36,7 +32,7 @@ export default async function WatchedMovies({ searchParams }: { searchParams: Se
   const users: User[] = userRows.map(toUser);
 
   // PAGINATION META
-  const totalPages = Math.ceil(total / pageSize);
+  const totalPages = Math.ceil(total / query.limit);
 
   // AUTH
   const session = await auth();
@@ -47,7 +43,7 @@ export default async function WatchedMovies({ searchParams }: { searchParams: Se
       movies={movies}
       loggedInUser={loggedInUser}
       users={users}
-      pagination={{ page, totalPages }}
+      pagination={{ page: query.page, totalPages }}
       sortValue={sort}
       sortOrder={order}
     />

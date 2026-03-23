@@ -35,6 +35,7 @@ export interface StoredMovie extends MovieBase {
   id: number;
   tmdbId: number; // TMDB ID
   addedBy: number;
+  addedOn: Date;
 }
 
 export interface LoggedInUser extends User {

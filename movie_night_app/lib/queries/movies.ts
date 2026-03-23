@@ -2,11 +2,38 @@
 
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { pool } from '@/lib/db';
-import { MovieRow, MovieInsert } from '@/lib/types/db';
+import { MovieRow, MovieInsert, MoviesQuery } from '@/lib/types/db';
 import { PaginatedResult } from '@/lib/types/pagination';
 import { StoredMovie } from '../types/domain';
 
-export async function getMovies(limit: number, offset: number): Promise<PaginatedResult<MovieRow>> {
+const MOVIE_SORT_MAP = {
+  addedBy: 'm.added_by',
+  releaseDate: 'm.release_date',
+  title: 'm.original_title',
+  addedOn: 'm.added_on',
+};
+
+type SortKey = keyof typeof MOVIE_SORT_MAP;
+
+const ORDER_MAP = {
+  asc: 'ASC',
+  desc: 'DESC',
+};
+
+function isSortKey(value: string): value is SortKey {
+  return value in MOVIE_SORT_MAP;
+}
+
+export async function getMovies({
+  limit,
+  offset,
+  sortBy,
+  order,
+}: MoviesQuery): Promise<PaginatedResult<MovieRow>> {
+  const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
+
+  const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
+
   const [rows] = await pool.query<RowDataPacket[]>(
     `
 SELECT
@@ -17,7 +44,8 @@ SELECT
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
     m.tmdb_id
-FROM movies m 
+FROM movies m
+ORDER BY ${sortColumn} ${sortDirection}
 LIMIT ?
 OFFSET ?
     `,
@@ -25,13 +53,13 @@ OFFSET ?
   );
 
   const [countRows] = await pool.query<RowDataPacket[]>(`
-    SELECT COUNT(*) as total
-    FROM movies
-    `);
+    SELECT COUNT(*) as total FROM movies
+  `);
 
-  const total = countRows[0].total;
-
-  return { data: rows as MovieRow[], total };
+  return {
+    data: rows as MovieRow[],
+    total: countRows[0].total,
+  };
 }
 
 // PARAMS NEEDED: releaseDate, alphabetical, genres

@@ -21,6 +21,7 @@ export default function SearchedMovieCard({ movie, layout, loggedInUser }: Searc
       releaseDate: movie.releaseDate,
       addedBy: Number(loggedInUser?.id),
       trailerUrl: movie.trailerUrl,
+      addedOn: new Date(),
     };
 
     await addSearchedMovieToMovies(movieData);
