@@ -23,6 +23,7 @@ export interface WatchedMovieRow {
   overview: string | null;
   releaseDate: Date;
   posterPath: string | null;
+  trailerUrl: string | null;
 }
 
 export interface MovieRow {
@@ -33,8 +34,8 @@ export interface MovieRow {
   releaseDate: Date;
   posterPath: string | null;
   tmdbId: number;
-  // addedBy: string; // Need to implement
-  // trailerUrl: string; // Need to implement
+  addedBy: number;
+  trailerUrl: string; // 未実装 Need to implement
 }
 
 export interface DBUserRow {

@@ -2,7 +2,6 @@ import { GridOrListProps } from '@/lib/types/ui';
 import LayoutToggle from '@/app/components/ui/LayoutToggle';
 import Pagination from './Pagination';
 import { Sort } from './Sort';
-import { SORT_OPTIONS_WATCHED_MOVIES } from '@/lib/config/sorts';
 
 export function GridOrList({
   children,
@@ -19,12 +18,7 @@ export function GridOrList({
       <div className="bg-base-200 p-2">
         <div className="navbar gap-2">
           <LayoutToggle layout={layout} onChange={setLayout} />
-          <Pagination
-            page={pagination.page}
-            totalPages={pagination.totalPages}
-            sort={sortValue}
-            order={sortOrder}
-          />
+          {pagination && <Pagination page={pagination.page} totalPages={pagination.totalPages} />}
           <Sort options={sortOptions} value={sortValue} order={sortOrder} />
         </div>
       </div>

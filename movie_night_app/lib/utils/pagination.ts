@@ -9,10 +9,12 @@ export function buildPagination(pageSize: number, pageParam?: string) {
   };
 }
 
-export function buildPageHref(page: number, sort: string, order: string) {
-  const params = new URLSearchParams();
-  params.set('page', String(page));
-  params.set('sort', sort);
-  params.set('order', order);
+export function buildPageHref(currentParams: URLSearchParams, updates: Record<string, string>) {
+  const params = new URLSearchParams(currentParams.toString());
+
+  Object.entries(updates).forEach(([key, value]) => {
+    params.set(key, value);
+  });
+
   return `?${params.toString()}`;
 }

@@ -1,7 +1,15 @@
-import { LoggedInUser, MovieBase, StoredMovie, User, WatchedMovie } from '@/lib/types/domain';
+import {
+  LoggedInUser,
+  MovieBase,
+  SearchedMovie,
+  StoredMovie,
+  User,
+  WatchedMovie,
+} from '@/lib/types/domain';
 import { QueryParams } from './db';
 import {
   MovieSortValue,
+  SearchedMovieSortValue,
   SortOption,
   SortOrder,
   WatchedMovieSortValue,
@@ -15,7 +23,11 @@ export type MoviePoster = Pick<MovieBase, 'posterPath' | 'originalTitle'> & {
 
 export type MovieDeleteHandler = () => void;
 
+export type MovieAddHandler = () => void;
+
 export type WatchedMovieAddHandler = () => void;
+
+export type SearchedMovieAddHandler = () => void;
 
 export type IsDetailScreen = boolean;
 
@@ -53,7 +65,12 @@ export interface DeleteMovieButtonProps {
 }
 
 export interface AddWatchedMovieButtonProps {
-  onAdd: MovieDeleteHandler;
+  onAdd: MovieAddHandler;
+  isDetailScreen: IsDetailScreen;
+}
+
+export interface AddSearchedMovieButtonProps {
+  onAdd: SearchedMovieAddHandler; // CHECK delete should be add?
   isDetailScreen: IsDetailScreen;
 }
 
@@ -62,10 +79,21 @@ export interface GridOrListProps {
   layout: Layout;
   setLayout: (layout: Layout) => void;
   headerTitle: string;
-  pagination: PaginationProps;
+  pagination?: PaginationProps;
   sortOptions: SortOption[];
   sortValue: string;
   sortOrder: SortOrder;
+}
+
+export interface SearchedMovieGridOrListProps {
+  children?: React.ReactNode;
+  layout: Layout;
+  setLayout: (layout: Layout) => void;
+  headerTitle: string;
+  pagination?: PaginationProps;
+  sortOptions?: SortOption[];
+  sortValue?: string;
+  sortOrder?: SortOrder;
 }
 
 export interface WatchedMoviesLayoutProps {
@@ -85,6 +113,22 @@ export interface MoviesLayoutProps {
   sortOrder: SortOrder;
 }
 
+export interface SearchedMoviesLayoutProps {
+  movies: SearchedMovie[];
+  loggedInUser?: LoggedInUser;
+  pagination?: PaginationProps;
+  sortValue: SearchedMovieSortValue;
+  sortOrder: SortOrder;
+  emptyState?: boolean;
+}
+
+export interface SearchedMovieCardProps {
+  movie: SearchedMovie;
+  layout: string | null;
+  loggedInUser?: LoggedInUser;
+  // users: User[];
+  isDetailScreen: boolean;
+}
 export interface MovieCardProps {
   movie: StoredMovie;
   layout?: Layout;
@@ -94,6 +138,6 @@ export interface MovieCardProps {
 export interface PaginationProps {
   page: number;
   totalPages: number;
-  sort: string;
-  order: SortOrder;
+  // sort: string;
+  // order: SortOrder;
 }

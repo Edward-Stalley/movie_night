@@ -71,8 +71,8 @@ WHERE m.id = ?
 export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
   const [result] = await pool.query<ResultSetHeader>(
     `
-    INSERT INTO movies ( original_title, tmdb_id, genre_ids, overview, release_date, poster_path)
-    VALUES (?,?,?,?,?,?);
+    INSERT INTO movies ( original_title, tmdb_id, genre_ids, overview, release_date, poster_path, added_by, trailer_url)
+    VALUES (?,?,?,?,?,?,?,?);
     `,
     [
       movie.originalTitle,
@@ -81,6 +81,8 @@ export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
       movie.overview,
       movie.releaseDate ? new Date(movie.releaseDate) : null,
       movie.posterPath,
+      movie.addedBy,
+      movie.trailerUrl,
     ],
   );
 

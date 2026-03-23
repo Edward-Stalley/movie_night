@@ -1,0 +1,12 @@
+import { AddWatchedMovieButtonProps } from '@/lib/types/ui';
+
+export function AddSearchedMovieToMoviesButton({ onAdd }: AddWatchedMovieButtonProps) {
+  return (
+    <button
+      onClick={onAdd}
+      className="opacity-0 group-hover:opacity-100 btn btn-primary btn-soft  absolute bottom-0 rounded-tr-2xl rounded-bl-2xl rounded-br-none rounded-tl-none"
+    >
+      +
+    </button>
+  );
+}

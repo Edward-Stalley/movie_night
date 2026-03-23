@@ -7,4 +7,5 @@ export interface TMDBMovie {
   genre_ids: number[] | null;
   overview: string | null;
   release_date: string;
+  trailer_url: string;
 }

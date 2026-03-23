@@ -2,8 +2,8 @@
 import { WatchedMovieCardProps } from '@/lib/types/ui';
 import { deleteMovieFromWatched } from '@/lib/api/watched-movies';
 import { useRouter } from 'next/navigation';
-import { WatchedMovieGridItem } from '@/app/components/watched-movies/WatchedMovieGridItem';
-import { WatchedMovieListItem } from '@/app/components/watched-movies/WatchedMovieListItem';
+import { WatchedMovieGridItem } from '@/app/components/watchedMovies/WatchedMovieGridItem';
+import { WatchedMovieListItem } from '@/app/components/watchedMovies/WatchedMovieListItem';
 
 export default function WatchedMovieCard({
   movie,

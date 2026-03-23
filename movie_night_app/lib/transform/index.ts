@@ -25,6 +25,7 @@ export function toWatchedMovieBase(row: WatchedMovieRow): WatchedMovie {
     originalTitle: row.originalTitle,
     posterPath: row.posterPath,
     releaseDate: new Date(row.releaseDate),
+    trailerUrl: row.trailerUrl,
   };
 }
 
@@ -63,6 +64,8 @@ export function toStoredMovies(row: MovieRow): StoredMovie {
     originalTitle: row.originalTitle,
     posterPath: row.posterPath,
     releaseDate: new Date(row.releaseDate),
+    addedBy: row.addedBy,
+    trailerUrl: row.trailerUrl,
   };
 }
 
@@ -70,12 +73,13 @@ export function toStoredMovies(row: MovieRow): StoredMovie {
 
 export function toSearchedMovie(movie: TMDBMovie): SearchedMovie {
   return {
-    id: movie.id,
+    tmdbId: movie.id,
     originalTitle: movie.original_title,
     overview: movie.overview,
     releaseDate: new Date(movie.release_date),
     posterPath: movie.poster_path,
     genreIds: movie.genre_ids,
+    trailerUrl: movie.trailer_url,
   };
 }
 

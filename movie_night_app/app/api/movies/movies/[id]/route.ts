@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
   }
 }
 
-// The id is a number in MovieCard but it is sent via the url "api/movies/id" so it becomes a string.
+// The id is a number in MovieCard but it is sent via the url "api/movies/movies/id" so it becomes a string.
 // It is reconverted to a number here.
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {

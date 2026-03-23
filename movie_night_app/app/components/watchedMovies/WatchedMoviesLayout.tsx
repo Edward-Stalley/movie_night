@@ -1,6 +1,6 @@
 'use client';
 
-import WatchedMovieCard from '@/app/components/watched-movies/WatchedMovieCard';
+import WatchedMovieCard from '@/app/components/watchedMovies/WatchedMovieCard';
 import { useState } from 'react';
 import { GridOrList } from '../layout/GridOrList';
 import { Layout, WatchedMoviesLayoutProps } from '@/lib/types/ui';

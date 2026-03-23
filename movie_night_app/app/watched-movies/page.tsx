@@ -1,6 +1,6 @@
 import { toWatchedMovies, toUser } from '@/lib/transform';
 import type { User, WatchedMovie } from '@/lib/types/domain';
-import WatchedMoviesLayout from '../components/watched-movies/WatchedMoviesLayout';
+import WatchedMoviesLayout from '../components/watchedMovies/WatchedMoviesLayout';
 import { auth } from '@/app/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getWatchedMovies } from '@/lib/queries/watched-movies';
@@ -47,7 +47,7 @@ export default async function WatchedMovies({ searchParams }: { searchParams: Se
       movies={movies}
       loggedInUser={loggedInUser}
       users={users}
-      pagination={{ page, totalPages, sort, order }}
+      pagination={{ page, totalPages }}
       sortValue={sort}
       sortOrder={order}
     />

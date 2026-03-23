@@ -41,7 +41,13 @@ TO DO
 - Authentication (oAuth) [Done]
 - Search function for API 
 - Paginations (Date, Rating, Added By)
+- ADD TV SHOWS ? We watched cabinet of curiosities
 
+
+---------------
+BUGS
+---------------
+- Foreign Film titles (due to original title being used?) break display and sort
 
 ---------------
 IDEAS

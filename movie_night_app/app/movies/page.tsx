@@ -23,6 +23,10 @@ export default async function Movies({ searchParams }: { searchParams: SearchPar
   // PAGINATION
   const { page, pageSize, offset } = buildPagination(PAGE_SIZES.movies, params.page);
 
+  // AUTH
+  const session = await auth();
+  const loggedInUser = mapSessionToLoggedInUser(session);
+
   // QUERY
   const query = buildQuery(params, PAGE_SIZES.movies, 'title');
   const { data: movieRows, total } = await getMovies(pageSize, offset);
@@ -31,15 +35,11 @@ export default async function Movies({ searchParams }: { searchParams: SearchPar
   // PAGINATION META
   const totalPages = Math.ceil(total / pageSize);
 
-  // AUTH
-  const session = await auth();
-  const loggedInUser = mapSessionToLoggedInUser(session);
-
   return (
     <MoviesLayout
       movies={movies}
       loggedInUser={loggedInUser}
-      pagination={{ page, totalPages, sort, order }}
+      pagination={{ page, totalPages }}
       sortValue={sort}
       sortOrder={order}
     />
