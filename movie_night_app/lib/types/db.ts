@@ -2,6 +2,7 @@
 // # "snake_case" is converted to "camelCase" in the SQL Query in "@/lib/queries".
 
 import { StoredMovie } from './domain';
+import { SortOrder } from './pagination';
 
 // ----------------
 // ROWS
@@ -13,27 +14,32 @@ export interface WatchedMovieRow {
   tmdbId: number;
   watchedOn: Date;
   chosenBy: string;
+  chosenByImage: string;
   username: string;
   rating: number | null;
   ratedBy: string | null;
   comment: string | null;
   genreIds: number[] | null;
-  originalTitle: string | null;
+  title: string | null;
   overview: string | null;
   releaseDate: Date;
   posterPath: string | null;
+  trailerUrl: string | null;
 }
 
 export interface MovieRow {
   id: number;
-  originalTitle: string | null;
+  title: string | null;
   genreIds: number[] | null;
   overview: string | null;
   releaseDate: Date;
   posterPath: string | null;
   tmdbId: number;
-  // addedBy: string;
+  addedBy: number;
+  trailerUrl: string; // 未実装 Need to implement
+  addedOn: Date;
 }
+
 export interface DBUserRow {
   id: number;
   name: string;
@@ -53,6 +59,13 @@ export interface DBUserInsert {
   provider: string;
   providerAccountId: string;
 }
+
+export interface MoviesQuery {
+  limit: number;
+  offset: number;
+  sortBy: string;
+  order: SortOrder;
+}
 export interface ReviewInsert {
   watchedMovieId: number;
   userId: number; // ratedBy on Client Side // this is actually name on client side. convert to id later.
@@ -70,3 +83,16 @@ export interface WatchedMovieUpdate {
   chosenBy?: number;
   watchedOn?: string;
 }
+
+export interface WatchedMoviesQuery {
+  limit: number;
+  offset: number;
+  sortBy: string;
+  order: string;
+}
+
+export type QueryParams = {
+  page?: string;
+  sort?: string;
+  order?: string;
+};

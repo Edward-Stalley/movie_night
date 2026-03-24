@@ -29,13 +29,13 @@ export function WatchedMovieListItem({
       <MoviePoster
         id={movie.movieId}
         posterPath={movie.posterPath}
-        originalTitle={movie.originalTitle}
+        title={movie.title}
         urlRoute="watched-movies"
       />
       <DeleteMovieButton onDelete={onDelete} isDetailScreen={isDetailScreen} />
 
       <div className="flex flex-col">
-        {!isDetailScreen && <div className="text-3xl">{movie.originalTitle}</div>}
+        {!isDetailScreen && <div className="text-3xl">{movie.title}</div>}
         <div>
           <div className="flex gap-1">
             <div>

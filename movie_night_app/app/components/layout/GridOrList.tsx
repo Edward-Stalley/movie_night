@@ -1,10 +1,28 @@
 import { GridOrListProps } from '@/lib/types/ui';
-import LayoutToggle from '@/app/components/ui/LayoutToggle';
+import Toolbar from '@/app/components/layout/Toolbar';
 
-export function GridOrList({ children, layout, setLayout, headerTitle }: GridOrListProps) {
+export function GridOrList({
+  children,
+  layout,
+  setLayout,
+  headerTitle,
+  pagination,
+  sortValue,
+  sortOrder,
+  sortOptions,
+}: GridOrListProps) {
   return (
     <div>
-      <LayoutToggle layout={layout} onChange={setLayout} />
+      {pagination && (
+        <Toolbar
+          layout={layout}
+          setLayout={setLayout}
+          pagination={pagination}
+          sortOptions={sortOptions}
+          sortValue={sortValue}
+          sortOrder={sortOrder}
+        />
+      )}
       {layout === 'list' && (
         <ul className="list bg-base-100 rounded-box shadow-md">
           <li className=" text-base-content text-4xl font-bold p-4 pb-2 opacity-40 tracking-wide">

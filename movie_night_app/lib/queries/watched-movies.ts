@@ -1,27 +1,51 @@
 // # Table: watched_movies
 
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
-import { WatchedMovieRow } from '@/lib/types/db';
+import { WatchedMoviesQuery, WatchedMovieRow } from '@/lib/types/db';
 import { pool } from '@/lib/db';
 import { WatchedMovieInsert } from '@/lib/types/db';
 import { UserId } from '../types/domain';
+import { PaginatedResult } from '@/lib/types/pagination';
+
+const SORT_MAP = {
+  watchedOn: 'wm.watched_on',
+  releaseDate: 'm.release_date',
+  title: 'm.title',
+  chosenBy: 'wm.chosen_by',
+};
+
+type SortKey = keyof typeof SORT_MAP;
+
+const ORDER_MAP = {
+  asc: 'ASC',
+  desc: 'DESC',
+};
 
 // ## (GET) : Get List of Movies from watched_movies.
-export async function getWatchedMovies(): Promise<WatchedMovieRow[]> {
-  const [rows] = await pool.query<RowDataPacket[]>(`
+export async function getWatchedMovies({
+  limit,
+  offset,
+  sortBy,
+  order,
+}: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> {
+  const sortColumn = SORT_MAP[sortBy as SortKey] ?? SORT_MAP.watchedOn;
+  const sortDirection = ORDER_MAP[order as keyof typeof ORDER_MAP] ?? ORDER_MAP.desc;
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `
 SELECT
     wm.id,
     wm.movie_id AS movieId,
     wm.watched_on AS watchedOn,
     mr.rating,
     mr.comment,
-    m.original_title AS originalTitle,
+    m.title,
     m.genre_ids AS genreIds,
     m.overview,
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
     m.tmdb_id AS tmdbId,
     chooser.name AS chosenBy,
+    chooser.image AS chosenByImage,
     rater.name AS ratedBy
 FROM watched_movies wm
 JOIN movies m
@@ -32,11 +56,20 @@ LEFT JOIN users rater
   ON mr.user_id = rater.id
 LEFT JOIN users chooser
   ON wm.chosen_by = chooser.id
-    `);
+ORDER BY ${sortColumn} ${sortDirection}
+LIMIT ?
+OFFSET ?
+    `,
+    [limit, offset],
+  );
 
-  return rows as WatchedMovieRow[];
+  const [countRows] = await pool.query<RowDataPacket[]>(`
+    SELECT COUNT (*) as total FROM watched_movies`);
+
+  const total = countRows[0].total;
+
+  return { data: rows as WatchedMovieRow[], total };
 }
-
 // ## (DETAIL) SHOW: get individual movie from watched_movies.
 
 export async function showWatchedMovie(id: number): Promise<WatchedMovieRow[] | null> {
@@ -48,7 +81,7 @@ SELECT
     wm.watched_on AS watchedOn,
     mr.rating,
     mr.comment,
-    m.original_title AS originalTitle,
+    m.title,
     m.genre_ids AS genreIds,
     m.overview,
     m.release_date AS releaseDate,

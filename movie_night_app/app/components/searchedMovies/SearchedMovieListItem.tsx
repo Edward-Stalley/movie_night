@@ -1,16 +1,16 @@
-import { StoredMovie } from '@/lib/types/domain';
+import { SearchedMovie } from '@/lib/types/domain';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
 
-type MovieListItemProps = {
-  movie: StoredMovie;
+type SearchedMovieListItemProps = {
+  movie: SearchedMovie;
 };
 
-export function MovieListItem({ movie }: MovieListItemProps) {
+export function SearchedMovieListItem({ movie }: SearchedMovieListItemProps) {
   return (
     <div className="relative flex gap-4 bg-base-300 m-2 p-2 rounded-2xl w-full">
       <div className="">
         <MoviePoster
-          id={movie.id}
+          id={movie.tmdbId}
           posterPath={movie.posterPath}
           title={movie.title}
           urlRoute="movies"

@@ -9,8 +9,8 @@ type Props = {
 
 export default function LayoutToggle({ layout, onChange }: Props) {
   return (
-    <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
-      <label className="label">
+    <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-fit p-2  border h-10 flex items-center ">
+      <label className="label ">
         <input
           type="checkbox"
           defaultChecked

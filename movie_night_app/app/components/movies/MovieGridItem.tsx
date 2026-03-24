@@ -4,29 +4,26 @@ import {
   WatchedMovieAddHandler,
 } from '@/lib/types/ui';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
-import { DeleteMovieButton } from './DeleteMovieButton';
-import { AddMovieToWatchedButton } from '../watched-movies/AddMovieToWatchedButton';
+import { DeleteMovieButton } from '../shared/DeleteMovieButton';
+import { AddMovieToWatchedButton } from '../watchedMovies/AddMovieToWatchedButton';
+import Image from 'next/image';
 
-type MovieGridItemProps = MoviePosterTypes & { onDelete: MovieDeleteHandler } & {
+type MovieGridItemProps = MoviePosterTypes & {
+  onDelete: MovieDeleteHandler;
   onAdd?: WatchedMovieAddHandler;
 };
 
 export function MovieGridItem({
   id,
   posterPath,
-  originalTitle,
+  title,
   urlRoute,
   onDelete,
   onAdd,
 }: MovieGridItemProps) {
   return (
-    <div className="group relative transition-transform duration-300 hover:scale-103">
-      <MoviePoster
-        id={id}
-        posterPath={posterPath}
-        originalTitle={originalTitle}
-        urlRoute={urlRoute}
-      />
+    <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl">
+      <MoviePoster id={id} posterPath={posterPath} title={title} urlRoute={urlRoute} />
       {onDelete && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
       {onAdd && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
     </div>

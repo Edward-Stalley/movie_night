@@ -2,8 +2,8 @@
 import { WatchedMovieCardProps } from '@/lib/types/ui';
 import { deleteMovieFromWatched } from '@/lib/api/watched-movies';
 import { useRouter } from 'next/navigation';
-import { MovieGridItem } from '@/app/components/shared/MovieGridItem';
-import { WatchedMovieListItem } from '@/app/components/watched-movies/WatchedMovieListItem';
+import { WatchedMovieGridItem } from '@/app/components/watchedMovies/WatchedMovieGridItem';
+import { WatchedMovieListItem } from '@/app/components/watchedMovies/WatchedMovieListItem';
 
 export default function WatchedMovieCard({
   movie,
@@ -22,12 +22,15 @@ export default function WatchedMovieCard({
   return (
     <li className="relative group">
       {layout === 'grid' && (
-        <MovieGridItem
+        <WatchedMovieGridItem
           id={movie.movieId}
           posterPath={movie.posterPath}
-          originalTitle={movie.originalTitle}
+          title={movie.title}
           urlRoute="watched-movies"
           onDelete={handleDelete}
+          watchedOn={movie.watchedOn}
+          chosenBy={movie.chosenBy}
+          chosenByImage={movie.chosenByImage}
         />
       )}
 

@@ -1,13 +1,33 @@
-import { LoggedInUser, MovieBase, StoredMovie, User, WatchedMovie } from '@/lib/types/domain';
+import {
+  LoggedInUser,
+  MovieBase,
+  SearchedMovie,
+  StoredMovie,
+  User,
+  WatchedMovie,
+} from '@/lib/types/domain';
+import { QueryParams } from './db';
+import {
+  MovieSortValue,
+  SearchedMovieSortValue,
+  SortOption,
+  SortOrder,
+  WatchedMovieSortValue,
+} from '@/lib/types/pagination';
+import { SearchParams } from 'next/dist/server/request/search-params';
 
-export type MoviePoster = Pick<MovieBase, 'posterPath' | 'originalTitle'> & {
+export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title'> & {
   id?: number;
   urlRoute?: string;
 };
 
 export type MovieDeleteHandler = () => void;
 
+export type MovieAddHandler = () => void;
+
 export type WatchedMovieAddHandler = () => void;
+
+export type SearchedMovieAddHandler = () => void;
 
 export type IsDetailScreen = boolean;
 
@@ -45,7 +65,12 @@ export interface DeleteMovieButtonProps {
 }
 
 export interface AddWatchedMovieButtonProps {
-  onAdd: MovieDeleteHandler;
+  onAdd: MovieAddHandler;
+  isDetailScreen: IsDetailScreen;
+}
+
+export interface AddSearchedMovieButtonProps {
+  onAdd: SearchedMovieAddHandler; // CHECK delete should be add?
   isDetailScreen: IsDetailScreen;
 }
 
@@ -54,21 +79,78 @@ export interface GridOrListProps {
   layout: Layout;
   setLayout: (layout: Layout) => void;
   headerTitle: string;
+  pagination?: PaginationProps;
+  sortOptions: SortOption[];
+  sortValue: string;
+  sortOrder: SortOrder;
+}
+
+export interface SearchedMovieGridOrListProps {
+  children?: React.ReactNode;
+  layout: Layout;
+  setLayout: (layout: Layout) => void;
+  headerTitle: string;
+  pagination?: PaginationProps;
+  sortOptions?: SortOption[];
+  sortValue?: string;
+  sortOrder?: SortOrder;
 }
 
 export interface WatchedMoviesLayoutProps {
   movies: WatchedMovie[];
   loggedInUser?: LoggedInUser;
   users: User[];
+  pagination: PaginationProps;
+  sortValue: WatchedMovieSortValue;
+  sortOrder: SortOrder;
 }
 
 export interface MoviesLayoutProps {
   movies: StoredMovie[];
   loggedInUser?: LoggedInUser;
+  pagination: PaginationProps;
+  sortValue: MovieSortValue;
+  sortOrder: SortOrder;
 }
 
+export interface SearchedMoviesLayoutProps {
+  movies: SearchedMovie[];
+  loggedInUser?: LoggedInUser;
+  pagination?: PaginationProps;
+  sortValue: SearchedMovieSortValue;
+  sortOrder: SortOrder;
+  emptyState?: boolean;
+}
+
+export interface SearchedMovieCardProps {
+  movie: SearchedMovie;
+  layout: string | null;
+  loggedInUser?: LoggedInUser;
+  // users: User[];
+  isDetailScreen: boolean;
+}
 export interface MovieCardProps {
   movie: StoredMovie;
   layout?: Layout;
   isDetailScreen?: boolean;
+}
+
+export interface PaginationProps {
+  page: number;
+  totalPages: number;
+}
+
+export interface SortProps {
+  options: { label: string; value: string }[];
+  value: string;
+  order: SortOrder;
+}
+
+export interface ToolbarProps {
+  layout: Layout;
+  setLayout: (layout: Layout) => void;
+  pagination: PaginationProps;
+  sortOptions: SortProps['options'];
+  sortValue: string;
+  sortOrder: SortOrder;
 }

@@ -1,15 +1,17 @@
 // # Used in the application
 
 export interface MovieBase {
-  originalTitle: string | null;
+  title: string | null;
   overview: string | null;
   releaseDate: Date;
   posterPath: string | null;
   genreIds: number[] | null;
+  trailerUrl?: string | null;
+  addedBy?: number | null;
 }
 
 export interface SearchedMovie extends MovieBase {
-  id: number; // === tmdb_id
+  tmdbId: number; // === tmdb_id
 }
 
 export interface Review {
@@ -23,21 +25,17 @@ export interface WatchedMovie extends MovieBase {
   movieId: number; // Movies ID
   watchedOn: Date;
   chosenBy: string;
+  chosenByImage: string;
   username: string;
   reviews: Review[];
-  tmdbId: number; // TMDB ID
-}
-
-export interface ShortlistedMovie extends MovieBase {
-  id: number;
-  addedBy: Date;
-  username: string;
   tmdbId: number; // TMDB ID
 }
 
 export interface StoredMovie extends MovieBase {
   id: number;
   tmdbId: number; // TMDB ID
+  addedBy: number;
+  addedOn: Date;
 }
 
 export interface LoggedInUser extends User {

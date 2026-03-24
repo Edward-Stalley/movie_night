@@ -1,0 +1,37 @@
+import { PAGE_SIZES } from '@/lib/config/pagination';
+import { getMovies, addMovie } from '@/lib/queries/movies';
+import { buildQuery } from '@/lib/utils/query';
+import { NextRequest, NextResponse } from 'next/server';
+
+// NOT USED CURRENTLY: MAY NEED FOR MOBILE THOUGH.
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+
+  const params = {
+    page: searchParams.get('page') ?? undefined,
+    sort: searchParams.get('sort') ?? undefined,
+    order: searchParams.get('order') ?? undefined,
+  };
+
+  const query = buildQuery(params, PAGE_SIZES.movies, 'title');
+
+  const { data, total } = await getMovies(query);
+
+  return NextResponse.json({
+    data,
+    total,
+    page: query.page,
+    totalPages: Math.ceil(total / query.limit),
+  });
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const newMovie = await addMovie(body);
+    return NextResponse.json(newMovie);
+  } catch (error) {
+    console.error('post error', error);
+    return NextResponse.json({ error: 'failed to add movie' }, { status: 500 });
+  }
+}

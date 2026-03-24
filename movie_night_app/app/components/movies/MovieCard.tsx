@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { WatchedMovieInsert } from '@/lib/types/db';
 import { deleteMovieFromMovies } from '@/lib/api/movies';
 import { addMovieToWatched } from '@/lib/api/watched-movies';
-import { MovieGridItem } from '../shared/MovieGridItem';
+import { MovieGridItem } from './MovieGridItem';
 import { MovieCardProps } from '@/lib/types/ui';
 import { MovieListItem } from './MovieListItem';
 
@@ -32,7 +32,7 @@ export default function MovieCard({ movie, layout }: MovieCardProps) {
         <MovieGridItem
           id={movie.id}
           posterPath={movie.posterPath}
-          originalTitle={movie.originalTitle}
+          title={movie.title}
           urlRoute="movies"
           onDelete={handleDelete}
           onAdd={handleAddMovieToWatched}

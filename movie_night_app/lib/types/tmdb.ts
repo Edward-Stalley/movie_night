@@ -2,9 +2,10 @@
 
 export interface TMDBMovie {
   id: number; // # Will Become 'tmdb_id'
-  original_title: string | null;
+  title: string | null;
   poster_path: string | null;
   genre_ids: number[] | null;
   overview: string | null;
   release_date: string;
+  trailer_url: string;
 }
