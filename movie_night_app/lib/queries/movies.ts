@@ -9,7 +9,7 @@ import { StoredMovie } from '../types/domain';
 const MOVIE_SORT_MAP = {
   addedBy: 'm.added_by',
   releaseDate: 'm.release_date',
-  title: 'm.original_title',
+  title: 'm.title',
   addedOn: 'm.added_on',
 };
 
@@ -38,7 +38,7 @@ export async function getMovies({
     `
 SELECT
     m.id AS id,
-    m.original_title AS originalTitle,
+    m.title,
     m.genre_ids AS genreIds,
     m.overview,
     m.release_date AS releaseDate,
@@ -79,7 +79,7 @@ export async function getMovie(id: number): Promise<MovieRow | null> {
     `
 SELECT
     m.id AS id,
-    m.original_title AS originalTitle,
+    m.title,
     m.genre_ids AS genreIds,
     m.overview,
     m.release_date AS releaseDate,
@@ -99,11 +99,11 @@ WHERE m.id = ?
 export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
   const [result] = await pool.query<ResultSetHeader>(
     `
-    INSERT INTO movies ( original_title, tmdb_id, genre_ids, overview, release_date, poster_path, added_by, trailer_url)
+    INSERT INTO movies ( title, tmdb_id, genre_ids, overview, release_date, poster_path, added_by, trailer_url)
     VALUES (?,?,?,?,?,?,?,?);
     `,
     [
-      movie.originalTitle,
+      movie.title,
       movie.tmdbId,
       JSON.stringify(movie.genreIds),
       movie.overview,

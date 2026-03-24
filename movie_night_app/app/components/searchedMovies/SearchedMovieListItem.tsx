@@ -12,7 +12,7 @@ export function SearchedMovieListItem({ movie }: SearchedMovieListItemProps) {
         <MoviePoster
           id={movie.tmdbId}
           posterPath={movie.posterPath}
-          originalTitle={movie.originalTitle}
+          title={movie.title}
           urlRoute="movies"
         />
       </div>

@@ -10,7 +10,7 @@ import { PaginatedResult } from '@/lib/types/pagination';
 const SORT_MAP = {
   watchedOn: 'wm.watched_on',
   releaseDate: 'm.release_date',
-  title: 'm.original_title',
+  title: 'm.title',
   chosenBy: 'wm.chosen_by',
 };
 
@@ -38,7 +38,7 @@ SELECT
     wm.watched_on AS watchedOn,
     mr.rating,
     mr.comment,
-    m.original_title AS originalTitle,
+    m.title,
     m.genre_ids AS genreIds,
     m.overview,
     m.release_date AS releaseDate,
@@ -81,7 +81,7 @@ SELECT
     wm.watched_on AS watchedOn,
     mr.rating,
     mr.comment,
-    m.original_title AS originalTitle,
+    m.title,
     m.genre_ids AS genreIds,
     m.overview,
     m.release_date AS releaseDate,

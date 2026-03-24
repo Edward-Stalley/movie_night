@@ -1,7 +1,7 @@
 // # Used in the application
 
 export interface MovieBase {
-  originalTitle: string | null;
+  title: string | null;
   overview: string | null;
   releaseDate: Date;
   posterPath: string | null;

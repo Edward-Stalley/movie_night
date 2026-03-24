@@ -22,7 +22,7 @@ export function toWatchedMovieBase(row: WatchedMovieRow): WatchedMovie {
     reviews: [],
     overview: row.overview,
     genreIds: row.genreIds,
-    originalTitle: row.originalTitle,
+    title: row.title,
     posterPath: row.posterPath,
     releaseDate: new Date(row.releaseDate),
     trailerUrl: row.trailerUrl,
@@ -61,7 +61,7 @@ export function toStoredMovies(row: MovieRow): StoredMovie {
     tmdbId: row.tmdbId,
     overview: row.overview,
     genreIds: row.genreIds,
-    originalTitle: row.originalTitle,
+    title: row.title,
     posterPath: row.posterPath,
     releaseDate: new Date(row.releaseDate),
     addedBy: row.addedBy,
@@ -75,7 +75,7 @@ export function toStoredMovies(row: MovieRow): StoredMovie {
 export function toSearchedMovie(movie: TMDBMovie): SearchedMovie {
   return {
     tmdbId: movie.id,
-    originalTitle: movie.original_title,
+    title: movie.title,
     overview: movie.overview,
     releaseDate: new Date(movie.release_date),
     posterPath: movie.poster_path,

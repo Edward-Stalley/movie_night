@@ -12,7 +12,7 @@ export function MovieListItem({ movie }: MovieListItemProps) {
         <MoviePoster
           id={movie.id}
           posterPath={movie.posterPath}
-          originalTitle={movie.originalTitle}
+          title={movie.title}
           urlRoute="movies"
         />
       </div>

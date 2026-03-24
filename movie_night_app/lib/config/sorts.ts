@@ -49,10 +49,8 @@ export function sortSearchedMovies(
       return order === 'asc' ? dateA - dateB : dateB - dateA;
     }
 
-    if (sort === 'title' && a.originalTitle && b.originalTitle) {
-      return order === 'asc'
-        ? a.originalTitle.localeCompare(b.originalTitle)
-        : b.originalTitle.localeCompare(a.originalTitle);
+    if (sort === 'title' && a.title && b.title) {
+      return order === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title);
     }
 
     return 0;

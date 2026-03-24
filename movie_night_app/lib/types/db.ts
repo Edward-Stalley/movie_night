@@ -2,6 +2,7 @@
 // # "snake_case" is converted to "camelCase" in the SQL Query in "@/lib/queries".
 
 import { StoredMovie } from './domain';
+import { SortOrder } from './pagination';
 
 // ----------------
 // ROWS
@@ -19,7 +20,7 @@ export interface WatchedMovieRow {
   ratedBy: string | null;
   comment: string | null;
   genreIds: number[] | null;
-  originalTitle: string | null;
+  title: string | null;
   overview: string | null;
   releaseDate: Date;
   posterPath: string | null;
@@ -28,7 +29,7 @@ export interface WatchedMovieRow {
 
 export interface MovieRow {
   id: number;
-  originalTitle: string | null;
+  title: string | null;
   genreIds: number[] | null;
   overview: string | null;
   releaseDate: Date;
@@ -63,7 +64,7 @@ export interface MoviesQuery {
   limit: number;
   offset: number;
   sortBy: string;
-  order: 'asc' | 'desc';
+  order: SortOrder;
 }
 export interface ReviewInsert {
   watchedMovieId: number;

@@ -32,7 +32,7 @@ export default function MovieCard({ movie, layout }: MovieCardProps) {
         <MovieGridItem
           id={movie.id}
           posterPath={movie.posterPath}
-          originalTitle={movie.originalTitle}
+          title={movie.title}
           urlRoute="movies"
           onDelete={handleDelete}
           onAdd={handleAddMovieToWatched}

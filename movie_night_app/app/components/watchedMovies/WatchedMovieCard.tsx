@@ -25,7 +25,7 @@ export default function WatchedMovieCard({
         <WatchedMovieGridItem
           id={movie.movieId}
           posterPath={movie.posterPath}
-          originalTitle={movie.originalTitle}
+          title={movie.title}
           urlRoute="watched-movies"
           onDelete={handleDelete}
           watchedOn={movie.watchedOn}

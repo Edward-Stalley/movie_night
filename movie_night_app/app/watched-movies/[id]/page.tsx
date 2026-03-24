@@ -26,7 +26,7 @@ export default async function WatchedMovieDetail({ params }: { params: Promise<{
   return (
     <ul className="list bg-base-100 rounded-box shadow-md">
       <li className=" text-base-content text-4xl font-bold p-4 pb-2 opacity-40 tracking-wide">
-        {m.originalTitle}
+        {m.title}
       </li>
       <WatchedMovieCard
         movie={m}

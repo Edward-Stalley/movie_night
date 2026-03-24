@@ -18,7 +18,7 @@ type SearchParams = {
 export default async function Movies({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
   const sort: MovieSortValue = params.sort ?? 'addedOn';
-  const order: 'asc' | 'desc' = params.order === 'asc' ? 'asc' : 'desc';
+  const order: SortOrder = params.order === 'asc' ? 'asc' : 'desc';
 
   // AUTH
   const session = await auth();

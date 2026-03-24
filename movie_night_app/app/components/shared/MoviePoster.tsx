@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MoviePoster as MoviePosterTypes } from '@/lib/types/ui';
 
-export function MoviePoster({ id, posterPath, originalTitle, urlRoute }: MoviePosterTypes) {
+export function MoviePoster({ id, posterPath, title, urlRoute }: MoviePosterTypes) {
   const image = (
     <Image
       className="rounded-2xl"
@@ -10,7 +10,7 @@ export function MoviePoster({ id, posterPath, originalTitle, urlRoute }: MoviePo
       width={210}
       height={315}
       priority
-      alt={`${originalTitle} (${id})`}
+      alt={`${title} (${id})`}
       loading="eager"
     />
   );

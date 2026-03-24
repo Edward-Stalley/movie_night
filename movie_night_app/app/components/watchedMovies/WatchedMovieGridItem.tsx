@@ -19,7 +19,7 @@ type MovieGridItemProps = MoviePosterTypes & {
 export function WatchedMovieGridItem({
   id,
   posterPath,
-  originalTitle,
+  title,
   urlRoute,
   onDelete,
   onAdd,
@@ -29,12 +29,7 @@ export function WatchedMovieGridItem({
 }: MovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 rounded-2xl p-1 border-2">
-      <MoviePoster
-        id={id}
-        posterPath={posterPath}
-        originalTitle={originalTitle}
-        urlRoute={urlRoute}
-      />
+      <MoviePoster id={id} posterPath={posterPath} title={title} urlRoute={urlRoute} />
       {onDelete && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
       {onAdd && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
       <div className="flex gap-2 justify-center items-center p-1 w-full">

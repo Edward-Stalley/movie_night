@@ -9,7 +9,6 @@ export function buildQuery(params: QueryParams, defaultLimit: number, defaultSor
 
   // Sorting (safe defaults)
   const sortBy = params.sort ?? defaultSort;
-  // const order = params.order === 'asc' ? 'asc' : 'desc';
   const order: SortOrder = params.order === 'asc' ? 'asc' : 'desc';
   return {
     page,

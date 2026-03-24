@@ -16,7 +16,7 @@ import {
 } from '@/lib/types/pagination';
 import { SearchParams } from 'next/dist/server/request/search-params';
 
-export type MoviePoster = Pick<MovieBase, 'posterPath' | 'originalTitle'> & {
+export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title'> & {
   id?: number;
   urlRoute?: string;
 };
