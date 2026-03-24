@@ -24,7 +24,7 @@ export default function SearchedMovieCard({ movie, layout, loggedInUser }: Searc
       addedOn: new Date(),
     };
 
-    console.log('movie data',movieData)
+    console.log('movie data', movieData);
     await addSearchedMovieToMovies(movieData);
     router.refresh();
   };

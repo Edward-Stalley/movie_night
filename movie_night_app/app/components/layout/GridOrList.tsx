@@ -1,7 +1,5 @@
 import { GridOrListProps } from '@/lib/types/ui';
-import LayoutToggle from '@/app/components/ui/LayoutToggle';
-import Pagination from './Pagination';
-import { Sort } from './Sort';
+import Toolbar from '@/app/components/layout/Toolbar';
 
 export function GridOrList({
   children,
@@ -15,14 +13,16 @@ export function GridOrList({
 }: GridOrListProps) {
   return (
     <div>
-      <div className="bg-base-200 p-2">
-        <div className="navbar gap-2">
-          <LayoutToggle layout={layout} onChange={setLayout} />
-          {pagination && <Pagination page={pagination.page} totalPages={pagination.totalPages} />}
-          <Sort options={sortOptions} value={sortValue} order={sortOrder} />
-        </div>
-      </div>
-
+      {pagination && (
+        <Toolbar
+          layout={layout}
+          setLayout={setLayout}
+          pagination={pagination}
+          sortOptions={sortOptions}
+          sortValue={sortValue}
+          sortOrder={sortOrder}
+        />
+      )}
       {layout === 'list' && (
         <ul className="list bg-base-100 rounded-box shadow-md">
           <li className=" text-base-content text-4xl font-bold p-4 pb-2 opacity-40 tracking-wide">

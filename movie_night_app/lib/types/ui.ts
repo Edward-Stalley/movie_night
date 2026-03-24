@@ -138,6 +138,19 @@ export interface MovieCardProps {
 export interface PaginationProps {
   page: number;
   totalPages: number;
-  // sort: string;
-  // order: SortOrder;
+}
+
+export interface SortProps {
+  options: { label: string; value: string }[];
+  value: string;
+  order: SortOrder;
+}
+
+export interface ToolbarProps {
+  layout: Layout;
+  setLayout: (layout: Layout) => void;
+  pagination: PaginationProps;
+  sortOptions: SortProps['options'];
+  sortValue: string;
+  sortOrder: SortOrder;
 }

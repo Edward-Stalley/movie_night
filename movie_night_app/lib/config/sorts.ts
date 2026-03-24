@@ -2,8 +2,8 @@ import { SearchedMovie } from '../types/domain';
 import { SearchedMovieSortValue, SortOrder } from '../types/pagination';
 
 export const SORT_OPTIONS_WATCHED_MOVIES = [
-  { value: 'watchedOn', label: 'Watched Date' },
   { value: 'title', label: 'Title' },
+  { value: 'watchedOn', label: 'Watched Date' },
   { value: 'chosenBy', label: 'Chosen By' },
 ];
 
