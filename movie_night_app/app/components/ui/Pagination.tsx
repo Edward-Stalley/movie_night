@@ -7,7 +7,7 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
   const searchParams = useSearchParams();
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  const pageButtons = pages.map((p, i) => (
+  const pageButtons = pages.map((p) => (
     <Link
       href={buildPageHref(searchParams, { page: String(p) })}
       key={p}

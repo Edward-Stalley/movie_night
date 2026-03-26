@@ -8,7 +8,7 @@ import { SortOrder } from './pagination';
 // ROWS
 // ----------------
 
-export interface WatchedMovieRow {
+export type WatchedMovieRow = {
   id: number;
   movieId: number;
   tmdbId: number;
@@ -25,9 +25,9 @@ export interface WatchedMovieRow {
   releaseDate: Date;
   posterPath: string | null;
   trailerUrl: string | null;
-}
+};
 
-export interface MovieRow {
+export type MovieRow = {
   id: number;
   title: string | null;
   genreIds: number[] | null;
@@ -38,9 +38,9 @@ export interface MovieRow {
   addedBy: number;
   trailerUrl: string; // 未実装 Need to implement
   addedOn: Date;
-}
+};
 
-export interface VoteSessionMovieRow {
+export type VoteSessionMovieRow = {
   id: number;
   createdBy: number;
   createdAt: Date;
@@ -48,53 +48,53 @@ export interface VoteSessionMovieRow {
   movieNightDate: Date;
   title: string;
   posterPath: string;
-}
+};
 
-export interface VoteSessionRow {
+export type VoteSessionRow = {
   id: number;
   createdBy: number;
   movieNightDate: Date;
   createdAt: Date;
-}
+};
 
-export interface DBUserRow {
+export type DBUserRow = {
   id: number;
   name: string;
   image: string;
   provider: string;
   providerAccountId: string;
-}
+};
 
 // ------------------
 // INSERTS / UPDATES
 // ------------------
 
 export type MovieInsert = Omit<StoredMovie, 'id'>;
-export interface DBUserInsert {
+export type DBUserInsert = {
   name: string;
   image: string;
   provider: string;
   providerAccountId: string;
-}
+};
 
-export interface MoviesQuery {
+export type MoviesQuery = {
   limit: number;
   offset: number;
   sortBy: string;
   order: SortOrder;
-}
-export interface ReviewInsert {
+};
+export type ReviewInsert = {
   watchedMovieId: number;
   userId: number; // ratedBy on Client Side // this is actually name on client side. convert to id later.
   rating: number | null;
   comment: string | null;
-}
+};
 
-export interface WatchedMovieInsert {
+export type WatchedMovieInsert = {
   movieId: number; // Movies ID
   watched_on: string | null;
   chosenBy: string | null;
-}
+};
 
 export type VoteInsert = {
   voteSessionId: number;
@@ -102,17 +102,17 @@ export type VoteInsert = {
   movieId: number;
 };
 
-export interface WatchedMovieUpdate {
+export type WatchedMovieUpdate = {
   chosenBy?: number;
   watchedOn?: string;
-}
+};
 
-export interface WatchedMoviesQuery {
+export type WatchedMoviesQuery = {
   limit: number;
   offset: number;
   sortBy: string;
   order: string;
-}
+};
 
 export type QueryParams = {
   page?: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GridOrList } from '@/app/components/layout/GridOrList';
 import { Layout, CreateVotingSessionLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_MOVIES } from '@/lib/config/sorts';

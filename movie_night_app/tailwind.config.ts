@@ -11,7 +11,7 @@ const config: Config = {
     extend: {},
   },
   plugins: [daisyui],
-  // @ts-ignore — daisyUI extends tailwind config at runtime
+  // @ts-expect-error daisyUI extends tailwind config at runtime
   daisyui: {
     themes: ['light', 'dark', 'sunset'],
   },

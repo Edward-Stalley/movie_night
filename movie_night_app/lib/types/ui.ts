@@ -1,13 +1,12 @@
 import {
   LoggedInUser,
-  MovieBase,
-  SearchedMovie,
-  StoredMovie,
   User,
-  VoteSession,
+  SearchedMovie,
   WatchedMovie,
+  MovieBase,
+  StoredMovie,
+  VoteSession,
 } from '@/lib/types/domain';
-import { QueryParams } from './db';
 import {
   MovieSortValue,
   SearchedMovieSortValue,
@@ -15,7 +14,6 @@ import {
   SortOrder,
   WatchedMovieSortValue,
 } from '@/lib/types/pagination';
-import { SearchParams } from 'next/dist/server/request/search-params';
 
 export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title'> & {
   id?: number;
@@ -39,44 +37,44 @@ export type Layout = 'grid' | 'list';
 // PROPS
 // -------------
 
-export interface IconClassNameProps {
+export type IconClassNameProps = {
   className?: string;
   fill?: string;
-}
+};
 
-export interface StarRatingProps {
+export type StarRatingProps = {
   rating: number | null | undefined;
   max?: number;
   onClick?: (rating: number) => void;
   isEditing: boolean;
-}
+};
 
-export interface WatchedMovieCardProps {
+export type WatchedMovieCardProps = {
   movie: WatchedMovie;
   layout: string | null;
   loggedInUser?: LoggedInUser;
   users: User[];
   isDetailScreen: boolean;
-}
+};
 
 export type IconProps = React.SVGProps<SVGSVGElement>;
 
-export interface DeleteMovieButtonProps {
+export type DeleteMovieButtonProps = {
   onDelete: MovieDeleteHandler;
   isDetailScreen: IsDetailScreen;
-}
+};
 
-export interface AddWatchedMovieButtonProps {
+export type AddWatchedMovieButtonProps = {
   onAdd: MovieAddHandler;
   isDetailScreen: IsDetailScreen;
-}
+};
 
-export interface AddSearchedMovieButtonProps {
+export type AddSearchedMovieButtonProps = {
   onAdd: SearchedMovieAddHandler; // CHECK delete should be add?
   isDetailScreen: IsDetailScreen;
-}
+};
 
-export interface GridOrListProps {
+export type GridOrListProps = {
   children: React.ReactNode;
   layout: Layout;
   setLayout: (layout: Layout) => void;
@@ -85,9 +83,9 @@ export interface GridOrListProps {
   sortOptions: SortOption[];
   sortValue: string;
   sortOrder: SortOrder;
-}
+};
 
-export interface SearchedMovieGridOrListProps {
+export type SearchedMovieGridOrListProps = {
   children?: React.ReactNode;
   layout: Layout;
   setLayout: (layout: Layout) => void;
@@ -96,99 +94,99 @@ export interface SearchedMovieGridOrListProps {
   sortOptions?: SortOption[];
   sortValue?: string;
   sortOrder?: SortOrder;
-}
+};
 
-export interface WatchedMoviesLayoutProps {
+export type WatchedMoviesLayoutProps = {
   movies: WatchedMovie[];
   loggedInUser?: LoggedInUser;
   users: User[];
   pagination: PaginationProps;
   sortValue: WatchedMovieSortValue;
   sortOrder: SortOrder;
-}
+};
 
-export interface MoviesLayoutProps {
+export type MoviesLayoutProps = {
   movies: StoredMovie[];
   loggedInUser?: LoggedInUser;
   pagination: PaginationProps;
   sortValue: MovieSortValue;
   sortOrder: SortOrder;
-}
+};
 
-export interface VoteMoviesLayoutProps {
+export type VoteMoviesLayoutProps = {
   movies: StoredMovie[];
   loggedInUser?: LoggedInUser;
   users: User[];
   createdBy: User;
   voteSession: VoteSession;
-}
+};
 
-export interface CreateVotingSessionLayoutProps {
+export type CreateVotingSessionLayoutProps = {
   movies: StoredMovie[];
   loggedInUser?: LoggedInUser;
   pagination: PaginationProps;
   sortValue: MovieSortValue;
   sortOrder: SortOrder;
   selectedMovies: StoredMovie[];
-}
+};
 
-export interface SearchedMoviesLayoutProps {
+export type SearchedMoviesLayoutProps = {
   movies: SearchedMovie[];
   loggedInUser?: LoggedInUser;
   pagination?: PaginationProps;
   sortValue: SearchedMovieSortValue;
   sortOrder: SortOrder;
   emptyState?: boolean;
-}
+};
 
-export interface SearchedMovieCardProps {
+export type SearchedMovieCardProps = {
   movie: SearchedMovie;
   layout: string | null;
   loggedInUser?: LoggedInUser;
   isDetailScreen: boolean;
-}
-export interface MovieCardProps {
+};
+export type MovieCardProps = {
   movie: StoredMovie;
   layout?: Layout;
   isDetailScreen?: boolean;
-}
+};
 
-export interface VoteMovieCardCardProps {
+export type VoteMovieCardCardProps = {
   movie: StoredMovie;
   layout?: Layout;
   isDetailScreen?: boolean;
   CreateVotingSessionProps?: CreateVotingSessionProps;
   VotingSessionProps?: VotingSessionProps;
-}
-export interface CreateVotingSessionProps {
+};
+export type CreateVotingSessionProps = {
   selectable?: boolean;
   selected?: boolean;
   onSelect?: (id: number) => void;
-}
+};
 
-export interface VotingSessionProps {
+export type VotingSessionProps = {
   voteInSession: boolean;
   voteCompleted: boolean;
   toggleVote?: (id: number) => void;
   canVote: boolean;
-}
+};
 
-export interface PaginationProps {
+export type PaginationProps = {
   page: number;
   totalPages: number;
-}
+};
 
-export interface SortProps {
+export type SortProps = {
   options: { label: string; value: string }[];
   value: string;
   order: SortOrder;
-}
+};
 
-export interface ToolbarProps {
+export type ToolbarProps = {
   layout: Layout;
   setLayout: (layout: Layout) => void;
   pagination: PaginationProps;
   sortOptions: SortProps['options'];
   sortValue: string;
   sortOrder: SortOrder;
-}
+};

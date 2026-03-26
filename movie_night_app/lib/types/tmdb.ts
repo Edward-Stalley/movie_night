@@ -1,6 +1,6 @@
 // # From TMDB API (before transformed locally) so in snake_case.
 
-export interface TMDBMovie {
+export type TMDBMovie = {
   id: number; // # Will Become 'tmdb_id'
   title: string | null;
   poster_path: string | null;
@@ -8,4 +8,4 @@ export interface TMDBMovie {
   overview: string | null;
   release_date: string;
   trailer_url: string;
-}
+};
