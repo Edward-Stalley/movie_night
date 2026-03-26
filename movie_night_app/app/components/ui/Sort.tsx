@@ -1,6 +1,6 @@
 'use client';
 
-import { buildSortParams } from '@/lib/config/sorts';
+import { buildSortParams } from '@/lib/utils/urls/sortParams';
 import { SortOption, SortOrder } from '@/lib/types/pagination';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';

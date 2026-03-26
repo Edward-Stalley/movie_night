@@ -6,7 +6,7 @@ import { auth } from '@/app/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import SearchedMoviesLayout from '../components/searchedMovies/SearchedMoviesLayout';
 import { SearchedMovieSortValue, SortOrder } from '@/lib/types/pagination';
-import { sortSearchedMovies } from '@/lib/config/sorts';
+import { sortSearchedMovies } from '@/lib/utils/sort/sortSearchedMovies';
 
 type SearchParams = {
   query?: string;

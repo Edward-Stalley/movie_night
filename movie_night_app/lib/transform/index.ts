@@ -1,8 +1,8 @@
 // # Reorganises data from either Database or API into correct data structure / shape.
 
-import type { DBUserRow, MovieRow, WatchedMovieRow } from '@/lib/types/db';
+import type { DBUserRow, MovieRow, VoteSessionRow, WatchedMovieRow } from '@/lib/types/db';
 import { TMDBMovie } from '@/lib/types/tmdb';
-import { SearchedMovie, StoredMovie, User, WatchedMovie } from '@/lib/types/domain';
+import { SearchedMovie, StoredMovie, User, VoteSession, WatchedMovie } from '@/lib/types/domain';
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 
@@ -102,4 +102,21 @@ export function toUser(row: DBUserRow): User {
 
 export function toIso(date: Date) {
   return date.toISOString().split('T')[0];
+}
+
+//  Voting
+
+export function toVoteSession(rows: VoteSessionRow[]): VoteSession | null {
+  if (rows.length === 0) return null;
+
+  return {
+    id: rows[0].id,
+    movieNightDate: new Date(rows[0].movieNightDate),
+    createdBy: rows[0].createdBy,
+    movies: rows.map((row) => ({
+      id: row.movieId,
+      title: row.title,
+      posterPath: row.posterPath,
+    })),
+  };
 }

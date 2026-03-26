@@ -1,11 +1,11 @@
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
-import DateInput from '../ui/DateInput';
 import ChosenByInput from '../ui/ChosenByInput';
 import { ReviewRow } from './reviews/ReviewRow';
 import { ReviewRowAdd } from './reviews/ReviewRowAdd';
 import { LoggedInUser, Review, User, WatchedMovie } from '@/lib/types/domain';
 import { DeleteMovieButton } from '../shared/DeleteMovieButton';
 import { IsDetailScreen, MovieDeleteHandler } from '@/lib/types/ui';
+import WatchedDateInput from './WatchedDateInput';
 
 type WatchedMovieListItemProps = {
   movie: WatchedMovie;
@@ -38,12 +38,8 @@ export function WatchedMovieListItem({
         {!isDetailScreen && <div className="text-3xl">{movie.title}</div>}
         <div>
           <div className="flex gap-1">
-            <div>
-              <DateInput movie={movie} />
-            </div>
-            <div>
-              <ChosenByInput movie={movie} users={users} />
-            </div>
+            <WatchedDateInput movie={movie} />
+            <ChosenByInput movie={movie} users={users} />
           </div>
           {movie.reviews.map((review: Review) => (
             <ReviewRow

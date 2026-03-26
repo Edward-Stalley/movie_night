@@ -40,6 +40,15 @@ export interface MovieRow {
   addedOn: Date;
 }
 
+export interface VoteSessionMovieRow {
+  id: number;
+  createdBy: number;
+  movieId: number;
+  movieNightDate: Date;
+  title: string;
+  posterPath: string;
+}
+
 export interface DBUserRow {
   id: number;
   name: string;

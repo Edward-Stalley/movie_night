@@ -31,6 +31,17 @@ export interface WatchedMovie extends MovieBase {
   tmdbId: number; // TMDB ID
 }
 
+export interface VoteSession {
+  id: number;
+  movieNightDate: Date;
+  createdBy: number;
+  movies: {
+    id: number;
+    title: string;
+    posterPath: string;
+  }[];
+}
+
 export interface StoredMovie extends MovieBase {
   id: number;
   tmdbId: number; // TMDB ID

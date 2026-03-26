@@ -19,6 +19,7 @@ import { SearchParams } from 'next/dist/server/request/search-params';
 export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title'> & {
   id?: number;
   urlRoute?: string;
+  selected?: boolean;
 };
 
 export type MovieDeleteHandler = () => void;
@@ -113,6 +114,21 @@ export interface MoviesLayoutProps {
   sortOrder: SortOrder;
 }
 
+export interface VoteMoviesLayoutProps {
+  movies: StoredMovie[];
+  loggedInUser?: LoggedInUser;
+  users: User[];
+}
+
+export interface CreateVotingSessionLayoutProps {
+  movies: StoredMovie[];
+  loggedInUser?: LoggedInUser;
+  pagination: PaginationProps;
+  sortValue: MovieSortValue;
+  sortOrder: SortOrder;
+  selectedMovies: StoredMovie[];
+}
+
 export interface SearchedMoviesLayoutProps {
   movies: SearchedMovie[];
   loggedInUser?: LoggedInUser;
@@ -126,13 +142,31 @@ export interface SearchedMovieCardProps {
   movie: SearchedMovie;
   layout: string | null;
   loggedInUser?: LoggedInUser;
-  // users: User[];
   isDetailScreen: boolean;
 }
 export interface MovieCardProps {
   movie: StoredMovie;
   layout?: Layout;
   isDetailScreen?: boolean;
+}
+
+export interface VoteMovieCardCardProps {
+  movie: StoredMovie;
+  layout?: Layout;
+  isDetailScreen?: boolean;
+  CreateVotingSessionProps?: CreateVotingSessionProps;
+  VotingSessionProps?: VotingSessionProps;
+}
+export interface CreateVotingSessionProps {
+  selectable?: boolean;
+  selected?: boolean;
+  onSelect?: (id: number) => void;
+}
+
+export interface VotingSessionProps {
+  voteInSession: boolean;
+  voteCompleted: boolean;
+  toggleVote?: (id: number) => void;
 }
 
 export interface PaginationProps {

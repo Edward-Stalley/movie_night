@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MoviePoster as MoviePosterTypes } from '@/lib/types/ui';
 
-export function MoviePoster({ id, posterPath, title, urlRoute }: MoviePosterTypes) {
+export function MoviePoster({ id, posterPath, title, urlRoute, selected }: MoviePosterTypes) {
   const image = (
     <Image
       className="rounded-2xl"
