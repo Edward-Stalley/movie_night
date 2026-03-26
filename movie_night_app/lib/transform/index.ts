@@ -1,8 +1,21 @@
 // # Reorganises data from either Database or API into correct data structure / shape.
 
-import type { DBUserRow, MovieRow, VoteSessionRow, WatchedMovieRow } from '@/lib/types/db';
+import type {
+  DBUserRow,
+  MovieRow,
+  VoteSessionMovieRow,
+  VoteSessionRow,
+  WatchedMovieRow,
+} from '@/lib/types/db';
 import { TMDBMovie } from '@/lib/types/tmdb';
-import { SearchedMovie, StoredMovie, User, VoteSession, WatchedMovie } from '@/lib/types/domain';
+import {
+  SearchedMovie,
+  StoredMovie,
+  User,
+  VoteSession,
+  VoteSessionWithMovie,
+  WatchedMovie,
+} from '@/lib/types/domain';
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 
@@ -106,17 +119,29 @@ export function toIso(date: Date) {
 
 //  Voting
 
-export function toVoteSession(rows: VoteSessionRow[]): VoteSession | null {
+export function toVoteSessionMovie(rows: VoteSessionMovieRow[]): VoteSessionWithMovie | null {
   if (rows.length === 0) return null;
 
   return {
     id: rows[0].id,
     movieNightDate: new Date(rows[0].movieNightDate),
     createdBy: rows[0].createdBy,
+    createdAt: rows[0].createdAt,
+
     movies: rows.map((row) => ({
       id: row.movieId,
       title: row.title,
       posterPath: row.posterPath,
     })),
+  };
+}
+
+export function toVoteSession(rows: VoteSessionRow): VoteSession {
+  console.log(typeof rows.movieNightDate, rows.movieNightDate);
+  return {
+    id: rows.id,
+    movieNightDate: new Date(rows.movieNightDate),
+    createdBy: rows.createdBy,
+    createdAt: rows.createdAt,
   };
 }

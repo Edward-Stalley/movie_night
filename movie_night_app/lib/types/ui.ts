@@ -4,6 +4,7 @@ import {
   SearchedMovie,
   StoredMovie,
   User,
+  VoteSession,
   WatchedMovie,
 } from '@/lib/types/domain';
 import { QueryParams } from './db';
@@ -118,6 +119,8 @@ export interface VoteMoviesLayoutProps {
   movies: StoredMovie[];
   loggedInUser?: LoggedInUser;
   users: User[];
+  createdBy: User;
+  voteSession: VoteSession;
 }
 
 export interface CreateVotingSessionLayoutProps {
@@ -167,6 +170,7 @@ export interface VotingSessionProps {
   voteInSession: boolean;
   voteCompleted: boolean;
   toggleVote?: (id: number) => void;
+  canVote: boolean;
 }
 
 export interface PaginationProps {

@@ -43,10 +43,18 @@ export interface MovieRow {
 export interface VoteSessionMovieRow {
   id: number;
   createdBy: number;
+  createdAt: Date;
   movieId: number;
   movieNightDate: Date;
   title: string;
   posterPath: string;
+}
+
+export interface VoteSessionRow {
+  id: number;
+  createdBy: number;
+  movieNightDate: Date;
+  createdAt: Date;
 }
 
 export interface DBUserRow {
@@ -87,6 +95,12 @@ export interface WatchedMovieInsert {
   watched_on: string | null;
   chosenBy: string | null;
 }
+
+export type VoteInsert = {
+  voteSessionId: number;
+  userId: number;
+  movieId: number;
+};
 
 export interface WatchedMovieUpdate {
   chosenBy?: number;

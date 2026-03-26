@@ -1,7 +1,6 @@
 'use client';
 
 import { VoteMovieCardCardProps } from '@/lib/types/ui';
-import { useRouter } from 'next/navigation';
 import { VoteMovieGridItem } from './VoteMovieGridItem';
 
 export default function VoteMovieCard({

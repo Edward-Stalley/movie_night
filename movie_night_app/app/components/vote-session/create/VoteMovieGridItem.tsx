@@ -15,7 +15,6 @@ export function VoteMovieGridItem({
   posterPath,
   title,
   urlRoute,
-
   selectable,
   selected,
   onSelect,
@@ -38,7 +37,7 @@ export function VoteMovieGridItem({
         <div
           onClick={(e) => {
             e.stopPropagation();
-            onSelect?.();
+            voteInSession ? toggleVote?.() : onSelect?.();
           }}
           className={`flex flex-col justify-content items-center rounded-bl-2xl rounded-br-2xl  cursor-pointer hover:bg-primary hover:text-base-content ${selected ? 'hover:' : ''}`}
         >
@@ -46,7 +45,14 @@ export function VoteMovieGridItem({
         </div>
       )}
       {/* VOTING IN SESSION */}
-      {voteInSession && <button onClick={toggleVote}>Add Vote</button>}
+      {voteInSession && (
+        <button
+          className="hover:bg-primary hover:text-primary-content cursor-pointer rounded-b-2xl"
+          onClick={toggleVote}
+        >
+          Vote
+        </button>
+      )}
     </div>
   );
 }

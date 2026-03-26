@@ -29,7 +29,7 @@ export default async function WatchedMovies({ searchParams }: { searchParams: Se
 
   const { data: watchedMovieRows, total } = await getWatchedMovies(query);
   const movies: WatchedMovie[] = toWatchedMovies(watchedMovieRows);
-  
+
   const userRows = await getUsers();
   const users: User[] = userRows.map(toUser);
 

@@ -33,6 +33,7 @@ export default async function Voting({ searchParams }: { searchParams: SearchPar
   // --MOVIES
   const { data: movieRows, total } = await getMovies(query);
   const movies: StoredMovie[] = movieRows.map(toStoredMovies);
+
   // --VOTING SELECTIONS
   const selectedMovieData = await getSelectedMoviesByIds(selectedIds);
   const selectedMovies: StoredMovie[] = selectedMovieData.map(toStoredMovies);

@@ -3,11 +3,10 @@
 import { useEffect, useState } from 'react';
 import { GridOrList } from '@/app/components/layout/GridOrList';
 import { Layout, CreateVotingSessionLayoutProps } from '@/lib/types/ui';
-import MovieCard from '@/app/components/movies/MovieCard';
 import { SORT_OPTIONS_MOVIES } from '@/lib/config/sorts';
 import { useRouter, useSearchParams } from 'next/navigation';
 import DateInput from '@/app/components/ui/DateInput';
-import { createVote } from '@/lib/actions/createVote';
+import { createVotingSessionAction } from '@/lib/actions/createVotingSession';
 import { getTodayLocal } from '@/lib/utils/date/getTodayLocal';
 import VoteMovieCard from './VoteMovieCard';
 
@@ -35,14 +34,13 @@ export default function CreateVoteSessionLayout({
   const handleSubmitCreateVote = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    const voteSessionId = await createVote({ movieNightDate, movieIds: selectedIds, createdBy });
-    router.replace(`/vote-session/${voteSessionId}`);
-    // router.refresh();
+    const voteSessionId = await createVotingSessionAction({
+      movieNightDate,
+      movieIds: selectedIds,
+      createdBy,
+    });
+    router.replace(`/vote-session/sessions/${voteSessionId}`);
   };
-
-  useEffect(() => {
-    setSelectedIds(initialSelected);
-  }, [searchParams]);
 
   const toggleSelect = (id: number) => {
     const current = searchParams.get('selected')
