@@ -7,6 +7,7 @@ import {
   MovieNightSessionRow,
   VoteRow,
 } from '../types/db';
+import { VoteSessionStatus } from '../types/domain';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -103,6 +104,22 @@ FROM
 
 export async function deleteVoteSession(sessionId: number): Promise<void> {
   await pool.query(`DELETE from vote_sessions WHERE id = ?`, [sessionId]);
+}
+
+// (UPDATE: voting status)
+export async function closeVotingSession({
+  voteSessionId,
+}: VoteSessionFilter): Promise<VoteSessionStatus> {
+  await pool.query<RowDataPacket[]>(
+    `
+    UPDATE vote_sessions 
+    SET status = 'completed'
+    WHERE id = ?
+    `,
+    [voteSessionId],
+  );
+
+  return 'completed';
 }
 
 // ## (POST) : Add Vote for Movie

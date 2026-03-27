@@ -6,6 +6,8 @@ import VoteMovieCard from './VoteMovieCard';
 import { VoteKey } from '@/lib/types/db';
 import { toggleVoteAction } from '@/lib/actions/toggleVoteAction';
 import Image from 'next/image';
+import { closeVotingSessionAction } from '@/lib/actions/closeVoting';
+import { useRouter } from 'next/navigation';
 
 export default function VoteSessionLayout({
   movies,
@@ -16,7 +18,7 @@ export default function VoteSessionLayout({
 }: VoteMoviesLayoutProps) {
   const [layout] = useState<Layout>('grid');
   const headerTitle = 'Vote For Movie';
-
+  const router = useRouter();
   const toggleVote = async (id: number) => {
     if (!loggedInUser) {
       alert('Please Login to Vote!');
@@ -32,6 +34,24 @@ export default function VoteSessionLayout({
     await toggleVoteAction(vote);
   };
 
+  const winner = votesByMovie.reduce((currentWinner, movie) => {
+    if (movie.count > currentWinner.count) {
+      return movie;
+    }
+    return currentWinner;
+  });
+
+  const voteInProgress = voteSession.status === 'inProgress';
+
+  const handleSubmitSessionFinalVote = async () => {
+    const confirmClose = confirm('Close Voting? This Cannot Be Undone.');
+    if (!confirmClose) return;
+
+    await closeVotingSessionAction(voteSession.id);
+
+    router.refresh();
+  };
+
   const didUserVote = (voteInfo?: { users: { id: string }[] }) =>
     voteInfo?.users.some((user) => {
       const numberId = Number(user.id);
@@ -45,8 +65,12 @@ export default function VoteSessionLayout({
       {movies.map((movie) => {
         const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
         const userVoted = didUserVote(voteInfo);
+        const displayWinner = !voteInProgress && winner.movieId === voteInfo?.movieId;
         return (
-          <div key={movie.id} className="flex flex-col items-center bg-base-100 p-3 rounded-2xl">
+          <div
+            key={movie.id}
+            className={`flex flex-col items-center bg-base-100 p-3 rounded-2xl relative ${displayWinner && 'border border-info'}`}
+          >
             <VoteMovieCard
               key={movie.id}
               movie={movie}
@@ -57,13 +81,14 @@ export default function VoteSessionLayout({
               }}
             />
             {/* VOTES */}
-
-            <button
-              className=" btn btn-secondary cursor-pointer w-full rounded-2xl m-2"
-              onClick={() => toggleVote(movie.id)}
-            >
-              {userVoted ? '-' : '+'}
-            </button>
+            {voteInProgress && (
+              <button
+                className=" btn btn-secondary cursor-pointer w-full rounded-2xl m-2 text-4xl"
+                onClick={() => toggleVote(movie.id)}
+              >
+                {userVoted ? '-' : '+'}
+              </button>
+            )}
 
             <div className="flex flex-col gap-2 mt-6  w-full rounded-2xl justify-center items-center badge badge-soft p-2 h-fit">
               <div className="text-3xl badge badge-secondary p-4 badge-outline ">
@@ -75,6 +100,11 @@ export default function VoteSessionLayout({
                 </div>
               ))}
             </div>
+            {displayWinner && (
+              <div className="absolute top-0 right-0 bg-info text-base-200 p-2 rounded-tr-xl">
+                Winner
+              </div>
+            )}
           </div>
         );
       })}
@@ -82,7 +112,10 @@ export default function VoteSessionLayout({
   );
 
   const sessionDetail = (
-    <div key={voteSession.id} className="list-row flex gap-4 items-center bg-base-300 p-2 rounded-2xl">
+    <div
+      key={voteSession.id}
+      className="list-row flex gap-4 items-center bg-base-300 p-2 rounded-2xl"
+    >
       <div className="text-4xl font-thin opacity-30 tabular-nums pr-4">
         Movie Night {voteSession.id}
       </div>
@@ -106,7 +139,7 @@ export default function VoteSessionLayout({
         {voteSession.status === 'inProgress' ? (
           <div className="badge badge-info">Vote in Progress</div>
         ) : (
-          <div className="badge badge-error">Complete</div>
+          <div className="badge badge-info">Completed</div>
         )}
       </div>
     </div>
@@ -118,11 +151,20 @@ export default function VoteSessionLayout({
         <h1 className="text-6xl badge h-fit badge-secondary font-bold m-4 p-4  badge-outline">
           {headerTitle}
         </h1>
-      <div className="p-4">{sessionDetail}</div>
+        <div className="p-4">{sessionDetail}</div>
         <div className="flex justify-center items-center b">
           <div>{moviesForVoting}</div>
         </div>
       </div>
+
+      <button
+        onClick={handleSubmitSessionFinalVote}
+        disabled={!voteInProgress}
+        className={`btn  p-10 ml-4 mr-4 text-2xl font-bold ${voteInProgress ? 'btn-secondary' : 'btn-info'}`}
+      >
+        {voteInProgress ? 'Submit Final Vote' : 'Voting Over'}
+      </button>
+
       {/* TO DO: ADD VOTE GRAPH */}
     </div>
   );

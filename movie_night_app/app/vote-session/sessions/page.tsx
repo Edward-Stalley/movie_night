@@ -49,9 +49,9 @@ export default async function VotingSessions() {
           </div>
           <div className="p-4 pb-2 text-xs opacity-60 tracking-wide">
             {session.status === 'inProgress' ? (
-              <div className="badge badge-info">Vote in Progress</div>
+              <div className="badge badge-secondary">Vote in Progress</div>
             ) : (
-              <div className="badge badge-error">Complete</div>
+              <div className="badge badge-info">Complete</div>
             )}
           </div>
         </Link>
