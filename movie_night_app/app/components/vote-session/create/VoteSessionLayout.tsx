@@ -47,9 +47,6 @@ export default function VoteSessionLayout({
   const voteInProgress = voteSession.status === 'inProgress';
 
   const handleSubmitSessionFinalVote = async () => {
-    const confirmClose = confirm('Close Voting? This Cannot Be Undone.');
-    if (!confirmClose) return;
-
     await closeVotingSessionAction(voteSession.id);
 
     router.refresh();
