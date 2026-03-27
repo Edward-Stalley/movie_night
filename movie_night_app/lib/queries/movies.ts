@@ -15,11 +15,6 @@ const MOVIE_SORT_MAP = {
 
 type SortKey = keyof typeof MOVIE_SORT_MAP;
 
-const ORDER_MAP = {
-  asc: 'ASC',
-  desc: 'DESC',
-};
-
 function isSortKey(value: string): value is SortKey {
   return value in MOVIE_SORT_MAP;
 }
@@ -62,17 +57,11 @@ OFFSET ?
   };
 }
 
-// PARAMS NEEDED: releaseDate, alphabetical, genres
-
-// ORDER BY ID DESC;
-// LIMIT
-// OFFSET
+//  Detail (indiviudal Movie)
 
 export async function deleteMovie(id: number): Promise<void> {
   await pool.query(`DELETE from movies WHERE id = ?`, [id]);
 }
-
-//  Detail (indiviudal Movie)
 
 export async function getMovie(id: number): Promise<MovieRow | null> {
   const [rows] = await pool.query<RowDataPacket[]>(
@@ -92,6 +81,30 @@ WHERE m.id = ?
   );
 
   return rows[0] as MovieRow;
+}
+
+export async function getSelectedMoviesByIds(ids: number[]): Promise<MovieRow[]> {
+  if (ids.length === 0) return [];
+
+  const placeholders = ids.map(() => '?').join(',');
+
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `
+SELECT
+    m.id AS id,
+    m.title,
+    m.genre_ids AS genreIds,
+    m.overview,
+    m.release_date AS releaseDate,
+    m.poster_path AS posterPath,
+    m.tmdb_id
+FROM movies m
+WHERE m.id IN (${placeholders})
+    `,
+    ids,
+  );
+
+  return rows as MovieRow[];
 }
 
 // ## (POST) : Add individual Movie to watched_movies.

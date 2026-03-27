@@ -1,7 +1,7 @@
-export interface PaginatedResult<T> {
+export type PaginatedResult<T> = {
   data: T[];
   total: number;
-}
+};
 
 export type SearchedMovieSortValue = 'title' | 'releaseDate';
 export type MovieSortValue = 'title' | 'addedBy' | 'addedOn';

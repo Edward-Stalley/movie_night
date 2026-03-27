@@ -24,10 +24,12 @@ export default async function WatchedMovies({ searchParams }: { searchParams: Se
 
   // QUERY
   const query = buildQuery(params, PAGE_SIZES.watchedMovies, 'watchedOn');
+
+  // TRANSFORM
+
   const { data: watchedMovieRows, total } = await getWatchedMovies(query);
   const movies: WatchedMovie[] = toWatchedMovies(watchedMovieRows);
 
-  // TRANSFORM
   const userRows = await getUsers();
   const users: User[] = userRows.map(toUser);
 

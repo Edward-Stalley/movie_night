@@ -57,6 +57,12 @@ export default async function Navbar() {
             <li>
               <Link href="/watched-movies">Watched</Link>
             </li>
+            <li>
+              <Link href="/vote-session/create">Create Vote</Link>
+            </li>
+            <li>
+              <Link href="/vote-session/sessions">Vote Sessions</Link>
+            </li>
           </ul>
         </div>
         <Link href="/" className="flex w-fit justify-start">

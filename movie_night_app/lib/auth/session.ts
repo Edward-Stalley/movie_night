@@ -1,6 +1,6 @@
 // lib/auth.ts
 import { LoggedInUser } from '@/lib/types/domain';
-import { Session } from 'next-auth';
+import type { Session } from '@auth/core/types';
 
 export function mapSessionToLoggedInUser(session: Session | null): LoggedInUser | undefined {
   if (!session?.user) return undefined;
