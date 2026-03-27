@@ -65,7 +65,7 @@ export default function VoteSessionLayout({
       {movies.map((movie) => {
         const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
         const userVoted = didUserVote(voteInfo);
-        const displayWinner = !voteInProgress && winner.movieId === voteInfo?.movieId;
+        const displayWinner = !voteInProgress && winner?.movieId === voteInfo?.movieId;
         return (
           <div
             key={movie.id}
