@@ -3,9 +3,10 @@
 import type {
   DBUserRow,
   MovieRow,
-  VoteSessionMovieRow,
-  VoteSessionRow,
+  MovieNightSessionWithMovieRow,
+  MovieNightSessionRow,
   WatchedMovieRow,
+  VoteRow,
 } from '@/lib/types/db';
 import { TMDBMovie } from '@/lib/types/tmdb';
 import {
@@ -16,6 +17,8 @@ import {
   VoteSessionWithMovie,
   WatchedMovie,
 } from '@/lib/types/domain';
+import { Vote } from '../types/ui';
+import getUserFromId from '../utils/users/getUsersFromIds';
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 
@@ -119,7 +122,9 @@ export function toIso(date: Date) {
 
 //  Voting
 
-export function toVoteSessionMovie(rows: VoteSessionMovieRow[]): VoteSessionWithMovie | null {
+export function toVoteSessionMovie(
+  rows: MovieNightSessionWithMovieRow[],
+): VoteSessionWithMovie | null {
   if (rows.length === 0) return null;
 
   return {
@@ -136,12 +141,40 @@ export function toVoteSessionMovie(rows: VoteSessionMovieRow[]): VoteSessionWith
   };
 }
 
-export function toVoteSession(rows: VoteSessionRow): VoteSession {
-  console.log(typeof rows.movieNightDate, rows.movieNightDate);
+export function toVoteSession(rows: MovieNightSessionRow): VoteSession {
   return {
     id: rows.id,
     movieNightDate: new Date(rows.movieNightDate),
     createdBy: rows.createdBy,
     createdAt: rows.createdAt,
   };
+}
+
+export function toVote(rows: VoteRow): Vote {
+  return {
+    id: rows.id,
+    voteSessionId: rows.vote_session_id,
+    userId: rows.user_id,
+    movieId: rows.movie_id,
+  };
+}
+
+export function countVotesByMovie(votes: Vote[], users: User[]) {
+  const movieMap = new Map<number, { count: number; users: User[] }>();
+
+  votes.forEach((vote) => {
+    const user = getUserFromId(vote.userId, users);
+
+    const entry = movieMap.get(vote.movieId) ?? { count: 0, users: [] };
+    entry.count += 1;
+    entry.users.push(user);
+
+    movieMap.set(vote.movieId, entry);
+  });
+
+  return Array.from(movieMap.entries()).map(([movieId, { count, users }]) => ({
+    movieId,
+    count,
+    users,
+  }));
 }

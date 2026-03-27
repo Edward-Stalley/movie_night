@@ -1,6 +1,12 @@
 import { pool } from '@/lib/db';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
-import { VoteInsert, VoteSessionMovieRow, VoteSessionRow } from '../types/db';
+import {
+  VoteKey,
+  VoteSessionFilter,
+  MovieNightSessionWithMovieRow,
+  MovieNightSessionRow,
+  VoteRow,
+} from '../types/db';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -49,7 +55,9 @@ export async function createVotingSession({
   }
 }
 
-export async function getVoteSessionMovieRows(id: number): Promise<VoteSessionMovieRow[]> {
+export async function getVoteSessionMovieRows(
+  id: number,
+): Promise<MovieNightSessionWithMovieRow[]> {
   const [rows] = await pool.query<RowDataPacket[]>(
     `
 SELECT
@@ -70,12 +78,12 @@ WHERE vs.id = ?
     [id],
   );
 
-  return rows as VoteSessionMovieRow[];
+  return rows as MovieNightSessionWithMovieRow[];
 }
 
 //  (GET) Get the Movie Night Sessions
 
-export async function getSessionRows(): Promise<VoteSessionRow[]> {
+export async function getSessionRows(): Promise<MovieNightSessionRow[]> {
   const [rows] = await pool.query<RowDataPacket[]>(
     `
 SELECT
@@ -88,12 +96,12 @@ FROM
     `,
   );
 
-  return rows as VoteSessionRow[];
+  return rows as MovieNightSessionRow[];
 }
 
 // ## (POST) : Add Vote for Movie
 
-export async function addVote(vote: VoteInsert) {
+export async function addVote(vote: VoteKey) {
   const [result] = await pool.query<ResultSetHeader>(
     `
     INSERT INTO votes( vote_session_id, user_id, movie_id )
@@ -115,7 +123,7 @@ export async function deleteVote(voteId: number): Promise<void> {
 
 // ## (DETAIL)
 
-export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId }: VoteInsert) {
+export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId }: VoteKey) {
   const [rows] = await pool.query<RowDataPacket[]>(
     `
     SELECT id
@@ -129,4 +137,20 @@ export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId
   );
 
   return rows[0] ?? null;
+}
+
+// ## (GET) Vote List
+
+export async function getAllVotesForMovieSession({
+  voteSessionId,
+}: VoteSessionFilter): Promise<VoteRow[]> {
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `
+    SELECT id, vote_session_id, user_id, movie_id
+    FROM votes
+    WHERE vote_session_id = ?
+    `,
+    [voteSessionId],
+  );
+  return rows as VoteRow[];
 }

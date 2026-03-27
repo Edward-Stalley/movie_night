@@ -40,7 +40,7 @@ export type MovieRow = {
   addedOn: Date;
 };
 
-export type VoteSessionMovieRow = {
+export type MovieNightSessionWithMovieRow = {
   id: number;
   createdBy: number;
   createdAt: Date;
@@ -50,11 +50,18 @@ export type VoteSessionMovieRow = {
   posterPath: string;
 };
 
-export type VoteSessionRow = {
+export type MovieNightSessionRow = {
   id: number;
   createdBy: number;
   movieNightDate: Date;
   createdAt: Date;
+};
+
+export type VoteRow = {
+  id: number;
+  vote_session_id: number;
+  user_id: number;
+  movie_id: number;
 };
 
 export type DBUserRow = {
@@ -96,10 +103,14 @@ export type WatchedMovieInsert = {
   chosenBy: string | null;
 };
 
-export type VoteInsert = {
+export type VoteKey = {
   voteSessionId: number;
   userId: number;
   movieId: number;
+};
+
+export type VoteSessionFilter = {
+  voteSessionId: number;
 };
 
 export type WatchedMovieUpdate = {

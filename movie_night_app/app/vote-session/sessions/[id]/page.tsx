@@ -3,8 +3,18 @@ import VoteSessionLayout from '@/app/components/vote-session/create/VoteSessionL
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getSelectedMoviesByIds } from '@/lib/queries/movies';
 import { getUsers } from '@/lib/queries/users';
-import { getVoteSessionMovieRows } from '@/lib/queries/vote';
-import { toStoredMovies, toUser, toVoteSessionMovie } from '@/lib/transform';
+import {
+  getAllVotesForMovieSession,
+  getVoteByUserMovieSession,
+  getVoteSessionMovieRows,
+} from '@/lib/queries/vote';
+import {
+  countVotesByMovie,
+  toStoredMovies,
+  toUser,
+  toVote,
+  toVoteSessionMovie,
+} from '@/lib/transform';
 import { StoredMovie, User } from '@/lib/types/domain';
 
 export default async function VotingSessionPage({ params }: { params: { id: string } }) {
@@ -35,8 +45,10 @@ export default async function VotingSessionPage({ params }: { params: { id: stri
     throw new Error(`Creator user ${voteSession.createdBy} not found`);
   }
 
-  // const votes = await getVotes();
-
+  const voteRows = await getAllVotesForMovieSession({ voteSessionId: sessionId });
+  const votes = voteRows.map(toVote);
+  const votesByMovie = countVotesByMovie(votes, users);
+  
   return (
     <VoteSessionLayout
       movies={selectedMoviesList}
@@ -44,6 +56,7 @@ export default async function VotingSessionPage({ params }: { params: { id: stri
       loggedInUser={loggedInUser}
       createdBy={createdBy}
       voteSession={voteSession}
+      votesByMovie={votesByMovie}
     />
   );
 }

@@ -119,6 +119,20 @@ export type VoteMoviesLayoutProps = {
   users: User[];
   createdBy: User;
   voteSession: VoteSession;
+  votesByMovie: VoteByMovie[];
+};
+
+export type Vote = {
+  id: number;
+  voteSessionId: number;
+  userId: number;
+  movieId: number;
+};
+
+export type VoteByMovie = {
+  count: number;
+  movieId: number;
+  users: User[];
 };
 
 export type CreateVotingSessionLayoutProps = {

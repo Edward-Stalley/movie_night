@@ -1,9 +1,9 @@
 'use server';
 
 import { addVote } from '../queries/vote';
-import { VoteInsert } from '../types/db';
+import { VoteKey } from '../types/db';
 
-export async function addVoteAction({ voteSessionId, userId, movieId }: VoteInsert) {
+export async function addVoteAction({ voteSessionId, userId, movieId }: VoteKey) {
   const vote = await addVote({ voteSessionId, userId, movieId });
   return vote;
 }
