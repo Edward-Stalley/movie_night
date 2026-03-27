@@ -31,6 +31,7 @@ export function WatchedMovieListItem({
         posterPath={movie.posterPath}
         title={movie.title}
         urlRoute="watched-movies"
+        className="rounded-2xl"
       />
       <DeleteMovieButton onDelete={onDelete} isDetailScreen={isDetailScreen} />
 

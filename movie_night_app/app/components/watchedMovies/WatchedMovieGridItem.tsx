@@ -29,7 +29,13 @@ export function WatchedMovieGridItem({
 }: MovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 rounded-2xl p-1 border-2">
-      <MoviePoster id={id} posterPath={posterPath} title={title} urlRoute={urlRoute} />
+      <MoviePoster
+        id={id}
+        posterPath={posterPath}
+        title={title}
+        urlRoute={urlRoute}
+        className="rounded-2xl"
+      />
       {onDelete && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
       {onAdd && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
       <div className="flex gap-2 justify-center items-center p-1 w-full">

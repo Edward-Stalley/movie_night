@@ -4,10 +4,7 @@ import { MoviePoster } from '@/app/components/shared/MoviePoster';
 type VoteMovieGridItemProps = MoviePosterTypes & {
   selectable?: boolean;
   selected?: boolean;
-  onSelect?: () => void;
-  voteInSession?: boolean;
-  voteCompleted?: boolean;
-  toggleVote?: () => void;
+  toggleSelect?: () => void;
 };
 
 export function VoteMovieGridItem({
@@ -17,10 +14,7 @@ export function VoteMovieGridItem({
   urlRoute,
   selectable,
   selected,
-  onSelect,
-  voteInSession,
-  voteCompleted,
-  toggleVote,
+  toggleSelect,
 }: VoteMovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl flex flex-col">
@@ -30,6 +24,8 @@ export function VoteMovieGridItem({
         title={title}
         urlRoute={urlRoute}
         selected={selected}
+        className="rounded-2xl"
+        disableLink={true}
       />
 
       {/* CREATE VOTING SESSION  */}
@@ -37,21 +33,12 @@ export function VoteMovieGridItem({
         <div
           onClick={(e) => {
             e.stopPropagation();
-            voteInSession ? toggleVote?.() : onSelect?.();
+            toggleSelect?.();
           }}
           className={`flex flex-col justify-content items-center rounded-bl-2xl rounded-br-2xl  cursor-pointer hover:bg-primary hover:text-base-content ${selected ? 'hover:' : ''}`}
         >
           <div className="text-2xl font-bold rounded-2xl">{selected ? '-' : '+'}</div>
         </div>
-      )}
-      {/* VOTING IN SESSION */}
-      {voteInSession && (
-        <button
-          className="hover:bg-primary hover:text-primary-content cursor-pointer rounded-b-2xl"
-          onClick={toggleVote}
-        >
-          Vote
-        </button>
       )}
     </div>
   );

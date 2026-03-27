@@ -3,11 +3,7 @@ import VoteSessionLayout from '@/app/components/vote-session/create/VoteSessionL
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getSelectedMoviesByIds } from '@/lib/queries/movies';
 import { getUsers } from '@/lib/queries/users';
-import {
-  getAllVotesForMovieSession,
-  getVoteByUserMovieSession,
-  getVoteSessionMovieRows,
-} from '@/lib/queries/vote';
+import { getAllVotesForMovieSession, getVoteSessionMovieRows } from '@/lib/queries/vote';
 import {
   countVotesByMovie,
   toStoredMovies,
@@ -23,6 +19,7 @@ export default async function VotingSessionPage({ params }: { params: { id: stri
 
   // TRANSFORM
   const sessionRows = await getVoteSessionMovieRows(sessionId);
+
   const voteSession = toVoteSessionMovie(sessionRows);
 
   if (!voteSession || !voteSession.movies.length) {
@@ -48,7 +45,7 @@ export default async function VotingSessionPage({ params }: { params: { id: stri
   const voteRows = await getAllVotesForMovieSession({ voteSessionId: sessionId });
   const votes = voteRows.map(toVote);
   const votesByMovie = countVotesByMovie(votes, users);
-  
+
   return (
     <VoteSessionLayout
       movies={selectedMoviesList}

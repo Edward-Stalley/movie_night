@@ -17,8 +17,9 @@ import {
   VoteSessionWithMovie,
   WatchedMovie,
 } from '@/lib/types/domain';
-import { Vote } from '../types/ui';
-import getUserFromId from '../utils/users/getUsersFromIds';
+import { Vote } from '@/lib/types/ui';
+import getUserFromId from '@/lib/utils/users/getUsersFromIds';
+import { mapStatusToDomain } from '@/lib/transform/voteSessionStatus';
 
 // #1 DB rows (snakecase) → Domain objects (camelCase)
 
@@ -132,7 +133,7 @@ export function toVoteSessionMovie(
     movieNightDate: new Date(rows[0].movieNightDate),
     createdBy: rows[0].createdBy,
     createdAt: rows[0].createdAt,
-
+    status: mapStatusToDomain(rows[0].status),
     movies: rows.map((row) => ({
       id: row.movieId,
       title: row.title,
@@ -147,6 +148,7 @@ export function toVoteSession(rows: MovieNightSessionRow): VoteSession {
     movieNightDate: new Date(rows.movieNightDate),
     createdBy: rows.createdBy,
     createdAt: rows.createdAt,
+    status: mapStatusToDomain(rows.status),
   };
 }
 

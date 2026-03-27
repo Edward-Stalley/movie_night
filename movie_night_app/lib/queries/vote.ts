@@ -65,6 +65,7 @@ SELECT
   vs.movie_night_date AS movieNightDate,
   vs.created_by AS createdBy,
   vs.created_at AS createdAt,
+  vs.status,
   m.id AS movieId,
   m.title,
   m.poster_path AS posterPath
@@ -90,13 +91,18 @@ SELECT
   id,
   movie_night_date AS movieNightDate,
   created_by AS createdBy,
-  created_at AS createdAt
+  created_at AS createdAt,
+  status
 FROM
   vote_sessions
     `,
   );
 
   return rows as MovieNightSessionRow[];
+}
+
+export async function deleteVoteSession(sessionId: number): Promise<void> {
+  await pool.query(`DELETE from vote_sessions WHERE id = ?`, [sessionId]);
 }
 
 // ## (POST) : Add Vote for Movie

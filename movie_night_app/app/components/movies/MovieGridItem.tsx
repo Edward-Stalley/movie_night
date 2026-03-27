@@ -12,7 +12,7 @@ type MovieGridItemProps = MoviePosterTypes & {
   onAdd?: WatchedMovieAddHandler;
   selectable?: boolean;
   selected?: boolean;
-  onSelect?: () => void;
+  toggleSelect?: () => void;
   voteInSession?: boolean;
   voteCompleted?: boolean;
   toggleVote?: () => void;
@@ -27,10 +27,7 @@ export function MovieGridItem({
   onAdd,
   selectable,
   selected,
-  onSelect,
   voteInSession,
-  voteCompleted,
-  toggleVote,
 }: MovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl flex flex-col">
@@ -40,6 +37,7 @@ export function MovieGridItem({
         title={title}
         urlRoute={urlRoute}
         selected={selected}
+        className="rounded-2xl"
       />
       {onDelete && !selectable && !voteInSession && (
         <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />

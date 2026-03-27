@@ -19,6 +19,8 @@ export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title'> & {
   id?: number;
   urlRoute?: string;
   selected?: boolean;
+  className?: string;
+  disableLink?: boolean;
 };
 
 export type MovieDeleteHandler = () => void;
@@ -175,12 +177,11 @@ export type VoteMovieCardCardProps = {
 export type CreateVotingSessionProps = {
   selectable?: boolean;
   selected?: boolean;
-  onSelect?: (id: number) => void;
+  toggleSelect?: (id: number) => void;
 };
 
 export type VotingSessionProps = {
-  voteInSession: boolean;
-  voteCompleted: boolean;
+  status: string;
   toggleVote?: (id: number) => void;
   canVote: boolean;
 };

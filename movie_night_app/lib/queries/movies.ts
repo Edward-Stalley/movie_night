@@ -15,11 +15,6 @@ const MOVIE_SORT_MAP = {
 
 type SortKey = keyof typeof MOVIE_SORT_MAP;
 
-const ORDER_MAP = {
-  asc: 'ASC',
-  desc: 'DESC',
-};
-
 function isSortKey(value: string): value is SortKey {
   return value in MOVIE_SORT_MAP;
 }

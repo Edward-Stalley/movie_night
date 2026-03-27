@@ -18,7 +18,7 @@ export default function CreateVoteSessionLayout({
   selectedMovies,
   loggedInUser,
 }: CreateVotingSessionLayoutProps) {
-  const [voteStarted, setVoteStarted] = useState<boolean>(true);
+  const [voteStarted] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const initialSelected = searchParams.get('selected')
     ? searchParams.get('selected')!.split(',').map(Number)
@@ -26,7 +26,7 @@ export default function CreateVoteSessionLayout({
 
   const [selectedIds, setSelectedIds] = useState<number[]>(initialSelected);
   const [layout, setLayout] = useState<Layout>('grid');
-  const headerTitle = 'Voting';
+  const headerTitle = 'Create Vote Session';
   const router = useRouter();
   const [movieNightDate, setMovieNightDate] = useState(getTodayLocal());
   const createdBy = Number(loggedInUser?.id);
@@ -78,7 +78,7 @@ export default function CreateVoteSessionLayout({
             CreateVotingSessionProps={{
               selectable: voteStarted,
               selected: selectedIds.includes(movie.id),
-              onSelect: toggleSelect,
+              toggleSelect: toggleSelect,
             }}
           />
         </div>
@@ -96,7 +96,7 @@ export default function CreateVoteSessionLayout({
       CreateVotingSessionProps={{
         selectable: voteStarted,
         selected: selectedIds.includes(movie.id),
-        onSelect: toggleSelect,
+        toggleSelect: toggleSelect,
       }}
     />
   ));
@@ -108,18 +108,22 @@ export default function CreateVoteSessionLayout({
 
   return (
     <div className="bg-base-300 flex justify-center items-center flex-col">
-      {/* <p className="text-3xl p-10">{headerTitle}</p> */}
-      <form className="flex gap-2 bg-primary p-2 rounded-2xl" onSubmit={handleSubmitCreateVote}>
+      <p className="text-3xl p-10 badge badge-secondary badge-soft">{headerTitle}</p>
+
+      {voteStarted && <div className="flex rounded-2xl m-2">{carouselMovies}</div>}
+      <form
+        className="flex gap-2  p-2 rounded-2xl badge badge-soft badge-secondary h-fit"
+        onSubmit={handleSubmitCreateVote}
+      >
         <DateInput
           className={className}
           date={movieNightDate}
           onChange={setMovieNightDate}
           min={getTodayLocal()}
         />
-        <button className="btn btn-soft rounded-2xl">Create</button>
+        <button className="btn btn-secondary rounded-xl h-8">Create</button>
       </form>
 
-      {voteStarted && <div className="flex flex-col rounded-2xl m-10">{carouselMovies}</div>}
       {voteStarted && (
         <GridOrList
           layout={layout}

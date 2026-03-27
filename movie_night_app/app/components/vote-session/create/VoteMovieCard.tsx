@@ -7,12 +7,9 @@ export default function VoteMovieCard({
   movie,
   layout,
   CreateVotingSessionProps,
-  VotingSessionProps,
 }: VoteMovieCardCardProps) {
   // CREATE VOTING
-  const { selectable = false, selected = false, onSelect } = CreateVotingSessionProps || {};
-  // VOTE IN SESSION
-  const { voteInSession = false, voteCompleted = false, toggleVote } = VotingSessionProps || {};
+  const { selectable = false, selected = false, toggleSelect } = CreateVotingSessionProps || {};
 
   return (
     <li className="relative group">
@@ -24,10 +21,7 @@ export default function VoteMovieCard({
           urlRoute="movies"
           selectable={selectable}
           selected={selected}
-          onSelect={selectable ? () => onSelect?.(movie.id) : undefined}
-          voteInSession={voteInSession}
-          voteCompleted={voteCompleted}
-          toggleVote={voteInSession ? () => toggleVote?.(movie.id) : undefined}
+          toggleSelect={selectable ? () => toggleSelect?.(movie.id) : undefined}
         />
       )}
     </li>

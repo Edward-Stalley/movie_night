@@ -46,6 +46,7 @@ export type MovieNightSessionWithMovieRow = {
   createdAt: Date;
   movieId: number;
   movieNightDate: Date;
+  status: VoteSessionStatus;
   title: string;
   posterPath: string;
 };
@@ -55,7 +56,10 @@ export type MovieNightSessionRow = {
   createdBy: number;
   movieNightDate: Date;
   createdAt: Date;
+  status: VoteSessionStatus;
 };
+
+export type VoteSessionStatus = 'in_progress' | 'completed';
 
 export type VoteRow = {
   id: number;

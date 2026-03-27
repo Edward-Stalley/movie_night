@@ -14,6 +14,7 @@ export function SearchedMovieListItem({ movie }: SearchedMovieListItemProps) {
           posterPath={movie.posterPath}
           title={movie.title}
           urlRoute="movies"
+          className="rounded-2xl"
         />
       </div>
 
