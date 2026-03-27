@@ -34,12 +34,15 @@ export default function VoteSessionLayout({
     await toggleVoteAction(vote);
   };
 
-  const winner = votesByMovie.reduce((currentWinner, movie) => {
-    if (movie.count > currentWinner.count) {
-      return movie;
-    }
-    return currentWinner;
-  });
+  const winner =
+    votesByMovie.length === 0
+      ? null
+      : votesByMovie.reduce((currentWinner, movie) => {
+          if (movie.count > currentWinner.count) {
+            return movie;
+          }
+          return currentWinner;
+        });
 
   const voteInProgress = voteSession.status === 'inProgress';
 
