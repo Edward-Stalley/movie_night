@@ -17,28 +17,28 @@ export function VoteMovieGridItem({
   toggleSelect,
 }: VoteMovieGridItemProps) {
   return (
-    <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl flex flex-col">
+    <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 rounded-2xl border-2 flex flex-col justify-center items-center">
       <MoviePoster
         id={id}
         posterPath={posterPath}
         title={title}
         urlRoute={urlRoute}
         selected={selected}
-        className="rounded-2xl"
+        className="rounded-t-2xl border-b border-secondary"
         disableLink={true}
       />
 
       {/* CREATE VOTING SESSION  */}
       {selectable && (
-        <div
+        <button
           onClick={(e) => {
             e.stopPropagation();
             toggleSelect?.();
           }}
-          className={`flex flex-col justify-content items-center rounded-bl-2xl rounded-br-2xl  cursor-pointer hover:bg-primary hover:text-base-content ${selected ? 'hover:' : ''}`}
+          className="btn btn-soft btn-secondary w-full rounded-none rounded-b-2xl"
         >
           <div className="text-2xl font-bold rounded-2xl">{selected ? '-' : '+'}</div>
-        </div>
+        </button>
       )}
     </div>
   );

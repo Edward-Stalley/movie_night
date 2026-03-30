@@ -1,5 +1,5 @@
-import { QueryParams } from '../types/db';
-import { SortOrder } from '../types/pagination';
+import { QueryParams } from '@/lib/types/db';
+import { SortOrder } from '@/lib/types/sort';
 
 export function buildQuery(params: QueryParams, defaultLimit: number, defaultSort: string) {
   // Pagination

@@ -16,7 +16,9 @@ export type SearchedMovie = MovieBase & {
 
 export type Review = {
   rating: number;
-  ratedBy: string;
+  ratedById: number;
+  ratedByName: string;
+  ratedByImage: string
   comment: string | null;
 };
 
@@ -24,7 +26,8 @@ export type WatchedMovie = MovieBase & {
   id: number; // Watched Movie ID
   movieId: number; // Movies ID
   watchedOn: Date;
-  chosenBy: string;
+  chosenById: number;
+  chosenByName: string;
   chosenByImage: string;
   username: string;
   reviews: Review[];

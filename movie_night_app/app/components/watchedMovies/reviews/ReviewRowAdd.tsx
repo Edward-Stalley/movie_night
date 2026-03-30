@@ -22,7 +22,7 @@ export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
     setRating(value);
 
     const reviewData: ReviewInsert = {
-      watchedMovieId: movie.movieId,
+      watchedMovieId: movie.id,
       userId: Number(loggedInUser?.id),
       comment: reviewComment,
       rating: value,
@@ -31,11 +31,12 @@ export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
     await saveReview(movie.movieId, reviewData);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
     if (!reviewComment.trim()) return;
 
     const reviewData: ReviewInsert = {
-      watchedMovieId: movie.movieId,
+      watchedMovieId: movie.id,
       userId: Number(loggedInUser?.id), // rated by is same as logged in user
       comment: reviewComment,
       rating: rating,
@@ -66,7 +67,13 @@ export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
     <div key={`${movie.id}`} className=" flex gap-4 bg-accent-content m-1 rounded-2xl p-2">
       <div className={'w-25'}>{loggedInUser?.name}</div>
       <div className="flex-col">
-        <StarRating rating={rating} onClick={handleRatingClick} isEditing={true} />
+        <StarRating
+          rating={rating}
+          onClick={(e) => {
+            handleRatingClick(e);
+          }}
+          isEditing={true}
+        />
         <div className="flex pl-2 pt-2">
           <InvertedCommas />
           <div className="w-96">{textArea}</div>

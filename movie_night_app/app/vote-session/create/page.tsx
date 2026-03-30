@@ -6,7 +6,8 @@ import { buildQuery } from '@/lib/utils/query';
 import { getMovies, getSelectedMoviesByIds } from '@/lib/queries/movies';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { toStoredMovies } from '@/lib/transform';
-import { MovieSortValue, SortOrder } from '@/lib/types/pagination';
+import { MovieSortValue, SortOrder } from '@/lib/types/sort';
+import { getUnwatchedMovies } from '@/lib/queries/vote';
 
 type SearchParams = {
   page?: string;
@@ -31,8 +32,8 @@ export default async function Voting({ searchParams }: { searchParams: SearchPar
   // DATA
 
   // --MOVIES
-  const { data: movieRows, total } = await getMovies(query);
-  const movies: StoredMovie[] = movieRows.map(toStoredMovies);
+  const { data: movieRows, total } = await getUnwatchedMovies(query);
+  const unWatchedMovies: StoredMovie[] = movieRows.map(toStoredMovies);
 
   // --VOTING SELECTIONS
   const selectedMovieData = await getSelectedMoviesByIds(selectedIds);
@@ -43,7 +44,7 @@ export default async function Voting({ searchParams }: { searchParams: SearchPar
   return (
     <CreateVoteSessionLayout
       loggedInUser={loggedInUser}
-      movies={movies}
+      movies={unWatchedMovies}
       pagination={{ page: query.page, totalPages }}
       sortValue={sort}
       sortOrder={order}

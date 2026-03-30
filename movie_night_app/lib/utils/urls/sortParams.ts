@@ -1,4 +1,4 @@
-import { SortOrder } from '@/lib/types/pagination';
+import { SortOrder } from '@/lib/types/sort';
 
 export function buildSortParams(
   currentParams: URLSearchParams,

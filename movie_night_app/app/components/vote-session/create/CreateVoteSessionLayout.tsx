@@ -30,6 +30,7 @@ export default function CreateVoteSessionLayout({
   const router = useRouter();
   const [movieNightDate, setMovieNightDate] = useState(getTodayLocal());
   const createdBy = Number(loggedInUser?.id);
+  const canToggleLayout = false;
 
   const handleSubmitCreateVote = async (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -68,7 +69,7 @@ export default function CreateVoteSessionLayout({
   const selectedMoviesList = selectedMovies;
 
   const carouselMovies = (
-    <div className="carousel carousel-center gap-4 p-4 bg-base-100 rounded-box w-full">
+    <div className="carousel carousel-center gap-4 p-4 bg-base-100 rounded-box w-full list-none">
       {selectedMoviesList.map((movie) => (
         <div key={movie.id} className="carousel-item w-32">
           <VoteMovieCard
@@ -112,7 +113,7 @@ export default function CreateVoteSessionLayout({
 
       {voteStarted && <div className="flex rounded-2xl m-2">{carouselMovies}</div>}
       <form
-        className="flex gap-2  p-2 rounded-2xl badge badge-soft badge-secondary h-fit"
+        className="flex gap-2 p-2 rounded-2xl badge badge-soft badge-secondary h-fit"
         onSubmit={handleSubmitCreateVote}
       >
         <DateInput
@@ -133,6 +134,7 @@ export default function CreateVoteSessionLayout({
           sortValue={sortValue}
           sortOrder={sortOrder}
           sortOptions={SORT_OPTIONS_MOVIES}
+          canToggleLayout={canToggleLayout}
         >
           {movieList}
         </GridOrList>

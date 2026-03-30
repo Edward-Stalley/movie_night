@@ -5,7 +5,7 @@ import { MoviePoster as MoviePosterTypes } from '@/lib/types/ui';
 export function MoviePoster({ id, posterPath, title, urlRoute, className }: MoviePosterTypes) {
   const image = (
     <Image
-      className={className}
+      className={`block w-full h-auto ${className}`}
       src={`https://image.tmdb.org/t/p/w500/${posterPath}`}
       width={210}
       height={315}

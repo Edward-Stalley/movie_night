@@ -4,20 +4,9 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { pool } from '@/lib/db';
 import { MovieRow, MovieInsert, MoviesQuery } from '@/lib/types/db';
 import { PaginatedResult } from '@/lib/types/pagination';
-import { StoredMovie } from '../types/domain';
-
-const MOVIE_SORT_MAP = {
-  addedBy: 'm.added_by',
-  releaseDate: 'm.release_date',
-  title: 'm.title',
-  addedOn: 'm.added_on',
-};
-
-type SortKey = keyof typeof MOVIE_SORT_MAP;
-
-function isSortKey(value: string): value is SortKey {
-  return value in MOVIE_SORT_MAP;
-}
+import { StoredMovie } from '@/lib/types/domain';
+import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
+import { isSortKey } from '@/lib/utils/sort/isSortKey';
 
 export async function getMovies({
   limit,

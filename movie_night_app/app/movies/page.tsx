@@ -5,7 +5,7 @@ import MoviesLayout from '../components/movies/MoviesLayout';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { auth } from '@/app/auth';
 import { PAGE_SIZES } from '@/lib/config/pagination';
-import { MovieSortValue, SortOrder } from '@/lib/types/pagination';
+import { MovieSortValue, SortOrder } from '@/lib/types/sort';
 import { buildQuery } from '@/lib/utils/query';
 export const dynamic = 'force-dynamic';
 

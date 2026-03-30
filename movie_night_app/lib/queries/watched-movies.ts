@@ -44,14 +44,17 @@ SELECT
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
     m.tmdb_id AS tmdbId,
-    chooser.name AS chosenBy,
+    chooser.id AS chosenById,
+    chooser.name AS chosenByName,
     chooser.image AS chosenByImage,
-    rater.name AS ratedBy
+    rater.id AS ratedById,
+    rater.name AS ratedByName,
+    rater.image AS ratedByImage
 FROM watched_movies wm
 JOIN movies m
   ON wm.movie_id = m.id
 LEFT JOIN movie_ratings mr
-  ON wm.movie_id = mr.watched_movie_id
+  ON wm.id = mr.watched_movie_id
 LEFT JOIN users rater
   ON mr.user_id = rater.id
 LEFT JOIN users chooser
@@ -86,13 +89,17 @@ SELECT
     m.overview,
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
-    chooser.name AS chosenBy,
-    rater.name AS ratedBy
+    chooser.name AS chosenByName,
+    chooser.id AS chosenById,
+    chooser.image AS chosenByImage,
+    rater.id AS ratedById,
+    rater.name AS ratedByName,
+    rater.image AS ratedByImage
 FROM watched_movies wm
 JOIN movies m
   ON wm.movie_id = m.id
 LEFT JOIN movie_ratings mr
-  ON wm.movie_id = mr.watched_movie_id
+  ON wm.id = mr.watched_movie_id
 LEFT JOIN users rater
   ON mr.user_id = rater.id
 LEFT JOIN users chooser
@@ -114,10 +121,10 @@ export async function addWatchedMovie(
 ): Promise<WatchedMovieInsert & { id: number }> {
   const [result] = await pool.query<ResultSetHeader>(
     `
-    INSERT INTO watched_movies ( movie_id )
-    VALUES (?);
+    INSERT INTO watched_movies ( movie_id, watched_on, chosen_by)
+    VALUES (?,?,?);
     `,
-    [movie.movieId],
+    [movie.movieId, movie.watchedOn, movie.chosenBy],
   );
 
   return {

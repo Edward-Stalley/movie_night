@@ -19,7 +19,7 @@ export default function MovieCard({ movie, layout }: MovieCardProps) {
   const handleAddMovieToWatched = async () => {
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,
-      watched_on: new Date().toISOString(),
+      watchedOn: new Date().toISOString(),
       chosenBy: null,
     };
     await addMovieToWatched(watchedMovieData);

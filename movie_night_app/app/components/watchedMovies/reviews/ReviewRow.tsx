@@ -17,10 +17,10 @@ type EditableReviewRowProps = {
 
 export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProps) {
   const [editing, setEditing] = useState(false);
-  const isAuthor = review.ratedBy === loggedInUser?.name;
+  const isAuthor = review.ratedById === Number(loggedInUser?.id);
   const [rating, setRating] = useState<number | null>(review.rating ?? null);
 
-  const isChooser = review.ratedBy === movie.chosenBy;
+  const isChooser = review.ratedById === movie.chosenById;
   const [reviewComment, setReviewComment] = useState(review.comment ?? '');
 
   const router = useRouter();
@@ -33,7 +33,7 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
     setRating(value);
 
     const reviewData: ReviewInsert = {
-      watchedMovieId: movie.movieId,
+      watchedMovieId: movie.id,
       userId: Number(loggedInUser?.id),
       comment: reviewComment,
       rating: value,
@@ -49,7 +49,7 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
     if (!reviewComment.trim()) return;
 
     const reviewData: ReviewInsert = {
-      watchedMovieId: movie.movieId,
+      watchedMovieId: movie.id,
       userId: Number(loggedInUser?.id), // rated by is same as logged in user
       comment: reviewComment,
       rating: review.rating,
@@ -90,11 +90,11 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
 
   return (
     <div
-      key={`${review.ratedBy}-${movie.id}`}
+      key={`${review.ratedById}-${movie.id}`}
       className=" flex gap-4 bg-accent-content m-1 rounded-2xl p-2"
     >
       <div>
-        <div className={`${isChooser ? 'text-accent font-bold' : ''} w-25`}>{review.ratedBy}</div>
+        <div className={`${isChooser ? 'text-accent font-bold' : ''} w-25`}>{review.ratedByName}</div>
         {isAuthor && editToggleButton}
       </div>
       <div className="flex-col">

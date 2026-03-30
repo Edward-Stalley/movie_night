@@ -12,7 +12,7 @@ type MovieGridItemProps = MoviePosterTypes & {
   onDelete: MovieDeleteHandler;
   onAdd?: WatchedMovieAddHandler;
   watchedOn?: Date;
-  chosenBy?: string;
+  chosenByName?: string;
   chosenByImage?: string;
 };
 
@@ -24,17 +24,17 @@ export function WatchedMovieGridItem({
   onDelete,
   onAdd,
   watchedOn,
-  chosenBy,
+  chosenByName,
   chosenByImage,
 }: MovieGridItemProps) {
   return (
-    <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 rounded-2xl p-1 border-2">
+    <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 rounded-2xl border-2 flex flex-col justify-center items-center">
       <MoviePoster
         id={id}
         posterPath={posterPath}
         title={title}
         urlRoute={urlRoute}
-        className="rounded-2xl"
+        className="rounded-t-2xl"
       />
       {onDelete && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
       {onAdd && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
@@ -43,7 +43,7 @@ export function WatchedMovieGridItem({
         {chosenByImage ? (
           <Image
             src={`${chosenByImage}`}
-            alt={`${chosenBy}`}
+            alt={`${chosenByName}`}
             width={100}
             height={100}
             className={`${'opacity-100 group-hover:opacity-100'}  w-auto h-5  rounded-2xl bg-base-300`}

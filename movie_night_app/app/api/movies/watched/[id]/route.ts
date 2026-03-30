@@ -24,8 +24,8 @@ export async function PATCH(req: NextRequest, context: { params: Promise<{ id: s
     const body = await req.json();
 
     //  Updates chosen_by
-    if (body.chosenBy !== undefined) {
-      await updateChosenBy(Number(id), body.chosenBy);
+    if (body.chosenById !== undefined) {
+      await updateChosenBy(Number(id), body.chosenById);
     }
 
     //  Updates watched_on
