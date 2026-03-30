@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import { Layout, VoteMoviesLayoutProps } from '@/lib/types/ui';
 import VoteMovieCard from './VoteMovieCard';
-import { VoteKey } from '@/lib/types/db';
+import { VoteKey, WatchedMovieInsert } from '@/lib/types/db';
 import { toggleVoteAction } from '@/lib/actions/toggleVoteAction';
 import Image from 'next/image';
 import { closeVotingSessionAction } from '@/lib/actions/closeVoting';
 import { useRouter } from 'next/navigation';
+import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 
 export default function VoteSessionLayout({
   movies,
@@ -19,6 +20,7 @@ export default function VoteSessionLayout({
   const [layout] = useState<Layout>('grid');
   const headerTitle = 'Vote For Movie';
   const router = useRouter();
+
   const toggleVote = async (id: number) => {
     if (!loggedInUser) {
       alert('Please Login to Vote!');
@@ -48,7 +50,15 @@ export default function VoteSessionLayout({
 
   const handleSubmitSessionFinalVote = async () => {
     await closeVotingSessionAction(voteSession.id);
+    if (!winner) return; // safety guard
 
+    const data: WatchedMovieInsert = {
+      movieId: winner.movieId,
+      watchedOn: voteSession.movieNightDate.toLocaleDateString('en-CA'),
+      chosenBy: createdBy.id,
+    };
+
+    await addWatchedMovieAction(data);
     router.refresh();
   };
 
@@ -162,7 +172,7 @@ export default function VoteSessionLayout({
         disabled={!voteInProgress}
         className={`btn  p-10 ml-4 mr-4 text-2xl font-bold ${voteInProgress ? 'btn-secondary' : 'btn-info'}`}
       >
-        {voteInProgress ? 'Submit Final Vote' : 'Voting Over'}
+        {voteInProgress ? 'Close Voting' : 'Voting Over'}
       </button>
 
       {/* TO DO: ADD VOTE GRAPH */}

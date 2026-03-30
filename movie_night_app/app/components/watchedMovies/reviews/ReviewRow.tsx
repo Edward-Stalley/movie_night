@@ -33,7 +33,7 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
     setRating(value);
 
     const reviewData: ReviewInsert = {
-      watchedMovieId: movie.movieId,
+      watchedMovieId: movie.id,
       userId: Number(loggedInUser?.id),
       comment: reviewComment,
       rating: value,

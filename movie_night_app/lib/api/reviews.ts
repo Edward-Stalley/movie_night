@@ -2,8 +2,8 @@
 
 import { ReviewInsert } from '@/lib/types/db';
 
-export async function saveReview(movieId: number, review: ReviewInsert) {
-  await fetch(`/api/movies/watched/${movieId}/reviews`, {
+export async function saveReview(watchedMovieId: number, review: ReviewInsert) {
+  await fetch(`/api/movies/watched/${watchedMovieId}/reviews`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
