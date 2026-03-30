@@ -10,11 +10,12 @@ export default function Toolbar({
   sortOptions,
   sortValue,
   sortOrder,
+  canToggleLayout = true,
 }: ToolbarProps) {
   return (
     <div className="bg-base-200 p-2">
       <div className="navbar gap-2">
-        <LayoutToggle layout={layout} onChange={setLayout} />
+        {canToggleLayout && <LayoutToggle layout={layout} onChange={setLayout} />}
         {pagination && <Pagination page={pagination.page} totalPages={pagination.totalPages} />}
         <Sort options={sortOptions} value={sortValue} order={sortOrder} />
       </div>

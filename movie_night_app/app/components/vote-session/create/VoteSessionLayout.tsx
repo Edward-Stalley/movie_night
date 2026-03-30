@@ -61,7 +61,7 @@ export default function VoteSessionLayout({
   const loggedInUserId = Number(loggedInUser?.id);
 
   const moviesForVoting = (
-    <div className="flex  gap-4 p-4 bg-base-300 rounded-box w-full">
+    <div className="flex  gap-4 p-4 bg-base-300 rounded-box w-full list-none">
       {movies.map((movie) => {
         const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
         const userVoted = didUserVote(voteInfo);

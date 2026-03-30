@@ -13,7 +13,7 @@ import {
   SortOption,
   SortOrder,
   WatchedMovieSortValue,
-} from '@/lib/types/pagination';
+} from '@/lib/types/sort';
 
 export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title'> & {
   id?: number;
@@ -80,6 +80,7 @@ export type GridOrListProps = {
   children: React.ReactNode;
   layout: Layout;
   setLayout: (layout: Layout) => void;
+  canToggleLayout?: boolean;
   headerTitle: string;
   pagination?: PaginationProps;
   sortOptions: SortOption[];
@@ -204,4 +205,5 @@ export type ToolbarProps = {
   sortOptions: SortProps['options'];
   sortValue: string;
   sortOrder: SortOrder;
+  canToggleLayout?: boolean;
 };
