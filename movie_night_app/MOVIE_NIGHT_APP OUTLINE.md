@@ -30,8 +30,8 @@ MOVIE_NIGHT_APP
 - Users [Done]
 - Watched Movies [Done]
 - Basic Film Info [Done]
-- Voting [Done]
-- Shortlist [Done]
+- Voting [DOING]
+- Shortlist [Doing]
 
 ---
 
@@ -45,34 +45,28 @@ MOVIE_NIGHT_APP
 - Search function for API [Done]
 - Paginations (Date, Rating, Added By) [Done] \* except Rating
 - ADD TV SHOWS ? We watched cabinet of curiosities
-- Change all 'interface' to 'type' for typescript. [Done]
-
-- Randomise or new vote for when multiple movies 'win' vote.
-- Edit vote session?
-- change sql to postgres? This may be needed for free db hosting.
-- upload to vercel
-- explore AWS as an option? New account for 1 year free.
+- Change all 'interface' to 'type' for typescript.
 
 ---
 
 ## BUGS
 
-- Foreign Film titles (due to original title being used?) break display and sort [in_progress]
+- Foreign Film titles (due to original title being used?) break display and sort
 
 ---
 
 ## IDEAS
 
 - RANDOMIZER
-- VOTING SYSTEM [Done]
+- VOTING SYSTEM
 - GET MOVIE DATA FROM TMDB [Done]
 - BASIC CRUD (ADD REMOVE FILMS) [Done]
 
-- Use search - get movie from tmdb (name, year, basically all data) [Done]
+- Use search - get movie from tmdb (name, year, basically all data)
 - Add movie to SHORTLIST which can be movies table in database. [Done]
 - Then just look up database to work with my data. [Done]
 - Add to watched_movies [Done]
-- Add 'already seen' for movies list films / voting films [Done]
+- Add 'already seen' for movies list films / voting films
 
 ---
 
