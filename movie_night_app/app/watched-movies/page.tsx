@@ -7,7 +7,7 @@ import { getWatchedMovies } from '@/lib/queries/watched-movies';
 import { getUsers } from '@/lib/queries/users';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { buildQuery } from '@/lib/utils/query';
-import { WatchedMovieSortValue, SortOrder } from '@/lib/types/pagination';
+import { WatchedMovieSortValue, SortOrder } from '@/lib/types/sort';
 
 export const dynamic = 'force-dynamic';
 

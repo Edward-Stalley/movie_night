@@ -1,7 +1,7 @@
 'use client';
 
 import { buildSortParams } from '@/lib/utils/urls/sortParams';
-import { SortOption, SortOrder } from '@/lib/types/pagination';
+import { SortOption, SortOrder } from '@/lib/types/sort';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 

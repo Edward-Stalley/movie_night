@@ -6,7 +6,7 @@ import { buildQuery } from '@/lib/utils/query';
 import { getMovies, getSelectedMoviesByIds } from '@/lib/queries/movies';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { toStoredMovies } from '@/lib/transform';
-import { MovieSortValue, SortOrder } from '@/lib/types/pagination';
+import { MovieSortValue, SortOrder } from '@/lib/types/sort';
 import { getUnwatchedMovies } from '@/lib/queries/vote';
 
 type SearchParams = {

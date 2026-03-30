@@ -2,7 +2,7 @@
 
 import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
 import { SearchedMovie } from '@/lib/types/domain';
-import { SearchedMovieSortValue, SortKey, SortOrder } from '@/lib/types/pagination';
+import { SearchedMovieSortValue, SortKey, SortOrder } from '@/lib/types/sort';
 
 export function sortSearchedMovies(
   movies: SearchedMovie[],

@@ -9,8 +9,8 @@ import {
   MoviesQuery,
   MovieRow,
 } from '../types/db';
-import { VoteSessionStatus } from '../types/domain';
-import { PaginatedResult } from '../types/pagination';
+import { VoteSessionStatus } from '@/lib/types/domain';
+import { PaginatedResult } from '@/lib/types/pagination';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;

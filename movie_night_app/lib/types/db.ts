@@ -1,8 +1,8 @@
 // # From mysql Database.
 // # "snake_case" is converted to "camelCase" in the SQL Query in "@/lib/queries".
 
-import { StoredMovie } from './domain';
-import { SortOrder } from './pagination';
+import { StoredMovie } from '@/lib/types/domain';
+import { SortOrder } from '@/lib/types/sort';
 
 // ----------------
 // ROWS
@@ -103,7 +103,7 @@ export type ReviewInsert = {
 
 export type WatchedMovieInsert = {
   movieId: number; // Movies ID
-  watched_on: string | null;
+  watchedOn: string | null;
   chosenBy: string | null;
 };
 
