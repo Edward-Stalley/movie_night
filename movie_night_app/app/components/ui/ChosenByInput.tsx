@@ -21,7 +21,7 @@ export default function ChosenByInput({ movie, users }: { movie: WatchedMovie; u
               popoverTarget={`popover-${movie.id}`}
               style={{ anchorName: `--anchor-1-${movie.id}` }}
             >
-              {`${movie.chosenBy ?? 'Select User'} ▼`}
+              {`${movie.chosenByName ?? 'Select User'} ▼`}
             </button>
 
             <ul

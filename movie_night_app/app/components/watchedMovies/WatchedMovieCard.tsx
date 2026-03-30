@@ -29,7 +29,7 @@ export default function WatchedMovieCard({
           urlRoute="watched-movies"
           onDelete={handleDelete}
           watchedOn={movie.watchedOn}
-          chosenBy={movie.chosenBy}
+          chosenByName={movie.chosenByName}
           chosenByImage={movie.chosenByImage}
         />
       )}
@@ -41,6 +41,7 @@ export default function WatchedMovieCard({
           loggedInUser={loggedInUser}
           onDelete={handleDelete}
           isDetailScreen={isDetailScreen}
+          
         />
       )}
     </li>

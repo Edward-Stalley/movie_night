@@ -44,9 +44,12 @@ SELECT
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
     m.tmdb_id AS tmdbId,
-    chooser.name AS chosenBy,
+    chooser.id AS chosenById,
+    chooser.name AS chosenByName,
     chooser.image AS chosenByImage,
-    rater.name AS ratedBy
+    rater.id AS ratedById,
+    rater.name AS ratedByName,
+    rater.image AS ratedByImage
 FROM watched_movies wm
 JOIN movies m
   ON wm.movie_id = m.id
@@ -86,8 +89,12 @@ SELECT
     m.overview,
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
-    chooser.name AS chosenBy,
-    rater.name AS ratedBy
+    chooser.name AS chosenByName,
+    chooser.id AS chosenById,
+    chooser.image AS chosenByImage,
+    rater.id AS ratedById,
+    rater.name AS ratedByName,
+    rater.image AS ratedByImage
 FROM watched_movies wm
 JOIN movies m
   ON wm.movie_id = m.id

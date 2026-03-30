@@ -22,8 +22,9 @@ export function WatchedMovieListItem({
   onDelete,
   isDetailScreen,
 }: WatchedMovieListItemProps) {
-  const userReview = movie.reviews.some((r) => r.ratedBy === loggedInUser?.name);
-
+  const userReview = movie.reviews.some((r) => {
+    return r.ratedById === Number(loggedInUser?.id);
+  });
   return (
     <div className=" relative flex gap-4 bg-base-300 m-2 p-2 rounded-2xl">
       <MoviePoster
@@ -44,7 +45,7 @@ export function WatchedMovieListItem({
           </div>
           {movie.reviews.map((review: Review) => (
             <ReviewRow
-              key={review.ratedBy}
+              key={review.ratedById}
               loggedInUser={loggedInUser}
               movie={movie}
               review={review}

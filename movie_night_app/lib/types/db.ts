@@ -13,11 +13,14 @@ export type WatchedMovieRow = {
   movieId: number;
   tmdbId: number;
   watchedOn: Date;
-  chosenBy: string;
+  chosenById: number;
+  chosenByName: string;
   chosenByImage: string;
   username: string;
   rating: number | null;
-  ratedBy: string | null;
+  ratedById: number | null;
+  ratedByName: string | null;
+  ratedByImage: string | null;
   comment: string | null;
   genreIds: number[] | null;
   title: string | null;

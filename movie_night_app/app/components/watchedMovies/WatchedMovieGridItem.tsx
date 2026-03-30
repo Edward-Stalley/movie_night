@@ -12,7 +12,7 @@ type MovieGridItemProps = MoviePosterTypes & {
   onDelete: MovieDeleteHandler;
   onAdd?: WatchedMovieAddHandler;
   watchedOn?: Date;
-  chosenBy?: string;
+  chosenByName?: string;
   chosenByImage?: string;
 };
 
@@ -24,7 +24,7 @@ export function WatchedMovieGridItem({
   onDelete,
   onAdd,
   watchedOn,
-  chosenBy,
+  chosenByName,
   chosenByImage,
 }: MovieGridItemProps) {
   return (
@@ -43,7 +43,7 @@ export function WatchedMovieGridItem({
         {chosenByImage ? (
           <Image
             src={`${chosenByImage}`}
-            alt={`${chosenBy}`}
+            alt={`${chosenByName}`}
             width={100}
             height={100}
             className={`${'opacity-100 group-hover:opacity-100'}  w-auto h-5  rounded-2xl bg-base-300`}

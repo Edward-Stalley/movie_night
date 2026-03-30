@@ -34,7 +34,8 @@ export function toWatchedMovieBase(row: WatchedMovieRow): WatchedMovie {
     tmdbId: row.tmdbId,
     watchedOn: new Date(row.watchedOn),
     username: row.username,
-    chosenBy: row.chosenBy,
+    chosenById: row.chosenById,
+    chosenByName: row.chosenByName,
     chosenByImage: row.chosenByImage,
     reviews: [],
     overview: row.overview,
@@ -48,7 +49,9 @@ export function toWatchedMovieBase(row: WatchedMovieRow): WatchedMovie {
 
 export function toReview(row: WatchedMovieRow) {
   return {
-    ratedBy: row.ratedBy!,
+    ratedByName: row.ratedByName!,
+    ratedByImage: row.ratedByImage!,
+    ratedById: row.ratedById!,
     rating: row.rating!,
     comment: row.comment!,
   };
@@ -62,7 +65,7 @@ export function toWatchedMovies(rows: WatchedMovieRow[]): WatchedMovie[] {
       moviesMap.set(row.id, toWatchedMovieBase(row));
     }
 
-    if (row.ratedBy) {
+    if (row.ratedById) {
       moviesMap.get(row.id)!.reviews.push(toReview(row));
     }
   }
