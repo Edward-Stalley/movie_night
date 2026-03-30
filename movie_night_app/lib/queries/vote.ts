@@ -6,8 +6,11 @@ import {
   MovieNightSessionWithMovieRow,
   MovieNightSessionRow,
   VoteRow,
+  MoviesQuery,
+  MovieRow,
 } from '../types/db';
 import { VoteSessionStatus } from '../types/domain';
+import { PaginatedResult } from '../types/pagination';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -176,4 +179,62 @@ export async function getAllVotesForMovieSession({
     [voteSessionId],
   );
   return rows as VoteRow[];
+}
+
+// # GET 'UNWATCHED MOVIES' for vote
+// ## Filter out any movies from 'watched_movies' as they will not be rewatched.
+
+const MOVIE_SORT_MAP = {
+  addedBy: 'm.added_by',
+  releaseDate: 'm.release_date',
+  title: 'm.title',
+  addedOn: 'm.added_on',
+};
+
+type SortKey = keyof typeof MOVIE_SORT_MAP;
+
+function isSortKey(value: string): value is SortKey {
+  return value in MOVIE_SORT_MAP;
+}
+
+export async function getUnwatchedMovies({
+  limit,
+  offset,
+  sortBy,
+  order,
+}: MoviesQuery): Promise<PaginatedResult<MovieRow>> {
+  const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
+
+  const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
+
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `
+SELECT
+    m.id AS id,
+    m.title,
+    m.genre_ids AS genreIds,
+    m.overview,
+    m.release_date AS releaseDate,
+    m.poster_path AS posterPath,
+    m.tmdb_id
+FROM movies m
+LEFT JOIN watched_movies wm ON wm.movie_id = m.id
+WHERE wm.movie_id is NULL
+ORDER BY ${sortColumn} ${sortDirection}
+LIMIT ?
+OFFSET ?
+    `,
+    [limit, offset],
+  );
+
+  const [countRows] = await pool.query<RowDataPacket[]>(`
+    SELECT COUNT(*) as total FROM movies m
+    LEFT JOIN watched_movies wm ON wm.movie_id = m.id
+    WHERE wm.movie_id IS NULL
+  `);
+
+  return {
+    data: rows as MovieRow[],
+    total: countRows[0].total,
+  };
 }
