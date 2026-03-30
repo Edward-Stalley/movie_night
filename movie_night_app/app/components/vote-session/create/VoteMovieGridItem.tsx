@@ -24,7 +24,7 @@ export function VoteMovieGridItem({
         title={title}
         urlRoute={urlRoute}
         selected={selected}
-        className="rounded-t-2xl border-b border-secondary"
+        className={`${selectable && 'rounded-none rounded-t-2xl  border-b border-secondary'} rounded-2xl`}
         disableLink={true}
       />
 

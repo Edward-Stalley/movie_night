@@ -94,7 +94,9 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
       className=" flex gap-4 bg-accent-content m-1 rounded-2xl p-2"
     >
       <div>
-        <div className={`${isChooser ? 'text-accent font-bold' : ''} w-25`}>{review.ratedByName}</div>
+        <div className={`${isChooser ? 'text-accent font-bold' : ''} w-25`}>
+          {review.ratedByName}
+        </div>
         {isAuthor && editToggleButton}
       </div>
       <div className="flex-col">

@@ -8,10 +8,11 @@ import type {
   WatchedMovieRow,
   VoteRow,
 } from '@/lib/types/db';
-import { TMDBMovie } from '@/lib/types/tmdb';
+import { TMDBMovieApi } from '@/lib/types/tmdb';
 import {
   SearchedMovie,
   StoredMovie,
+  TMDBMovie,
   User,
   VoteSession,
   VoteSessionWithMovie,
@@ -90,6 +91,20 @@ export function toStoredMovies(row: MovieRow): StoredMovie {
   };
 }
 
+// ## Searched Movies (TMDB Movie API → TMDB Movie)
+
+export function toTMDBMovie(tmdbMovieApi: TMDBMovieApi): TMDBMovie {
+  return {
+    id: tmdbMovieApi.id,
+    title: tmdbMovieApi.title,
+    overview: tmdbMovieApi.overview,
+    releaseDate: tmdbMovieApi.release_date,
+    posterPath: tmdbMovieApi.poster_path,
+    genreIds: tmdbMovieApi.genre_ids,
+    trailerUrl: tmdbMovieApi.trailer_url,
+  };
+}
+
 // ## Searched Movies (TMDB Movie → SearchedMovie )
 
 export function toSearchedMovie(movie: TMDBMovie): SearchedMovie {
@@ -97,10 +112,10 @@ export function toSearchedMovie(movie: TMDBMovie): SearchedMovie {
     tmdbId: movie.id,
     title: movie.title,
     overview: movie.overview,
-    releaseDate: new Date(movie.release_date),
-    posterPath: movie.poster_path,
-    genreIds: movie.genre_ids,
-    trailerUrl: movie.trailer_url,
+    releaseDate: new Date(movie.releaseDate),
+    posterPath: movie.posterPath,
+    genreIds: movie.genreIds,
+    trailerUrl: movie.trailerUrl,
   };
 }
 

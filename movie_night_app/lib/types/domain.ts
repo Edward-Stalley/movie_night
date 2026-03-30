@@ -18,7 +18,7 @@ export type Review = {
   rating: number;
   ratedById: number;
   ratedByName: string;
-  ratedByImage: string
+  ratedByImage: string;
   comment: string | null;
 };
 
@@ -76,3 +76,13 @@ export type User = {
 };
 
 export type UserId = number;
+
+export type TMDBMovie = {
+  id: number; // # Will Become 'tmdb_id'
+  title: string | null;
+  posterPath: string | null;
+  genreIds: number[] | null;
+  overview: string | null;
+  releaseDate: string;
+  trailerUrl: string | null;
+};

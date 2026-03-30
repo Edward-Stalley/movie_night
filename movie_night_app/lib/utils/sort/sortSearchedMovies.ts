@@ -1,8 +1,6 @@
 // Movies From TMDB API need custom sort unlike data from my DB.
-
-import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
 import { SearchedMovie } from '@/lib/types/domain';
-import { SearchedMovieSortValue, SortKey, SortOrder } from '@/lib/types/sort';
+import { SearchedMovieSortValue, SortOrder } from '@/lib/types/sort';
 
 export function sortSearchedMovies(
   movies: SearchedMovie[],

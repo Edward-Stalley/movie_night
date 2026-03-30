@@ -10,7 +10,6 @@ import { SearchedMovieListItem } from './SearchedMovieListItem';
 
 export default function SearchedMovieCard({ movie, layout, loggedInUser }: SearchedMovieCardProps) {
   const router = useRouter();
-
   const addToMovieList = async (movie: SearchedMovie) => {
     const movieData: MovieInsert = {
       title: movie.title,
@@ -19,8 +18,8 @@ export default function SearchedMovieCard({ movie, layout, loggedInUser }: Searc
       genreIds: movie.genreIds,
       overview: movie.overview,
       releaseDate: movie.releaseDate,
-      addedBy: Number(loggedInUser?.id),
       trailerUrl: movie.trailerUrl,
+      addedBy: Number(loggedInUser?.id),
       addedOn: new Date(),
     };
 

@@ -14,8 +14,18 @@ export function SearchedMovieListItem({ movie }: SearchedMovieListItemProps) {
           posterPath={movie.posterPath}
           title={movie.title}
           urlRoute="movies"
-          className="rounded-2xl"
+          className="rounded-2xl mb-2"
         />
+        <button className="btn btn-primary btn-soft w-full ">
+          <a
+            className=" p-2 m-2"
+            href={`${movie.trailerUrl ?? '#'}`}
+            target="blank"
+            rel="noopener noreferrer"
+          >
+            {movie.trailerUrl ? 'Trailer Link' : ' No Trailer'}
+          </a>
+        </button>
       </div>
 
       <div className="w-full  flex flex-col ">
