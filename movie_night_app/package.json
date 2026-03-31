@@ -14,6 +14,7 @@
     "check-all": "NODE_NO_WARNINGS=1 ts-node --esm scripts/check-all.cjs"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.1",
     "daisyui": "^5.5.19",
     "mysql2": "^3.18.0",
     "next": "16.1.6",

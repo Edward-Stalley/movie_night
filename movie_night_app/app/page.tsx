@@ -80,7 +80,7 @@ export default function Home() {
         />
       </div>
       <div className=" border-2 text-base-content col-span-5 col-start-4 row-start-7 row-span-2 flex justify-center items-center z-20  rounded-2xl bg-linear-to-l from-black via-gray-900 to-slate-800 ">
-        <h1 className="text-8xl font-extrabold text-neutral-content text-outline [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans ">
+        <h1 className="text-8xl font-extrabold text-secondary text-outline [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans  ">
           Movie Night
         </h1>
       </div>

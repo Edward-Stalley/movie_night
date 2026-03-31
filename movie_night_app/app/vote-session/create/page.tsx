@@ -3,7 +3,7 @@ import { auth } from '@/app/auth';
 import CreateVoteSessionLayout from '@/app/components/vote-session/create/CreateVoteSessionLayout';
 import { StoredMovie } from '@/lib/types/domain';
 import { buildQuery } from '@/lib/utils/query';
-import { getMovies, getSelectedMoviesByIds } from '@/lib/queries/movies';
+import { getSelectedMoviesByIds } from '@/lib/queries/movies';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { toStoredMovies } from '@/lib/transform';
 import { MovieSortValue, SortOrder } from '@/lib/types/sort';

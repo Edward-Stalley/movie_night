@@ -12,19 +12,7 @@ export default function SearchedMovieCard({ movie, layout, loggedInUser }: Searc
   const router = useRouter();
 
   const addToMovieList = async (movie: SearchedMovie) => {
-    const movieData: MovieInsert = {
-      title: movie.title,
-      tmdbId: movie.tmdbId, // <-- TMDB id maps to db tmdb_id
-      posterPath: movie.posterPath,
-      genreIds: movie.genreIds,
-      overview: movie.overview,
-      releaseDate: movie.releaseDate,
-      addedBy: Number(loggedInUser?.id),
-      trailerUrl: movie.trailerUrl,
-      addedOn: new Date(),
-    };
-
-    await addSearchedMovieToMovies(movieData);
+    await addSearchedMovieToMovies(movie);
     router.refresh();
   };
 
@@ -32,9 +20,7 @@ export default function SearchedMovieCard({ movie, layout, loggedInUser }: Searc
     <li className="relative group">
       {layout === 'grid' && (
         <SearchedMovieGridItem
-          id={movie.tmdbId}
-          posterPath={movie.posterPath}
-          title={movie.title}
+          movie={movie}
           urlRoute="search-movie"
           onAdd={() => addToMovieList(movie)}
         />

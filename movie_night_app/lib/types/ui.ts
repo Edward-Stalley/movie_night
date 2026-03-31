@@ -15,7 +15,7 @@ import {
   WatchedMovieSortValue,
 } from '@/lib/types/sort';
 
-export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title'> & {
+export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title' | 'trailerUrl'> & {
   id?: number;
   urlRoute?: string;
   selected?: boolean;

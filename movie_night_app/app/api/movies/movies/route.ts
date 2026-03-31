@@ -1,5 +1,8 @@
+import { auth } from '@/app/auth';
+import { addSearchedMovieToMoviesAction } from '@/lib/actions/addSearchedMovieToMovies';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { getMovies, addMovie } from '@/lib/queries/movies';
+import { SearchedMovie } from '@/lib/types/domain';
 import { buildQuery } from '@/lib/utils/query';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -27,8 +30,16 @@ export async function GET(req: Request) {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const newMovie = await addMovie(body);
+    const searchedMovie: SearchedMovie = await req.json();
+
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+    }
+
+    const newMovie = await addSearchedMovieToMoviesAction(searchedMovie, Number(session.user.id));
+
     return NextResponse.json(newMovie);
   } catch (error) {
     console.error('post error', error);

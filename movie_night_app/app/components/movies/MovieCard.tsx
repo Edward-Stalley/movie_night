@@ -10,7 +10,7 @@ import { MovieListItem } from './MovieListItem';
 
 export default function MovieCard({ movie, layout }: MovieCardProps) {
   const router = useRouter();
-
+  console.log('movie', movie);
   const handleDelete = async () => {
     await deleteMovieFromMovies(movie);
     router.refresh();

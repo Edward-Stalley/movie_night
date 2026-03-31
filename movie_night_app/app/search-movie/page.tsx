@@ -1,5 +1,5 @@
 import { searchMovie } from '@/lib/external/tmdb';
-import { toSearchedMovie } from '@/lib/transform';
+import { toSearchedMovie, toTMDBMovie } from '@/lib/transform';
 import { SearchedMovie } from '@/lib/types/domain';
 
 import { auth } from '@/app/auth';
@@ -44,11 +44,13 @@ export default async function SearchMovie({ searchParams }: { searchParams: Sear
 
   // SEARCH API
   const data = await searchMovie(query, page);
-  const totalPages = data.total_pages;
-
-  const searchedMovies: SearchedMovie[] = data.results.map(toSearchedMovie);
-  // TMDB Results (20 at a time) so need client side sorting ↓
+  // TRANSFORM
+  const tmdbMovies = data.results.map(toTMDBMovie);
+  const searchedMovies: SearchedMovie[] = tmdbMovies.map(toSearchedMovie);
   const movies = sortSearchedMovies(searchedMovies, sort, order);
+
+  // TMDB Results (20 at a time) so need client side sorting ↓
+  const totalPages = data.total_pages;
 
   return (
     <SearchedMoviesLayout

@@ -1,6 +1,6 @@
 // lib/api/movies.ts
 
-import { StoredMovie } from '../types/domain';
+import { SearchedMovie, StoredMovie } from '../types/domain';
 import { MovieInsert } from '../types/db';
 
 export async function deleteMovieFromMovies(movie: StoredMovie) {
@@ -10,7 +10,7 @@ export async function deleteMovieFromMovies(movie: StoredMovie) {
   });
 }
 
-export async function addSearchedMovieToMovies(movie: MovieInsert) {
+export async function addSearchedMovieToMovies(movie: SearchedMovie) {
   await fetch('/api/movies/movies', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

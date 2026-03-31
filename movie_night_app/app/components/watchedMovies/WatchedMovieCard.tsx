@@ -41,7 +41,6 @@ export default function WatchedMovieCard({
           loggedInUser={loggedInUser}
           onDelete={handleDelete}
           isDetailScreen={isDetailScreen}
-          
         />
       )}
     </li>

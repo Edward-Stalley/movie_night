@@ -30,7 +30,7 @@ export function MovieGridItem({
   voteInSession,
 }: MovieGridItemProps) {
   return (
-    <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 rounded-2xl border-2 flex flex-col justify-center items-center">
+    <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl flex flex-col">
       <MoviePoster
         id={id}
         posterPath={posterPath}
