@@ -16,18 +16,19 @@ export default function Searchbar({ movieTitle, setMovieTitle }: SearchbarProps)
     router.push(`/search-movie?query=${movieTitle}`);
   };
   return (
-    <div className="flex flex-col items-center">
-      <input
-        placeholder="Type Film Name..."
-        value={movieTitle}
-        onChange={(e) => setMovieTitle(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-        className="input m-2"
-      ></input>
-
-      <button onClick={handleSearch} className="btn btn-soft btn-primary hover:btn-active">
-        Search
-      </button>
+    <div className="flex flex-col items-center mt-4">
+      <div className=" badge badge-primary badge-soft h-fit p-2">
+        <input
+          placeholder="Type Film Name..."
+          value={movieTitle}
+          onChange={(e) => setMovieTitle(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          className="input m-2 input-primary text-base-content"
+        ></input>
+        <button onClick={handleSearch} className="btn btn-primary hover:btn-active">
+          Search
+        </button>
+      </div>
     </div>
   );
 }
