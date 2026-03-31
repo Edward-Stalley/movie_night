@@ -108,23 +108,25 @@ export default function CreateVoteSessionLayout({
   };
 
   return (
-    <div className="bg-base-300 flex justify-center items-center flex-col">
-      <p className="text-3xl p-10 badge badge-secondary badge-soft">{headerTitle}</p>
-
+    <div className="bg-base-200 flex justify-center items-center flex-col">
       {voteStarted && <div className="flex rounded-2xl m-2">{carouselMovies}</div>}
-      <form
-        className="flex gap-2 p-2 rounded-2xl badge badge-soft badge-secondary h-fit"
-        onSubmit={handleSubmitCreateVote}
-      >
-        <DateInput
-          className={className}
-          date={movieNightDate}
-          onChange={setMovieNightDate}
-          min={getTodayLocal()}
-        />
-        <button className="btn btn-secondary rounded-xl h-8">Create</button>
-      </form>
-
+      <div className="flex justify-center items-center badge badge-soft h-fit gap-0">
+        <p className="text-xl badge badge-secondary badge-soft ">
+          {headerTitle}
+        </p>
+        <form
+          className=" flex gap-2 p-2 rounded-2xl badge badge-soft badge-secondary h-14 m-2"
+          onSubmit={handleSubmitCreateVote}
+        >
+          <DateInput
+            className={className}
+            date={movieNightDate}
+            onChange={setMovieNightDate}
+            min={getTodayLocal()}
+          />
+          <button className="btn btn-secondary rounded-xl h-8">Create</button>
+        </form>
+      </div>
       {voteStarted && (
         <GridOrList
           layout={layout}

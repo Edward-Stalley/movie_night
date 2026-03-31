@@ -10,7 +10,6 @@ import { MovieListItem } from './MovieListItem';
 
 export default function MovieCard({ movie, layout }: MovieCardProps) {
   const router = useRouter();
-  console.log('movie', movie);
   const handleDelete = async () => {
     await deleteMovieFromMovies(movie);
     router.refresh();
@@ -19,7 +18,7 @@ export default function MovieCard({ movie, layout }: MovieCardProps) {
   const handleAddMovieToWatched = async () => {
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,
-      watchedOn: new Date().toISOString(),
+      watchedOn: new Date().toISOString().slice(0, 10),
       chosenBy: null,
     };
     await addMovieToWatched(watchedMovieData);
