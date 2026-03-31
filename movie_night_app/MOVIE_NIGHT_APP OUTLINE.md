@@ -12,7 +12,7 @@ MOVIE_NIGHT_APP
 - [REACT]
 - [NEXT_JS]
 - [DOCKER]
-- [MySql_db]
+- [MySql_db] -> [POSTGRES]
 - [SQL_(No_ORM)]
 - [Tailwind_/Daisy_UI]
 

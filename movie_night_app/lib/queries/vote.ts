@@ -1,5 +1,4 @@
 import { pool } from '@/lib/db';
-import { Pool } from 'pg';
 
 import {
   VoteKey,
@@ -68,13 +67,13 @@ export async function getVoteSessionMovieRows(
     `
 SELECT
   vs.id AS id,
-  vs.movie_night_date AS movieNightDate,
-  vs.created_by AS createdBy,
-  vs.created_at AS createdAt,
+  vs.movie_night_date AS "movieNightDate",
+  vs.created_by AS "createdBy",
+  vs.created_at AS "createdAt",
   vs.status,
-  m.id AS movieId,
+  m.id AS "movieId",
   m.title,
-  m.poster_path AS posterPath
+  m.poster_path AS "posterPath"
 FROM vote_sessions vs
 JOIN vote_session_movies vsm
   ON vs.id = vsm.vote_session_id
@@ -95,9 +94,9 @@ export async function getSessionRows(): Promise<MovieNightSessionRow[]> {
     `
 SELECT
   id,
-  movie_night_date AS movieNightDate,
-  created_by AS createdBy,
-  created_at AS createdAt,
+  movie_night_date AS "movieNightDate",
+  created_by AS "createdBy",
+  created_at AS "createdAt",
   status
 FROM
   vote_sessions
@@ -213,10 +212,10 @@ export async function getUnwatchedMovies({
 SELECT
     m.id AS id,
     m.title,
-    m.genre_ids AS genreIds,
+    m.genre_ids AS "genreIds",
     m.overview,
-    m.release_date AS releaseDate,
-    m.poster_path AS posterPath,
+    m.release_date AS "releaseDate",
+    m.poster_path AS "posterPath",
     m.tmdb_id
 FROM movies m
 LEFT JOIN watched_movies wm ON wm.movie_id = m.id

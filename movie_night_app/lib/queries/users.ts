@@ -20,7 +20,8 @@ export async function upsertUser(user: DBUserInsert) {
     `
     INSERT INTO users(name, image, provider, provider_account_id)
     VALUES($1, $2, $3, $4)
-    ON DUPLICATE KEY UPDATE name = VALUES(name), image = VALUES(image)
+    ON CONFLICT (provider, provider_account_id)
+    DO UPDATE SET name = EXCLUDED.name, image = EXCLUDED.image
     `,
     [user.name, user.image, user.provider, user.providerAccountId],
   );

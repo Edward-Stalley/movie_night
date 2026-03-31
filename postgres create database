@@ -1,0 +1,86 @@
+CREATE TABLE users (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(30),
+  image VARCHAR(255),
+  provider VARCHAR(255) NOT NULL,
+  provider_account_id VARCHAR(255) NOT NULL,
+  UNIQUE (provider, provider_account_id)
+);
+
+CREATE TABLE movie_night_groups (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  invite_code VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE movies (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  genre_ids JSON,
+  overview TEXT,
+  release_date DATE,
+  poster_path VARCHAR(255),
+  title VARCHAR(255) NOT NULL,
+  tmdb_id INTEGER NOT NULL UNIQUE,
+  added_by INTEGER,
+  trailer_url VARCHAR(255),
+  added_on DATE DEFAULT CURRENT_DATE,
+  FOREIGN KEY (added_by) REFERENCES users(id)
+);
+
+CREATE TABLE vote_sessions (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  created_by INTEGER NOT NULL,
+  movie_night_date DATE NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(20) NOT NULL DEFAULT 'in_progress',
+  FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+CREATE TABLE watched_movies (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  movie_id INTEGER NOT NULL UNIQUE,
+  watched_on DATE,
+  chosen_by INTEGER,
+  FOREIGN KEY (chosen_by) REFERENCES users(id) ON DELETE SET NULL,
+  FOREIGN KEY (movie_id) REFERENCES movies(id)
+);
+
+CREATE TABLE movie_night_members (
+  user_id INTEGER NOT NULL,
+  movie_night_group_id INTEGER NOT NULL,
+  PRIMARY KEY (user_id, movie_night_group_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (movie_night_group_id) REFERENCES movie_night_groups(id) ON DELETE CASCADE
+);
+
+CREATE TABLE movie_ratings (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  watched_movie_id INTEGER NOT NULL,
+  user_id INTEGER NOT NULL,
+  rating INTEGER,
+  comment TEXT,
+  UNIQUE (watched_movie_id, user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (watched_movie_id) REFERENCES watched_movies(id) ON DELETE CASCADE
+);
+
+CREATE TABLE vote_session_movies (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  vote_session_id INTEGER NOT NULL,
+  movie_id INTEGER NOT NULL,
+  UNIQUE (vote_session_id, movie_id),
+  FOREIGN KEY (vote_session_id) REFERENCES vote_sessions(id) ON DELETE CASCADE,
+  FOREIGN KEY (movie_id) REFERENCES movies(id)
+);
+
+CREATE TABLE votes (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  vote_session_id INTEGER NOT NULL,
+  user_id INTEGER,
+  movie_id INTEGER NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (vote_session_id, user_id, movie_id),
+  FOREIGN KEY (vote_session_id) REFERENCES vote_sessions(id) ON DELETE CASCADE,
+  FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);

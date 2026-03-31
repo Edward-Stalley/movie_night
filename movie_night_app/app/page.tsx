@@ -11,6 +11,7 @@ export default function Home() {
           alt="Movie Night"
           fill
           className=" h-auto w-auto object-cover rounded-2xl"
+          loading="eager"
         />
       </div>
       <div className="col-span-1 col-start-1 row-start-1 row-span-6 relative rounded-2xl ">

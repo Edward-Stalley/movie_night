@@ -10,7 +10,7 @@ type MovieListItemProps = {
 
 export function MovieListItem({ movie }: MovieListItemProps) {
   const trailerId = getYouTubeId(movie.trailerUrl);
-
+  console.log('movie ', movie)
   return (
     <div className="flex flex-col  gap-4 bg-base-300 m-2 p-2 rounded-2xl">
       <div className="flex relative">

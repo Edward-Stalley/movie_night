@@ -22,12 +22,12 @@ export async function getMovies({
 SELECT
     m.id AS id,
     m.title,
-    m.genre_ids AS genreIds,
+    m.genre_ids AS "genreIds",
     m.overview,
-    m.release_date AS releaseDate,
-    m.poster_path AS posterPath,
-    m.tmdb_id AS tmdbId,
-    m.trailer_url AS trailerUrl
+    m.release_date AS "releaseDate",
+    m.poster_path AS "posterPath",
+    m.tmdb_id AS "tmdbId",
+    m.trailer_url AS "trailerUrl"
 FROM movies m
 ORDER BY ${sortColumn} ${sortDirection}
 LIMIT $1
@@ -58,14 +58,14 @@ export async function getMovie(id: number): Promise<MovieRow | null> {
 SELECT
     m.id AS id,
     m.title,
-    m.genre_ids AS genreIds,
+    m.genre_ids AS "genreIds",
     m.overview,
-    m.release_date AS releaseDate,
-    m.poster_path AS posterPath,
-    m.trailer_url AS trailerUrl,
-    m.tmdb_id AS tmdbId
+    m.release_date AS "releaseDate",
+    m.poster_path AS "posterPath",
+    m.trailer_url AS "trailerUrl",
+    m.tmdb_id AS "tmdbId"
 FROM movies m
-WHERE m.id = ?
+WHERE m.id = $1
     `,
     [id],
   );
@@ -83,10 +83,10 @@ export async function getSelectedMoviesByIds(ids: number[]): Promise<MovieRow[]>
 SELECT
     m.id AS id,
     m.title,
-    m.genre_ids AS genreIds,
+    m.genre_ids AS "genreIds",
     m.overview,
-    m.release_date AS releaseDate,
-    m.poster_path AS posterPath,
+    m.release_date AS "releaseDate",
+    m.poster_path AS "posterPath",
     m.tmdb_id
 FROM movies m
 WHERE m.id IN (${placeholders})

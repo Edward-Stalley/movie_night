@@ -15,6 +15,7 @@ export default function MovieCard({ movie, layout }: MovieCardProps) {
     router.refresh();
   };
 
+  console.log('movie', movie);
   const handleAddMovieToWatched = async () => {
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,

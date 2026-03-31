@@ -28,7 +28,7 @@ export default async function Movies({ searchParams }: { searchParams: SearchPar
   const query = buildQuery(params, PAGE_SIZES.movies, 'addedOn');
   const { data: movieRows, total } = await getMovies(query);
   const movies: StoredMovie[] = movieRows.map(toStoredMovies);
-
+  console.log('movies', movies, 'movieRows', movieRows);
   // PAGINATION META
   const totalPages = Math.ceil(total / query.limit);
 
