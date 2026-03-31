@@ -4,7 +4,7 @@ type TrailerLinkType = {
 
 export function TrailerLinkButton({ trailerLink }: TrailerLinkType) {
   return (
-    <button className="btn btn-primary btn-soft w-full ">
+    <button className="btn btn-primary btn-soft w-64 ">
       <a
         className=" p-2 m-2"
         href={`${trailerLink ?? '#'}`}
