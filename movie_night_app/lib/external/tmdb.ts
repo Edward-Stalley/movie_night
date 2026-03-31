@@ -39,15 +39,6 @@ export async function searchMovie(query: string, page: number) {
   return data;
 }
 
-// export async function getSearchedMovieDetails(id: number) {
-//   const res = await fetch(`${tmdbBaseUrl}/movie/${id}?api_key=${apiKey}&language=en-US`);
-//   if (!res.ok) {
-//     throw new Error('Failed to fetch movie details');
-//   }
-
-//   return res.json();
-// }
-
 export async function getSearchedMovieDetails(id: number) {
   const movieUrl = `${tmdbBaseUrl}/movie/${id}?api_key=${apiKey}&language=en-US`;
   const videosUrl = `${tmdbBaseUrl}/movie/${id}/videos?api_key=${apiKey}&language=en-US`;
@@ -66,4 +57,13 @@ export async function getSearchedMovieDetails(id: number) {
   const tmdbMovie = toTMDBMovie({ ...tmdbMovieApi, trailer_url: trailerUrl });
 
   return tmdbMovie;
+}
+
+export async function getTrailerForMovie(id: number) {
+  const videosUrl = `${tmdbBaseUrl}/movie/${id}/videos?api_key=${apiKey}&language=en-US`;
+  const [videoRes] = await Promise.all([fetch(videosUrl)]);
+  if (!videoRes.ok) throw new Error('Failed to fetch movie videos');
+  const videosData = await videoRes.json();
+  const trailerUrl = getBestTrailer(videosData.results);
+  return trailerUrl;
 }

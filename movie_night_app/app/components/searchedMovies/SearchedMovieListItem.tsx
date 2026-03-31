@@ -1,5 +1,6 @@
 import { SearchedMovie } from '@/lib/types/domain';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
+import { TrailerLinkButton } from '../shared/TrailerLinkButton';
 
 type SearchedMovieListItemProps = {
   movie: SearchedMovie;
@@ -16,18 +17,8 @@ export function SearchedMovieListItem({ movie }: SearchedMovieListItemProps) {
           urlRoute="movies"
           className="rounded-2xl mb-2"
         />
-        <button className="btn btn-primary btn-soft w-full ">
-          <a
-            className=" p-2 m-2"
-            href={`${movie.trailerUrl ?? '#'}`}
-            target="blank"
-            rel="noopener noreferrer"
-          >
-            {movie.trailerUrl ? 'Trailer Link' : ' No Trailer'}
-          </a>
-        </button>
+        {movie.trailerUrl && <TrailerLinkButton trailerLink={movie.trailerUrl} />}
       </div>
-
       <div className="w-full  flex flex-col ">
         <div className=" p-4 bg-base-200 rounded-2xl h-full ">{movie.overview}</div>
       </div>

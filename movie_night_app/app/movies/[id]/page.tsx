@@ -11,7 +11,6 @@ export default async function MovieDetail({ params }: { params: Promise<{ id: st
   if (!data) {
     return <div>Movie Not Found</div>;
   }
-
   const movie = toStoredMovies(data);
 
   return (

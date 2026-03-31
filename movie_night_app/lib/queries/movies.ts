@@ -27,7 +27,8 @@ SELECT
     m.overview,
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
-    m.tmdb_id
+    m.tmdb_id AS tmdbId,
+    m.trailer_url AS trailerUrl
 FROM movies m
 ORDER BY ${sortColumn} ${sortDirection}
 LIMIT ?
@@ -62,7 +63,8 @@ SELECT
     m.overview,
     m.release_date AS releaseDate,
     m.poster_path AS posterPath,
-    m.tmdb_id
+    m.trailer_url AS trailerUrl,
+    m.tmdb_id AS tmdbId
 FROM movies m
 WHERE m.id = ?
     `,
