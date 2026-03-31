@@ -1,26 +1,25 @@
 // # Table: users
 
 import { DBUserInsert, DBUserRow } from '@/lib/types/db';
-import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { pool } from '../db';
 
 // # GET USERS (LIST)
 export async function getUsers(): Promise<DBUserRow[]> {
-  const [rows] = await pool.query<RowDataPacket[]>(`
+  const res = await pool.query(`
     SELECT id, name , image
     FROM users
     `);
 
-  return rows as DBUserRow[];
+  return res.rows as DBUserRow[];
 }
 
 // # CREATE USER
 // # IF USER DOES NOT EXIST IN DB → CREATE USER
 export async function upsertUser(user: DBUserInsert) {
-  await pool.query<ResultSetHeader>(
+  await pool.query(
     `
     INSERT INTO users(name, image, provider, provider_account_id)
-    VALUES(?,?,?,?)
+    VALUES($1, $2, $3, $4)
     ON DUPLICATE KEY UPDATE name = VALUES(name), image = VALUES(image)
     `,
     [user.name, user.image, user.provider, user.providerAccountId],
@@ -32,15 +31,15 @@ export async function upsertUser(user: DBUserInsert) {
 export async function getUserByProviderAccountId(
   providerAccountId: string,
 ): Promise<DBUserRow | null> {
-  const [rows] = await pool.query<RowDataPacket[]>(
+  const res = await pool.query(
     `
   SELECT id, name, image
   FROM users
-  WHERE provider_account_id = ?
+  WHERE provider_account_id = $1
   `,
     [providerAccountId],
   );
 
-  if ((rows as DBUserRow[]).length === 0) return null;
-  return (rows as DBUserRow[])[0];
+  if (res.rows.length === 0) return null;
+  return res.rows[0] as DBUserRow;
 }

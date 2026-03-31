@@ -1,6 +1,5 @@
 //  ## General Movies
 
-import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { pool } from '@/lib/db';
 import { MovieRow, MovieInsert, MoviesQuery } from '@/lib/types/db';
 import { PaginatedResult } from '@/lib/types/pagination';
@@ -18,7 +17,7 @@ export async function getMovies({
 
   const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
 
-  const [rows] = await pool.query<RowDataPacket[]>(
+  const res = await pool.query(
     `
 SELECT
     m.id AS id,
@@ -31,19 +30,19 @@ SELECT
     m.trailer_url AS trailerUrl
 FROM movies m
 ORDER BY ${sortColumn} ${sortDirection}
-LIMIT ?
-OFFSET ?
+LIMIT $1
+OFFSET $2
     `,
     [limit, offset],
   );
 
-  const [countRows] = await pool.query<RowDataPacket[]>(`
+  const countRes = await pool.query<{ total: number }>(`
     SELECT COUNT(*) as total FROM movies
   `);
 
   return {
-    data: rows as MovieRow[],
-    total: countRows[0].total,
+    data: res.rows as MovieRow[],
+    total: countRes.rows[0].total,
   };
 }
 
@@ -54,7 +53,7 @@ export async function deleteMovie(id: number): Promise<void> {
 }
 
 export async function getMovie(id: number): Promise<MovieRow | null> {
-  const [rows] = await pool.query<RowDataPacket[]>(
+  const res = await pool.query(
     `
 SELECT
     m.id AS id,
@@ -71,7 +70,7 @@ WHERE m.id = ?
     [id],
   );
 
-  return rows[0] as MovieRow;
+  return res.rows[0] as MovieRow;
 }
 
 export async function getSelectedMoviesByIds(ids: number[]): Promise<MovieRow[]> {
@@ -79,7 +78,7 @@ export async function getSelectedMoviesByIds(ids: number[]): Promise<MovieRow[]>
 
   const placeholders = ids.map(() => '?').join(',');
 
-  const [rows] = await pool.query<RowDataPacket[]>(
+  const res = await pool.query(
     `
 SELECT
     m.id AS id,
@@ -95,16 +94,17 @@ WHERE m.id IN (${placeholders})
     ids,
   );
 
-  return rows as MovieRow[];
+  return res.rows as MovieRow[];
 }
 
 // ## (POST) : Add individual Movie to watched_movies.
 
 export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
-  const [result] = await pool.query<ResultSetHeader>(
+  const res = await pool.query<{ id: number }>(
     `
     INSERT INTO movies ( title, tmdb_id, genre_ids, overview, release_date, poster_path, added_by, trailer_url)
-    VALUES (?,?,?,?,?,?,?,?);
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    RETURNING id
     `,
     [
       movie.title,
@@ -119,7 +119,7 @@ export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
   );
 
   return {
-    id: result.insertId,
+    id: res.rows[0].id,
     ...movie,
   };
 }

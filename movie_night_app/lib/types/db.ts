@@ -1,4 +1,4 @@
-// # From mysql Database.
+// # From Database.
 // # "snake_case" is converted to "camelCase" in the SQL Query in "@/lib/queries".
 
 import { StoredMovie } from '@/lib/types/domain';
