@@ -1,17 +1,15 @@
 services:
   db:
-    image: mysql:8.0
+    image: postgres:16
     container_name: "movie_night_db"
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: movie_night
-      MYSQL_USER: devuser
-      MYSQL_PASSWORD: devpassword
-      TZ: Asia/Tokyo
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: movie_night
     ports:
-      - "3333:3306"
+      - "5432:5432"
     volumes:
-      - "mysql_data:/var/lib/mysql"
+      - "postgres_data:/var/lib/postgresql/data"
 
   app:
     build: ./movie_night_app
@@ -28,4 +26,4 @@ services:
     command: npm run dev
 
 volumes:
-  mysql_data:
+  postgres_data:
