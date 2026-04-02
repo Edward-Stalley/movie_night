@@ -1,7 +1,7 @@
 import { toWatchedMovies, toUser } from '@/lib/transform';
 import type { User, WatchedMovie } from '@/lib/types/domain';
 import WatchedMoviesLayout from '../components/watchedMovies/WatchedMoviesLayout';
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getWatchedMovies } from '@/lib/queries/watched-movies';
 import { getUsers } from '@/lib/queries/users';

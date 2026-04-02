@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import Image from 'next/image';
 import LogoutButton from '@/app/components//auth/LogoutButton';
 

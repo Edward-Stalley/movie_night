@@ -1,4 +1,4 @@
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import { addSearchedMovieToMoviesAction } from '@/lib/actions/addSearchedMovieToMovies';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { getMovies, addMovie } from '@/lib/queries/movies';

@@ -1,4 +1,4 @@
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import VoteSessionLayout from '@/app/components/vote-session/create/VoteSessionLayout';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getSelectedMoviesByIds } from '@/lib/queries/movies';

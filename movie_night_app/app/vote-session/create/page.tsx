@@ -1,5 +1,5 @@
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import CreateVoteSessionLayout from '@/app/components/vote-session/create/CreateVoteSessionLayout';
 import { StoredMovie } from '@/lib/types/domain';
 import { buildQuery } from '@/lib/utils/query';

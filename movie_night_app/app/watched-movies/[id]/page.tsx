@@ -2,7 +2,7 @@ import { toWatchedMovies, toUser } from '@/lib/transform';
 import type { User, WatchedMovie } from '@/lib/types/domain';
 import { showWatchedMovie } from '@/lib/queries/watched-movies';
 import WatchedMovieCard from '@/app/components/watchedMovies/WatchedMovieCard';
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getUsers } from '@/lib/queries/users';
 

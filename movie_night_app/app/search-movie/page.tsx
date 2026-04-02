@@ -2,7 +2,7 @@ import { searchMovie } from '@/lib/external/tmdb';
 import { toSearchedMovie, toTMDBMovie } from '@/lib/transform';
 import { SearchedMovie } from '@/lib/types/domain';
 
-import { auth } from '@/app/auth';
+import { auth } from '@/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import SearchedMoviesLayout from '../components/searchedMovies/SearchedMoviesLayout';
 import { SearchedMovieSortValue, SortOrder } from '@/lib/types/sort';
