@@ -20,7 +20,7 @@ docker-compose.override.yml
 
 # Database backups (optional)
 database_backups/
-dump/
+dumps/
 
 # Mac / OS files
 .DS_Store
