@@ -1,18 +1,13 @@
 import { Pool } from 'pg';
 
 declare global {
-  // Ensure we reuse the pool in dev to avoid exhausting connections
   var pgPool: Pool | undefined;
 }
 
-// Choose the correct connection string depending on environment
-const connectionString =
-  process.env.NODE_ENV === 'production'
-    ? process.env.POSTGRES_DATABASE_PROD_URL
-    : process.env.POSTGRES_DATABASE_DEV_URL
+const connectionString = process.env.DATABASE_URL;
 
 console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("Using DB URL:", connectionString);
+console.log("Using DB URL:", !!connectionString);
 
 export const pool =
   global.pgPool ??
@@ -20,7 +15,6 @@ export const pool =
     connectionString,
   });
 
-// Only attach to global in dev to prevent multiple pools during hot reloads
 if (process.env.NODE_ENV !== 'production') {
   global.pgPool = pool;
 }

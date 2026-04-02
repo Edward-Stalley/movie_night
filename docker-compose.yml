@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env
+      - .env.local
     volumes:
       - ./movie_night_app:/app
       - /app/node_modules
