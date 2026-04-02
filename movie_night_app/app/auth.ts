@@ -4,7 +4,7 @@ import NextAuth from 'next-auth';
 import GitHub from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
-console.log("AUTH_SECRET exists?", !!process.env.NEXTAUTH_SECRET);
+console.log("AUTH_SECRET exists?", !!process.env.AUTH_SECRET);
 console.log("DB URL exists?", !!process.env.POSTGRES_DATABASE_PROD_URL);
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
@@ -15,7 +15,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET, 
+  secret: process.env.AUTH_SECRET, 
   trustHost:true,
   callbacks: {
     async signIn({ user, account }) {
