@@ -12,6 +12,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
     }),
   ],
+  secret: process.env.AUTH_SECRET, 
   callbacks: {
     async signIn({ user, account }) {
       if (!account) {
@@ -19,7 +20,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
 
       const dbUser: DBUserInsert = {
-        name: user.name ?? 'Unkwown User',
+        name: user.name ?? 'Unknown User',
         image: user.image ?? '',
         provider: account.provider,
         providerAccountId: account.providerAccountId,
