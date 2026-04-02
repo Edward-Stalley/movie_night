@@ -11,6 +11,9 @@ const connectionString =
     ? process.env.POSTGRES_DATABASE_PROD_URL
     : process.env.POSTGRES_DATABASE_DEV_URL
 
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("Using DB URL:", connectionString);
+
 export const pool =
   global.pgPool ??
   new Pool({
