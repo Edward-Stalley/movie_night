@@ -61,7 +61,7 @@ export default async function Navbar() {
               <Link href="/vote-session/create">Create Vote</Link>
             </li>
             <li>
-              <Link href="/vote-session/sessions">Vote Sessions</Link>
+              <Link href="/vote-session/sessions">Sessions</Link>
             </li>
           </ul>
         </div>
