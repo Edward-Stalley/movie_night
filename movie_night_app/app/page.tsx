@@ -106,7 +106,7 @@ export default function Home() {
 
       {/* ---------- Mobile: Layout 2 ---------- */}
 
-      <div className="flex flex-col gap-6 md:hidden px-4 py-6">
+      <div className="flex flex-col gap-6 md:hidden px-4 py-6 bg-base-200 relative  bg-linear-to-b from-black via-gray-900 to-slate-900">
         {/* BOX 2 — POSTER GRID */}
         <div className="relative p-10 grid  grid-cols-6 grid-rows-12 min-h-200 gap-1">
           {posters}

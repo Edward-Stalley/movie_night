@@ -33,9 +33,9 @@ export const moviePosters: PosterLayout[] = [
     title: 'Forbidden Planet',
     src: 'https://image.tmdb.org/t/p/original/urQWovdsxmLArvYqG0K2Xg8TTgL.jpg',
     colStart: 'col-start-2',
-    rowStart: 'row-start-4',
+    rowStart: 'row-start-3',
     colSpan: 'col-span-1',
-    rowSpan: 'row-span-3',
+    rowSpan: 'row-span-4',
   },
   {
     id: 5,

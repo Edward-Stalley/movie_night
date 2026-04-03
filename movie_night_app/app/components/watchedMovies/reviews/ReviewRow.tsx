@@ -78,7 +78,9 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
     </form>
   );
 
-  const displayComment = <div className="wrap-break-word whitespace-pre-wrap"> {review.comment}</div>;
+  const displayComment = (
+    <div className="wrap-break-word whitespace-pre-wrap"> {review.comment}</div>
+  );
 
   const editToggleButton = (
     <div className=" flex justify-start items-center">
@@ -88,35 +90,35 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
     </div>
   );
 
-return (
-  <div
-    key={`${review.ratedById}-${movie.id}`}
-    className="bg-accent-content m-1 rounded-2xl p-3 flex flex-col sm:flex-row gap-3 border sm:border-none"
-  >
-    {/* LEFT SIDE (name + edit) */}
-    <div className="flex sm:flex-col sm:min-w-27.5 gap-2 items-center sm:items-start">
-      <div className={`${isChooser ? 'text-primary ' : 'text-secondary'} font-bold`}>
-        {review.ratedByName}
+  return (
+    <div
+      key={`${review.ratedById}-${movie.id}`}
+      className="bg-accent-content m-1 rounded-2xl p-3 flex flex-col sm:flex-row gap-3 border sm:border-none"
+    >
+      {/* LEFT SIDE (name + edit) */}
+      <div className="flex sm:flex-col sm:min-w-27.5 gap-2 items-center sm:items-start">
+        <div className={`${isChooser ? 'text-primary ' : 'text-secondary'} font-bold`}>
+          {review.ratedByName}
+        </div>
+        {isAuthor && editToggleButton}
       </div>
-      {isAuthor && editToggleButton}
-    </div>
 
-    {/* RIGHT SIDE */}
-    <div className="flex flex-col w-full">
-      <StarRating
-        rating={rating}
-        onClick={editing ? handleRatingClick : undefined}
-        isEditing={editing}
-      />
+      {/* RIGHT SIDE */}
+      <div className="flex flex-col w-full">
+        <StarRating
+          rating={rating}
+          onClick={editing ? handleRatingClick : undefined}
+          isEditing={editing}
+        />
 
-      <div className="flex gap-2 pt-2 items-start">
-        <InvertedCommas />
+        <div className="flex gap-2 pt-2 items-start">
+          <InvertedCommas />
 
-        <div className="w-full max-w-xl wrap-break-word">
-          {isAuthor ? (editing ? textArea : displayComment) : displayComment}
+          <div className="w-full max-w-xl wrap-break-word">
+            {isAuthor ? (editing ? textArea : displayComment) : displayComment}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
