@@ -22,36 +22,42 @@ export default async function VotingSessions() {
     }
 
     return (
-      <li key={session.id} className="list-row flex justify-between">
+      <li
+        key={session.id}
+        className="list-row flex items-center justify-between p-3 my-2 rounded-2xl bg-base-200"
+      >
         <Link
           key={session.id}
           href={`sessions/${session.id}`}
-          className="flex gap-2 flex-1 items-center "
+          className="flex flex-1 flex-col sm:flex-row sm:items-center gap-3"
         >
-          <div className="text-4xl font-thin opacity-30 tabular-nums pr-4">
+          <div className="text-3xl sm:text-4xl font-thin opacity-30 tabular-nums">
             Session {session.id}
           </div>
-          <div>
-            <Image
-              src={`${createdBy.image}`}
-              alt={'user-image'}
-              width={30}
-              height={30}
-              className="rounded-2xl h-auto w-auto "
-            />
-          </div>
 
-          <div className="list-col-grow w-52">
-            <div>{createdBy.name}</div>
-            <div className="text-xs uppercase font-semibold opacity-60">
-              {session.movieNightDate.toDateString()}
+          <div className="flex items-center gap-3 flex-wrap">
+            <div>
+              <Image
+                src={`${createdBy.image}`}
+                alt={'user-image'}
+                width={30}
+                height={30}
+                className="rounded-2xl h-auto w-auto "
+              />
+            </div>
+            <div className="list-col-grow w-52">
+              <div>{createdBy.name}</div>
+              <div className="text-xs uppercase font-semibold opacity-60">
+                {session.movieNightDate.toDateString()}
+              </div>
             </div>
           </div>
-          <div className="p-4 pb-2 text-xs opacity-60 tracking-wide">
+
+          <div>
             {session.status === 'inProgress' ? (
-              <div className="badge badge-secondary">Vote in Progress</div>
+              <div className="badge badge-secondary ">Vote in Progress</div>
             ) : (
-              <div className="badge badge-info">Complete</div>
+              <div className="badge badge-info opacity-50">Complete</div>
             )}
           </div>
         </Link>
@@ -65,7 +71,7 @@ export default async function VotingSessions() {
 
   return (
     <div className=" flex flex-col gap-2 m-2 ">
-      <div className="text-6xl mb-10 p-2 badge badge-soft badge-secondary h-fit  ">
+      <div className="text-6xl mb-10 p-2 badge badge-soft badge-secondary h-fit text-center  ">
         Movie Night Sessions
       </div>
       <div className="list">

@@ -79,7 +79,7 @@ export default function CreateVoteSessionLayout({
   const selectedMoviesList = selectedMovies;
 
   const carouselMovies = (
-    <div className="relative w-64 sm:w-full max-w-6xl">
+    <div className="relative w-64 sm:w-full max-w-6xl list-none">
       {/* LEFT ARROW */}
       <button
         onClick={scrollLeft}
