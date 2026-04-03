@@ -24,16 +24,14 @@ export default function Toolbar({
         <div className="flex gap-2 items-center ml-auto">
           <Sort options={sortOptions} value={sortValue} order={sortOrder} />
         </div>
-        
+
         {/* FULL WIDTH ROW (mobile only) */}
         {pagination && (
           <div className="w-full md:w-auto flex sm:justify-center md:justify-start">
             <Pagination page={pagination.page} totalPages={pagination.totalPages} />
           </div>
         )}
-    </div>
-
       </div>
-
+    </div>
   );
 }

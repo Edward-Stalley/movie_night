@@ -63,23 +63,19 @@ export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
     </form>
   );
 
-return (
-  <div className="bg-accent-content m-1 rounded-2xl p-3 flex flex-col sm:flex-row gap-3">
-    {/* LEFT */}
-    <div className="sm:min-w-27.5">
-      <div>{loggedInUser?.name}</div>
-      <StarRating
-        rating={rating}
-        onClick={(e) => handleRatingClick(e)}
-        isEditing={true}
-      />
-    </div>
+  return (
+    <div className="bg-accent-content m-1 rounded-2xl p-3 flex flex-col sm:flex-row gap-3">
+      {/* LEFT */}
+      <div className="sm:min-w-27.5">
+        <div>{loggedInUser?.name}</div>
+        <StarRating rating={rating} onClick={(e) => handleRatingClick(e)} isEditing={true} />
+      </div>
 
-    {/* RIGHT */}
+      {/* RIGHT */}
       <InvertedCommas />
-    <div className="flex gap-2 items-start w-full">
-      <div className="w-full max-w-xl">{textArea}</div>
+      <div className="flex gap-2 items-start w-full">
+        <div className="w-full max-w-xl">{textArea}</div>
+      </div>
     </div>
-  </div>
-);
+  );
 }
