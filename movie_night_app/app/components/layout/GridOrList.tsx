@@ -34,7 +34,16 @@ export function GridOrList({
         </ul>
       )}
       {layout === 'grid' && (
-        <ul className="bg-base-100 pt-2 pl-5 pr-5 grid gap-2 sm:grid-cols-2  md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
+        <ul
+          className="
+          bg-base-100 p-3 sm:p-4 md:p-5 grid gap-2 sm:gap-3 md:gap-4 grid-cols-3 
+          sm:grid-cols-4 
+          md:grid-cols-5     
+          lg:grid-cols-6     
+          xl:grid-cols-7    
+          2xl:grid-cols-8  
+          "
+        >
           {children}
         </ul>
       )}
