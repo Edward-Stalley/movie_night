@@ -76,7 +76,7 @@ WHERE m.id = $1
 export async function getSelectedMoviesByIds(ids: number[]): Promise<MovieRow[]> {
   if (ids.length === 0) return [];
 
-  const placeholders = ids.map((_,i) => `$${i +1}`).join(',');
+  const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
 
   const res = await pool.query(
     `

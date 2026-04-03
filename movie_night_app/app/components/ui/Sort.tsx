@@ -17,12 +17,12 @@ export function Sort({ options, value, order }: SortProps) {
   const sortOptions = options;
 
   return (
-    <div className="dropdown">
+    <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle flex w-fit">
         Sort ▼
       </div>
 
-      <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+      <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow z-50 mt-3 w-32 p-2 sm:w-44">
         {sortOptions.map((opt) => {
           const params = buildSortParams(searchParams, value, order, opt.value);
           return (
