@@ -111,9 +111,7 @@ export default function CreateVoteSessionLayout({
     <div className="bg-base-200 flex justify-center items-center flex-col">
       {voteStarted && <div className="flex rounded-2xl m-2">{carouselMovies}</div>}
       <div className="flex justify-center items-center badge badge-soft h-fit gap-0">
-        <p className="text-xl badge badge-secondary badge-soft ">
-          {headerTitle}
-        </p>
+        <p className="text-xl badge badge-secondary badge-soft ">{headerTitle}</p>
         <form
           className=" flex gap-2 p-2 rounded-2xl badge badge-soft badge-secondary h-14 m-2"
           onSubmit={handleSubmitCreateVote}

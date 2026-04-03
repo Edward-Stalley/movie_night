@@ -24,7 +24,7 @@ export function MovieListItem({ movie }: MovieListItemProps) {
         <div className="w-full flex flex-col  bg-base-200 p-2  ">
           <div className=" p-4 bg-base-200 rounded-2xl flex-2 ">{movie.overview}</div>
           <div className="flex-1 w-64 rounded-2xl p-2">
-            <p className="font-bold text-2xl text-primary  border-b-2 p-2">Trailer</p>
+            <p className="font-bold text-1xl text-primary  border-b-2 p-2">Trailer</p>
             {trailerId ? (
               <YouTubeEmbed videoid={trailerId} />
             ) : (

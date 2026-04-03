@@ -32,6 +32,7 @@ export default function RootLayout({
         {/* Children (Pages) layer */}
         <main className="flex flex-1 flex-col">{children}</main>
         {/* Modal layer */}
+
         {modal}
       </body>
     </html>

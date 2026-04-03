@@ -86,3 +86,14 @@ export type TMDBMovie = {
   releaseDate: string;
   trailerUrl: string | null;
 };
+
+export type PosterLayout = {
+  id: number;
+  title: string;
+  src: string;
+  colStart: string;
+  rowStart: string;
+  colSpan: string;
+  rowSpan: string;
+  rounding?: string;
+};

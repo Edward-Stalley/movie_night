@@ -1,89 +1,134 @@
 import Image from 'next/image';
+import MobileGridImage from './components/landingPage/MobileGridImage';
+import { moviePosters } from '@/lib/config/landingPageMovies';
+import { PosterLayout } from '@/lib/types/domain';
 
 export default function Home() {
+  const posters = moviePosters.map((poster: PosterLayout) => {
+    return (
+      <MobileGridImage
+        key={poster.id}
+        src={poster.src}
+        colStart={poster.colStart}
+        rowStart={poster.rowStart}
+        colSpan={poster.colSpan}
+        rowSpan={poster.rowSpan}
+        rounding={poster.rounding}
+      />
+    );
+  });
+
   return (
-    <div className="relative p-10 grid grid-cols-10 grid-rows-10 gap-1 flex-1 min-h-0">
-      <div className="absolute top-0 left-0 w-full h-full bg-primary-content bg-linear-to-tr from-black via-gray-800 to-slate-800 [clip-path:polygon(0%_0%,90%_20%,0%_500%)] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-full h-full bg-primary bg-linear-to-br from-orange-300 via-orange-500 to-bg-primary  [clip-path:polygon(-60%_0%,66%_55%,50%_0%)] pointer-events-none"></div>
-      <div className="col-span-4 col-start-6 row-start-1 row-span-8 relative rounded-2xl z-10  ">
-        <Image
-          src="/movie-night-logo-padding.svg"
-          alt="Movie Night"
-          fill
-          className=" h-auto w-auto object-cover rounded-2xl"
-        />
-      </div>
-      <div className="col-span-1 col-start-1 row-start-1 row-span-6 relative rounded-2xl ">
-        <Image
-          src={`https://image.tmdb.org/t/p/original/12EeSboRofP3CI4SPmMFNNXCbtY.jpg`}
-          alt={''}
-          fill
-          quality={100}
-          className=" h-auto w-auto object-cover rounded-2xl"
-        />
-      </div>
-      <div className="bg-base-content col-span-3 col-start-3 row-start-3 row-span-2 relative rounded-2xl">
-        <Image
-          src={`https://image.tmdb.org/t/p/original/gl0jzn4BupSbL2qMVeqrjKkF9Js.jpg`}
-          alt={''}
-          fill
-          className=" h-auto w-auto object-cover object-top rounded-2xl"
-        />
-      </div>
-      <div className="bg-base-content col-span-1 col-start-2 row-start-3 row-span-2 relative rounded-2xl ">
-        <Image
-          src={`https://media.themoviedb.org/t/p/w220_and_h330_face/15uOEfqBNTVtDUT7hGBVCka0rZz.jpg`}
-          alt={''}
-          fill
-          className=" h-auto w-auto object-top rounded-2xl"
-        />
-      </div>
-      <div className=" col-span-1 col-start-2 row-start-5 row-span-2 relative rounded-2xl ">
-        <Image
-          src={`https://image.tmdb.org/t/p/original/neVhDxYVsmMMSuhXpHMT3LMK9f.jpg`}
-          alt={''}
-          fill
-          quality={100}
-          className=" h-auto w-auto object-cover rounded-2xl"
-        />
-      </div>
-      <div className="col-span-1 col-start-3 row-start-5 row-span-4 relative rounded-2xl ">
-        <div className="flex flex-col h-full gap-1">
-          <div className="relative h-1/2">
-            <Image
-              src={`https://image.tmdb.org/t/p/original/tH4Jvr2Rg7UQFqcndE6Mws4p7sP.jpg`}
-              alt={''}
-              fill
-              quality={100}
-              className=" w-auto  object-cover rounded-tl-2xl rounded-tr-2xl"
-            />
+    <>
+      {/* ---------- Desktop: Layout 1 ---------- */}
+      <div className="relative p-10 md:grid grid-cols-10 grid-rows-10 gap-1 flex-1 min-h-0 hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-primary-content bg-linear-to-tr from-black via-gray-800 to-slate-800 [clip-path:polygon(0%_0%,90%_20%,0%_500%)] pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-full h-full bg-primary bg-linear-to-br from-orange-300 via-orange-500 to-bg-primary  [clip-path:polygon(-60%_0%,66%_55%,50%_0%)] pointer-events-none"></div>
+        <div className="col-span-4 col-start-6 row-start-1 row-span-8 relative rounded-2xl z-10  ">
+          <Image
+            src="/movie-night-logo-padding.svg"
+            alt="Movie Night"
+            fill
+            className=" h-auto w-auto object-cover rounded-2xl"
+          />
+        </div>
+        <div className="col-span-1 col-start-1 row-start-1 row-span-6 relative rounded-2xl ">
+          <Image
+            src={`https://image.tmdb.org/t/p/original/12EeSboRofP3CI4SPmMFNNXCbtY.jpg`}
+            alt={''}
+            fill
+            quality={100}
+            className=" h-auto w-auto object-cover rounded-2xl"
+          />
+        </div>
+        <div className="bg-base-content col-span-3 col-start-3 row-start-3 row-span-2 relative rounded-2xl">
+          <Image
+            src={`https://image.tmdb.org/t/p/original/gl0jzn4BupSbL2qMVeqrjKkF9Js.jpg`}
+            alt={''}
+            fill
+            className=" h-auto w-auto object-cover object-top rounded-2xl"
+          />
+        </div>
+        <div className="bg-base-content col-span-1 col-start-2 row-start-3 row-span-2 relative rounded-2xl ">
+          <Image
+            src={`https://media.themoviedb.org/t/p/w220_and_h330_face/15uOEfqBNTVtDUT7hGBVCka0rZz.jpg`}
+            alt={''}
+            fill
+            className=" h-auto w-auto object-top rounded-2xl"
+          />
+        </div>
+        <div className=" col-span-1 col-start-2 row-start-5 row-span-2 relative rounded-2xl ">
+          <Image
+            src={`https://image.tmdb.org/t/p/original/neVhDxYVsmMMSuhXpHMT3LMK9f.jpg`}
+            alt={''}
+            fill
+            quality={100}
+            className=" h-auto w-auto object-cover rounded-2xl"
+          />
+        </div>
+        <div className="col-span-1 col-start-3 row-start-5 row-span-4 relative rounded-2xl ">
+          <div className="flex flex-col h-full gap-1">
+            <div className="relative h-1/2">
+              <Image
+                src={`https://image.tmdb.org/t/p/original/tH4Jvr2Rg7UQFqcndE6Mws4p7sP.jpg`}
+                alt={''}
+                fill
+                quality={100}
+                className=" w-auto  object-cover rounded-tl-2xl rounded-tr-2xl"
+              />
+            </div>
+            <div className="relative h-1/2">
+              <Image
+                src={`https://media.themoviedb.org/t/p/w220_and_h330_face/sMWPuhgtuUuFHcwSlp73EGACNrl.jpg`}
+                alt={''}
+                fill
+                quality={100}
+                className=" w-auto object-cover  rounded-bl-2xl rounded-br-2xl "
+              />
+            </div>
           </div>
-          <div className="relative h-1/2">
-            <Image
-              src={`https://media.themoviedb.org/t/p/w220_and_h330_face/sMWPuhgtuUuFHcwSlp73EGACNrl.jpg`}
-              alt={''}
-              fill
-              quality={100}
-              className=" w-auto object-cover  rounded-bl-2xl rounded-br-2xl "
-            />
+        </div>
+        <div className=" col-span-3 col-start-4 row-start-5 row-span-2 relative rounded-2xl">
+          <Image
+            src={`https://image.tmdb.org/t/p/original/eFth6zw4PEInzr2Y64mYVN1zbBi.jpg`}
+            alt={''}
+            fill
+            quality={100}
+            className=" h-auto w-auto object-cover rounded-2xl"
+          />
+        </div>
+        <div className=" border-2 text-base-content col-span-5 col-start-4 row-start-7 row-span-2 flex justify-center items-center z-20  rounded-2xl bg-linear-to-l from-black via-gray-900 to-slate-800 ">
+          <h1 className="text-8xl font-extrabold text-secondary text-outline [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans">
+            Movie Night
+          </h1>
+        </div>
+      </div>
+
+      {/* ---------- Mobile: Layout 2 ---------- */}
+
+      <div className="flex flex-col gap-6 md:hidden px-4 py-6">
+        {/* BOX 2 — POSTER GRID */}
+        <div className="relative p-10 grid  grid-cols-6 grid-rows-12 min-h-200 gap-1">
+          {posters}
+          {/* BOX 1 — TITLE */}
+          <div className="col-start-2 row-start-2 col-span-4 row-span-2 z-10">
+            <div className="flex flex-col h-full items-center justify-center  ">
+              <h1
+                className="text-6xl font-extrabold text-secondary text-outline 
+                     [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans"
+              >
+                Movie
+              </h1>
+              <h1
+                className="text-6xl font-extrabold text-secondary text-outline 
+                     [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans ml-10"
+              >
+                Night
+              </h1>
+            </div>
           </div>
         </div>
       </div>
-      <div className=" col-span-3 col-start-4 row-start-5 row-span-2 relative rounded-2xl">Box</div>
-      <div className=" col-span-3 col-start-4 row-start-5 row-span-2 relative rounded-2xl">
-        <Image
-          src={`https://image.tmdb.org/t/p/original/eFth6zw4PEInzr2Y64mYVN1zbBi.jpg`}
-          alt={''}
-          fill
-          quality={100}
-          className=" h-auto w-auto object-cover rounded-2xl"
-        />
-      </div>
-      <div className=" border-2 text-base-content col-span-5 col-start-4 row-start-7 row-span-2 flex justify-center items-center z-20  rounded-2xl bg-linear-to-l from-black via-gray-900 to-slate-800 ">
-        <h1 className="text-8xl font-extrabold text-secondary text-outline [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans  ">
-          Movie Night
-        </h1>
-      </div>
-    </div>
+    </>
   );
 }
