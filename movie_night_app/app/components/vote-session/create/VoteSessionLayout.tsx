@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { closeVotingSessionAction } from '@/lib/actions/closeVoting';
 import { useRouter } from 'next/navigation';
 import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
+import { useRef } from 'react';
 
 export default function VoteSessionLayout({
   movies,
@@ -20,6 +21,15 @@ export default function VoteSessionLayout({
   const [layout] = useState<Layout>('grid');
   const headerTitle = 'Vote For Movie';
   const router = useRouter();
+
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const scrollLeft = () => {
+    carouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
+  };
+
+  const scrollRight = () => {
+    carouselRef.current?.scrollBy({ left: 300, behavior: 'smooth' });
+  };
 
   const toggleVote = async (id: number) => {
     if (!loggedInUser) {
@@ -121,13 +131,47 @@ export default function VoteSessionLayout({
     </div>
   );
 
+  const carouselMovies = (
+    <div className="relative w-64 sm:w-full max-w-6xl">
+      {/* LEFT ARROW */}
+      <button
+        onClick={scrollLeft}
+        className="hidden md:flex btn btn-circle absolute left-0 top-1/2 -translate-y-1/2 z-10"
+      >
+        ❮
+      </button>
+
+      {/* RIGHT ARROW */}
+      <button
+        onClick={scrollRight}
+        className="hidden md:flex btn btn-circle absolute right-0 top-1/2 -translate-y-1/2 z-10"
+      >
+        ❯
+      </button>
+
+      {/* SCROLL CONTAINER */}
+      <div
+        ref={carouselRef}
+        className="
+        flex gap-4 p-4 
+        overflow-x-auto scroll-smooth
+        snap-x snap-mandatory
+        scrollbar-hide
+        bg-base-100 rounded-box
+      "
+      >
+        {moviesForVoting}
+      </div>
+    </div>
+  );
+
   const sessionDetail = (
     <div
       key={voteSession.id}
-      className="list-row flex gap-4 items-center bg-base-300 p-2 rounded-2xl"
+      className="list-row flex gap-4 items-center bg-base-300 p-2 rounded-2xl flex-col sm:flex-row"
     >
-      <div className="text-4xl font-thin opacity-30 tabular-nums pr-4">
-        Movie Night {voteSession.id}
+      <div className="w-full sm:w-fit text-center text-2xl sm:text-4xl font-thin opacity-30 tabular-nums sm:pr-4">
+        <p>Movie Night {voteSession.id}</p>
       </div>
       <div>
         <Image
@@ -158,12 +202,12 @@ export default function VoteSessionLayout({
   return (
     <div className="flex flex-col m-10 justify-center">
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-6xl badge h-fit badge-secondary font-bold m-4 p-4  badge-outline">
+        <h1 className="text-6xl badge h-fit badge-secondary font-bold m-4 p-4  badge-outline text-center">
           {headerTitle}
         </h1>
         <div className="p-4">{sessionDetail}</div>
         <div className="flex justify-center items-center b">
-          <div>{moviesForVoting}</div>
+          <div>{carouselMovies}</div>
         </div>
       </div>
 
