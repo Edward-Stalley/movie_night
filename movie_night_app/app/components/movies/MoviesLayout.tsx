@@ -15,8 +15,8 @@ export default function MoviesLayout({
   const [layout, setLayout] = useState<Layout>('grid');
   const headerTitle = 'Movies';
 
-  const movieList = movies.map((movie) => (
-    <MovieCard key={movie.id} movie={movie} layout={layout} />
+  const movieList = movies.map((movie, index) => (
+    <MovieCard key={movie.id} movie={movie} layout={layout} index={index} />
   ));
 
   return (

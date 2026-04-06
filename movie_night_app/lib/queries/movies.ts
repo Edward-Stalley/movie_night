@@ -33,6 +33,8 @@ SELECT
     m.tmdb_id AS "tmdbId",
     m.trailer_url AS "trailerUrl"
 FROM movies m
+LEFT JOIN watched_movies wm ON wm.movie_id = m.id
+WHERE wm.movie_id is NULL
 ORDER BY ${sortColumn} ${sortDirection}
 LIMIT $1
 OFFSET $2
@@ -41,7 +43,10 @@ OFFSET $2
   );
 
   const countRes = await pool.query<{ total: number }>(`
-    SELECT COUNT(*) as total FROM movies
+    SELECT COUNT(*) as total 
+    FROM movies m
+    LEFT JOIN watched_movies wm ON wm.movie_id = m.id
+    WHERE wm.movie_id is NULL
   `);
 
   return {
@@ -51,7 +56,7 @@ OFFSET $2
 };
 
 export const getMovies = unstable_cache(_getMovies, ['movies'], {
-  revalidate: 3600,
+  revalidate: 10,
   tags: ['movies'],
 });
 

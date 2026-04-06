@@ -21,6 +21,7 @@ export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title' | 'trailerUrl'>
   selected?: boolean;
   className?: string;
   disableLink?: boolean;
+  priority?: boolean;
 };
 
 export type MovieDeleteHandler = () => void;
@@ -166,6 +167,7 @@ export type MovieCardProps = {
   movie: StoredMovie;
   layout?: Layout;
   isDetailScreen?: boolean;
+  index?: number;
 };
 
 export type VoteMovieCardCardProps = {
