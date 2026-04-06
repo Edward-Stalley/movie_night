@@ -11,7 +11,8 @@ services:
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
 
-  app:
+  # 🟢 DEV MODE (for testing local performance)
+  app-dev:
     build: ./movie_night_app
     container_name: movie_night_next_app
     ports:
@@ -24,6 +25,18 @@ services:
       - ./movie_night_app:/app
       - /app/node_modules
     command: npm run dev
+
+  # 🟢 PRODUCTION MODE (for testing Vercel-like performance)
+  app-prod:
+    build: ./movie_night_app
+    container_name: movie_night_next_prod
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+    env_file:
+      - .env.local
+    command: npm run start
 
 volumes:
   postgres_data:
