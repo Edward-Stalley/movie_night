@@ -59,6 +59,7 @@ export const getMovies = unstable_cache(_getMovies, ['movies'], {
 
 export async function deleteMovie(id: number): Promise<void> {
   await pool.query(`DELETE from movies WHERE id = ?`, [id]);
+  revalidateTag('movies', 'max');
 }
 
 export async function getMovie(id: number): Promise<MovieRow | null> {
@@ -78,8 +79,7 @@ export async function getMovie(id: number): Promise<MovieRow | null> {
     `,
     [id],
   );
-  
-  revalidateTag('movies', 'max')
+
   return res.rows[0] as MovieRow;
 }
 
@@ -127,6 +127,8 @@ export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
       movie.trailerUrl,
     ],
   );
+
+  revalidateTag('movies', 'max');
 
   return {
     id: res.rows[0].id,
