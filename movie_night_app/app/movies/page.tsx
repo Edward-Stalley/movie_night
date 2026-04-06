@@ -7,13 +7,29 @@ import { auth } from '@/auth';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { MovieSortValue, SortOrder } from '@/lib/types/sort';
 import { buildQuery } from '@/lib/utils/query';
-export const dynamic = 'force-dynamic';
 
 type SearchParams = {
   page?: string;
   sort?: MovieSortValue;
   order?: SortOrder;
 };
+
+  // PreFetch Pages
+  export async function generateStaticParams() {
+    const { total } = await getMovies({
+      limit: 1,
+      offset: 0,
+      sortBy: 'title',
+      order: 'asc',
+    });
+
+    const pages = Math.ceil(total / 20);
+
+    return Array.from({ length: Math.min(pages, 4) }, (_, i) => ({
+      page: String(i + 1),
+    }));
+  }
+
 
 export default async function Movies({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;

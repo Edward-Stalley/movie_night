@@ -6,13 +6,17 @@ import { PaginatedResult } from '@/lib/types/pagination';
 import { StoredMovie } from '@/lib/types/domain';
 import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
 import { isSortKey } from '@/lib/utils/sort/isSortKey';
+import { unstable_cache } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
-export async function getMovies({
+const _getMovies = async ({
   limit,
   offset,
   sortBy,
   order,
-}: MoviesQuery): Promise<PaginatedResult<MovieRow>> {
+}: MoviesQuery): Promise<PaginatedResult<MovieRow>> => {
+  console.log('DB HIT: getMovies', limit, offset, sortBy, order);
+
   const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
 
   const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
@@ -44,7 +48,12 @@ OFFSET $2
     data: res.rows as MovieRow[],
     total: countRes.rows[0].total,
   };
-}
+};
+
+export const getMovies = unstable_cache(_getMovies, ['movies'], {
+  revalidate: 3600,
+  tags: ['movies'],
+});
 
 //  Detail (indiviudal Movie)
 
@@ -55,7 +64,7 @@ export async function deleteMovie(id: number): Promise<void> {
 export async function getMovie(id: number): Promise<MovieRow | null> {
   const res = await pool.query(
     `
-SELECT
+    SELECT
     m.id AS id,
     m.title,
     m.genre_ids AS "genreIds",
@@ -64,12 +73,13 @@ SELECT
     m.poster_path AS "posterPath",
     m.trailer_url AS "trailerUrl",
     m.tmdb_id AS "tmdbId"
-FROM movies m
-WHERE m.id = $1
+    FROM movies m
+    WHERE m.id = $1
     `,
     [id],
   );
-
+  
+  revalidateTag('movies', 'max')
   return res.rows[0] as MovieRow;
 }
 
