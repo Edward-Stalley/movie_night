@@ -29,7 +29,10 @@ export async function getWatchedMovies({
   sortBy,
   order,
 }: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> {
+  'use cache';
+
   console.log('DB HIT: fetching watched movies', { limit, offset, sortBy, order });
+
   const sortColumn = SORT_MAP[sortBy as SortKey] ?? SORT_MAP.watchedOn;
   const sortDirection = ORDER_MAP[order as keyof typeof ORDER_MAP] ?? ORDER_MAP.desc;
 
@@ -68,14 +71,15 @@ LIMIT $1 OFFSET $2
 
   const countRes = await pool.query('SELECT COUNT(*) AS total FROM watched_movies');
   const total = parseInt(countRes.rows[0].total, 10);
-  
+
   cacheLife('hours');
-  cacheTag('watched-movies');
+  cacheTag(`watched-movies-${limit}-${offset}-${sortBy}-${order}`);
   return { data: rows, total };
 }
 
 // ## (DETAIL) SHOW: get individual watched movie
 export async function showWatchedMovie(id: number): Promise<WatchedMovieRow[] | null> {
+  'use cache';
   const res = await pool.query(
     `
 SELECT
@@ -122,8 +126,8 @@ RETURNING id
     [movie.movieId, movie.watchedOn, movie.chosenBy],
   );
 
-  revalidateTag('watched-movies', 'max');
-  revalidateTag('movies', 'max');
+  revalidateTag('watched-movies-.*/', 'max');
+  revalidateTag('movies-.*/', 'max');
   return { ...movie, id: res.rows[0].id };
 }
 
@@ -145,8 +149,8 @@ WHERE id = $2
     [userId, watchedMovieId],
   );
 
-  revalidateTag('watched-movies', 'max');
-  revalidateTag('movies', 'max');
+  revalidateTag('watched-movies-.*/', 'max');
+  revalidateTag('movies-.*/', 'max');
 }
 
 // ## (UPDATE) : Update watched_on
@@ -160,6 +164,6 @@ WHERE id = $2
     [watchedOn, watchedMovieId],
   );
 
-  revalidateTag('watched-movies', 'max');
-  revalidateTag('movies', 'max');
+  revalidateTag('watched-movies-.*/', 'max');
+  revalidateTag('movies-.*/', 'max');
 }
