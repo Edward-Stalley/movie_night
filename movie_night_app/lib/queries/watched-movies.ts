@@ -4,6 +4,8 @@ import { pool } from '@/lib/db';
 import { WatchedMoviesQuery, WatchedMovieRow, WatchedMovieInsert } from '@/lib/types/db';
 import { UserId } from '../types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
+import { revalidatePath } from 'next/cache';
+import { cache } from 'react';
 
 const SORT_MAP = {
   watchedOn: 'wm.watched_on',
@@ -20,17 +22,20 @@ const ORDER_MAP = {
 } as const;
 
 // ## (GET) : Get list of watched movies with pagination
-export async function getWatchedMovies({
-  limit,
-  offset,
-  sortBy,
-  order,
-}: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> {
-  const sortColumn = SORT_MAP[sortBy as SortKey] ?? SORT_MAP.watchedOn;
-  const sortDirection = ORDER_MAP[order as keyof typeof ORDER_MAP] ?? ORDER_MAP.desc;
+export const getWatchedMovies = cache(
+  async ({
+    limit,
+    offset,
+    sortBy,
+    order,
+  }: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> => {
+    
+    console.log('DB HIT: fetching watched movies', { limit, offset });
+    const sortColumn = SORT_MAP[sortBy as SortKey] ?? SORT_MAP.watchedOn;
+    const sortDirection = ORDER_MAP[order as keyof typeof ORDER_MAP] ?? ORDER_MAP.desc;
 
-  const res = await pool.query(
-    `
+    const res = await pool.query(
+      `
 SELECT
     wm.id,
     wm.movie_id AS "movieId",
@@ -57,16 +62,26 @@ LEFT JOIN users chooser ON wm.chosen_by = chooser.id
 ORDER BY ${sortColumn} ${sortDirection}
 LIMIT $1 OFFSET $2
     `,
-    [limit, offset],
-  );
+      [limit, offset],
+    );
 
-  const rows = res.rows as WatchedMovieRow[];
+    const rows = res.rows as WatchedMovieRow[];
 
-  const countRes = await pool.query('SELECT COUNT(*) AS total FROM watched_movies');
-  const total = parseInt(countRes.rows[0].total, 10);
+    const countRes = await pool.query('SELECT COUNT(*) AS total FROM watched_movies');
+    const total = parseInt(countRes.rows[0].total, 10);
 
-  return { data: rows, total };
-}
+    return { data: rows, total };
+  },
+);
+
+// export const getWatchedMovies = unstable_cache(
+//   async (query: WatchedMoviesQuery) => _getWatchedMovies(query),
+//   ['watched-movies'],
+//   {
+//     revalidate: 3600,
+//     tags: ['watched-movies'],
+//   },
+// );
 
 // ## (DETAIL) SHOW: get individual watched movie
 export async function showWatchedMovie(id: number): Promise<WatchedMovieRow[] | null> {
@@ -116,12 +131,17 @@ RETURNING id
     [movie.movieId, movie.watchedOn, movie.chosenBy],
   );
 
+  revalidatePath('/movies');
+  revalidatePath('/watched-movies');
+
   return { ...movie, id: res.rows[0].id };
 }
 
 // ## (DELETE) : Delete watched movie
 export async function deleteWatchedMovie(id: number): Promise<void> {
   await pool.query('DELETE FROM watched_movies WHERE id = $1', [id]);
+  revalidatePath('/movies');
+  revalidatePath('/watched-movies');
 }
 
 // ## (UPDATE) : Update chosen_by
@@ -134,6 +154,9 @@ WHERE id = $2
     `,
     [userId, watchedMovieId],
   );
+
+  revalidatePath('/movies');
+  revalidatePath('/watched-movies');
 }
 
 // ## (UPDATE) : Update watched_on
@@ -146,4 +169,7 @@ WHERE id = $2
     `,
     [watchedOn, watchedMovieId],
   );
+
+  revalidatePath('/movies');
+  revalidatePath('/watched-movies');
 }
