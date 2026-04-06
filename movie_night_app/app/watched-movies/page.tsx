@@ -8,9 +8,6 @@ import { getUsers } from '@/lib/queries/users';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { buildQuery } from '@/lib/utils/query';
 import { WatchedMovieSortValue, SortOrder } from '@/lib/types/sort';
-import { Suspense } from 'react';
-
-export const dynamic = 'force-dynamic';
 
 type SearchParams = {
   page?: string;
