@@ -1,4 +1,6 @@
 import { pool } from '@/lib/db';
+import { unstable_cache } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 import {
   VoteKey,
@@ -149,12 +151,12 @@ function isSortKey(value: string): value is SortKey {
   return value in MOVIE_SORT_MAP;
 }
 
-export async function getUnwatchedMovies({
+const _getUnwatchedMovies = async ({
   limit,
   offset,
   sortBy,
   order,
-}: MoviesQuery): Promise<PaginatedResult<MovieRow>> {
+}: MoviesQuery): Promise<PaginatedResult<MovieRow>> => {
   const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
   const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
 
@@ -191,7 +193,13 @@ export async function getUnwatchedMovies({
     data: res.rows as MovieRow[],
     total: countRes.rows[0].total,
   };
-}
+};
+
+export const getUnwatchedMovies = unstable_cache(
+  async (query: MoviesQuery) => _getUnwatchedMovies(query),
+  ['unwatched-movies'],
+  { revalidate: 3600, tags: ['movies'] },
+);
 
 // --------------------------
 // GET MOVIES BY IDs

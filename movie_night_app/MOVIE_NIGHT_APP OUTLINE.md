@@ -45,13 +45,21 @@ MOVIE_NIGHT_APP
 - Search function for API [Done]
 - Paginations (Date, Rating, Added By) [Done] \* except Rating
 - ADD TV SHOWS ? We watched cabinet of curiosities
-- Change all 'interface' to 'type' for typescript.
+- Change all 'interface' to 'type' for typescript [Done]
+- Add randomizer
+- Tie in Vote?
+- 
 
 ---
 
 ## BUGS
 
 - Foreign Film titles (due to original title being used?) break display and sort
+- Fix delete button not working
+- voting needs to update straight away (refresh)
+- refactor (movies, unwatched movies) both filter out watched
+- fix button presses / interactivity on phones
+
 
 ---
 

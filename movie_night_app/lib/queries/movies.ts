@@ -7,22 +7,19 @@ import { StoredMovie } from '@/lib/types/domain';
 import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
 import { isSortKey } from '@/lib/utils/sort/isSortKey';
 import { unstable_cache } from 'next/cache';
-import { revalidateTag } from 'next/cache';
+import { cache } from 'react';
+import { revalidatePath } from 'next/cache';
 
-const _getMovies = async ({
-  limit,
-  offset,
-  sortBy,
-  order,
-}: MoviesQuery): Promise<PaginatedResult<MovieRow>> => {
-  console.log('DB HIT: getMovies', limit, offset, sortBy, order);
+export const getMovies = cache(
+  async ({ limit, offset, sortBy, order }: MoviesQuery): Promise<PaginatedResult<MovieRow>> => {
+    console.log('DB HIT: getMovies', limit, offset, sortBy, order);
 
-  const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
+    const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
 
-  const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
+    const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
 
-  const res = await pool.query(
-    `
+    const res = await pool.query(
+      `
 SELECT
     m.id AS id,
     m.title,
@@ -39,32 +36,28 @@ ORDER BY ${sortColumn} ${sortDirection}
 LIMIT $1
 OFFSET $2
     `,
-    [limit, offset],
-  );
+      [limit, offset],
+    );
 
-  const countRes = await pool.query<{ total: number }>(`
+    const countRes = await pool.query<{ total: number }>(`
     SELECT COUNT(*) as total 
     FROM movies m
     LEFT JOIN watched_movies wm ON wm.movie_id = m.id
     WHERE wm.movie_id is NULL
   `);
 
-  return {
-    data: res.rows as MovieRow[],
-    total: countRes.rows[0].total,
-  };
-};
-
-export const getMovies = unstable_cache(_getMovies, ['movies'], {
-  revalidate: 10,
-  tags: ['movies'],
-});
+    return {
+      data: res.rows as MovieRow[],
+      total: countRes.rows[0].total,
+    };
+  },
+);
 
 //  Detail (indiviudal Movie)
 
 export async function deleteMovie(id: number): Promise<void> {
   await pool.query(`DELETE from movies WHERE id = ?`, [id]);
-  revalidateTag('movies', 'max');
+  revalidatePath('/movies');
 }
 
 export async function getMovie(id: number): Promise<MovieRow | null> {
@@ -133,7 +126,7 @@ export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
     ],
   );
 
-  revalidateTag('movies', 'max');
+  revalidatePath('/movies');
 
   return {
     id: res.rows[0].id,
