@@ -16,6 +16,7 @@ type MovieGridItemProps = MoviePosterTypes & {
   voteInSession?: boolean;
   voteCompleted?: boolean;
   toggleVote?: () => void;
+  index?: number;
 };
 
 export function MovieGridItem({
@@ -28,6 +29,7 @@ export function MovieGridItem({
   selectable,
   selected,
   voteInSession,
+  index,
 }: MovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl flex flex-col">
@@ -38,6 +40,7 @@ export function MovieGridItem({
         urlRoute={urlRoute}
         selected={selected}
         className="rounded-2xl"
+        priority={index !== undefined && index < 4}
       />
       {onDelete && !selectable && !voteInSession && (
         <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />

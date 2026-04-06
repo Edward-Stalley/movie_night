@@ -8,7 +8,7 @@ import { MovieGridItem } from './MovieGridItem';
 import { MovieCardProps } from '@/lib/types/ui';
 import { MovieListItem } from './MovieListItem';
 
-export default function MovieCard({ movie, layout }: MovieCardProps) {
+export default function MovieCard({ movie, layout, index }: MovieCardProps) {
   const router = useRouter();
   const handleDelete = async () => {
     await deleteMovieFromMovies(movie);
@@ -35,6 +35,7 @@ export default function MovieCard({ movie, layout }: MovieCardProps) {
           urlRoute="movies"
           onDelete={handleDelete}
           onAdd={handleAddMovieToWatched}
+          index={index}
         />
       )}
 
