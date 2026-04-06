@@ -1,5 +1,5 @@
 import { pool } from '@/lib/db';
-import { unstable_cache } from 'next/cache';
+import { cacheLife, cacheTag, unstable_cache } from 'next/cache';
 import { revalidateTag } from 'next/cache';
 
 import {
@@ -47,7 +47,6 @@ WHERE vs.id = $1
     `,
     [id],
   );
-
   return res.rows as MovieNightSessionWithMovieRow[];
 }
 
