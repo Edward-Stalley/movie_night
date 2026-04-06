@@ -6,8 +6,6 @@ import { auth } from '@/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getUsers } from '@/lib/queries/users';
 
-export const dynamic = 'force-dynamic';
-
 export default async function WatchedMovieDetail({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   const loggedInUser = mapSessionToLoggedInUser(session);
