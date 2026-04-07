@@ -17,7 +17,6 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 // It is reconverted to a number here.
 
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
-  console.log('in here')
   try {
     const { id } = await context.params;
     const numericId = Number(id);
