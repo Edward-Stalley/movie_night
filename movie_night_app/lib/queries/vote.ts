@@ -294,6 +294,8 @@ export async function createVotingSession({
     }
 
     await connection.query('COMMIT');
+    revalidateTag('vote-sessions', 'max');
+
     return voteSessionId;
   } catch (error) {
     await connection.query('ROLLBACK');
