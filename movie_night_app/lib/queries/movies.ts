@@ -6,8 +6,7 @@ import { PaginatedResult } from '@/lib/types/pagination';
 import { StoredMovie } from '@/lib/types/domain';
 import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
 import { isSortKey } from '@/lib/utils/sort/isSortKey';
-import { cacheLife, cacheTag, revalidateTag } from 'next/cache';
-import { unstable_cache } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 
 const _getMovies = async ({
   limit,
@@ -113,8 +112,6 @@ WHERE m.id IN (${placeholders})
     `,
     ids,
   );
-
-  // cacheTag(`movies-${ids}`);
 
   return res.rows as MovieRow[];
 };

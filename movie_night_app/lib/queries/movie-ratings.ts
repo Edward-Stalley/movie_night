@@ -1,4 +1,3 @@
-'use cache';
 import { pool } from '@/lib/db';
 import { ReviewInsert } from '@/lib/types/db';
 import { revalidateTag } from 'next/cache';

@@ -3,9 +3,7 @@ import { pool } from '@/lib/db';
 import { WatchedMoviesQuery, WatchedMovieRow, WatchedMovieInsert } from '@/lib/types/db';
 import { UserId } from '../types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
-import { cacheTag, revalidateTag } from 'next/cache';
-import { cacheLife } from 'next/cache';
-import { connection } from 'next/server';
+import { revalidateTag, unstable_cache } from 'next/cache';
 
 const SORT_MAP = {
   watchedOn: 'wm.watched_on',
@@ -22,14 +20,12 @@ const ORDER_MAP = {
 } as const;
 
 // ## (GET) : Get list of watched movies with pagination
-export async function getWatchedMovies({
+const _getWatchedMovies = async ({
   limit,
   offset,
   sortBy,
   order,
-}: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> {
-  'use cache';
-
+}: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> => {
   console.log('DB HIT: fetching watched movies', { limit, offset, sortBy, order });
 
   const sortColumn = SORT_MAP[sortBy as SortKey] ?? SORT_MAP.watchedOn;
@@ -71,17 +67,16 @@ LIMIT $1 OFFSET $2
   const countRes = await pool.query('SELECT COUNT(*) AS total FROM watched_movies');
   const total = parseInt(countRes.rows[0].total, 10);
 
-  cacheLife('hours');
-  cacheTag(`watched-movies`);
-  cacheTag(`watched-movies-${limit}-${offset}-${sortBy}-${order}`);
   return { data: rows, total };
-}
+};
+
+export const getWatchedMovies = unstable_cache(_getWatchedMovies, ['watched-movies'], {
+  revalidate: 3600,
+  tags: ['watched-movies'],
+});
 
 // ## (DETAIL) SHOW: get individual watched movie
-export async function showWatchedMovie(id: number): Promise<WatchedMovieRow[] | null> {
-  'use cache';
-  // await connection();
-
+const _showWatchedMovie = async (id: number): Promise<WatchedMovieRow[] | null> => {
   const res = await pool.query(
     `
 SELECT
@@ -111,12 +106,15 @@ WHERE m.id = $1
     [id],
   );
 
-  cacheLife('hours');
-  cacheTag(`watched-movies-${id}`);
-
   if (res.rows.length === 0) return null;
   return res.rows as WatchedMovieRow[];
-}
+};
+
+export const showWatchedMovie = (id: number) =>
+  unstable_cache(() => _showWatchedMovie(id), [`watched-movies-${id}`], {
+    revalidate: 3600,
+    tags: [`watched-movies`],
+  })();
 
 // ## (POST) : Add individual watched movie
 export async function addWatchedMovie(
