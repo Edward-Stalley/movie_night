@@ -25,7 +25,6 @@ export default async function VotingSessionContent({
 
   // TRANSFORM
   const sessionRows = await getVoteSessionMovieRows(numericId);
-
   const voteSession = toVoteSessionMovie(sessionRows);
 
   if (!voteSession || !voteSession.movies.length) {

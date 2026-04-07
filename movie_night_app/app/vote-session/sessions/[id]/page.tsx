@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import VotingSessionContent from './VotingSessionContent';
+import VotingSessionContent from './Content';
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (

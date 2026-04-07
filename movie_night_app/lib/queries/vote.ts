@@ -50,6 +50,9 @@ WHERE vs.id = $1
     `,
     [id],
   );
+
+  cacheLife('hours');
+  cacheTag(`vote-session-movies-${id}`);
   return res.rows as MovieNightSessionWithMovieRow[];
 }
 
@@ -68,11 +71,14 @@ FROM vote_sessions
     `,
   );
 
+  cacheLife('hours');
+  cacheTag('vote-sessions');
   return res.rows as MovieNightSessionRow[];
 }
 
 export async function deleteVoteSession(sessionId: number): Promise<void> {
   await pool.query(`DELETE FROM vote_sessions WHERE id = $1`, [sessionId]);
+  revalidateTag('vote-sessions', 'max');
 }
 
 export async function closeVotingSession({
@@ -87,6 +93,7 @@ export async function closeVotingSession({
     [voteSessionId],
   );
 
+  revalidateTag('vote-sessions', 'max');
   return 'completed';
 }
 
@@ -100,11 +107,16 @@ export async function addVote(vote: VoteKey) {
     [vote.voteSessionId, vote.userId, vote.movieId],
   );
 
+  cacheLife('hours');
+  revalidateTag(`vote-session-votes-${vote.voteSessionId}`, 'max');
+
   return { id: res.rows[0].id };
 }
 
-export async function deleteVote(voteId: number): Promise<void> {
+export async function deleteVote(voteId: number, voteSessionId: number): Promise<void> {
   await pool.query(`DELETE FROM votes WHERE id = $1`, [voteId]);
+
+  revalidateTag(`vote-session-votes-${voteSessionId}`, 'max');
 }
 
 export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId }: VoteKey) {
@@ -126,6 +138,7 @@ export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId
 export async function getAllVotesForMovieSession({
   voteSessionId,
 }: VoteSessionFilter): Promise<VoteRow[]> {
+  'use cache';
   const res = await pool.query(
     `
     SELECT id, vote_session_id, user_id, movie_id
@@ -134,6 +147,8 @@ export async function getAllVotesForMovieSession({
     `,
     [voteSessionId],
   );
+
+  cacheTag(`vote-session-votes-${voteSessionId}`);
 
   return res.rows as VoteRow[];
 }
