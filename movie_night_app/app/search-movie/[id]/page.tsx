@@ -1,21 +1,10 @@
-import SearchedMovieCard from '@/app/components/searchedMovies/SearchedMovieCard';
-import { getSearchedMovieDetails } from '@/lib/external/tmdb';
-import { toSearchedMovie } from '@/lib/transform';
+import { Suspense } from 'react';
+import SearchMovieDetailContent from './SearchMovieDetailContent';
 
-export default async function MovieDetail({ params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
-
-  const numericId = Number(id);
-  const data = await getSearchedMovieDetails(numericId);
-
-  if (!data) {
-    return <div>Movie Not Found</div>;
-  }
-  const movie = toSearchedMovie(data);
-
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <div>
-      <SearchedMovieCard movie={movie} key={movie.tmdbId} layout="list" isDetailScreen={true} />
-    </div>
+    <Suspense>
+      <SearchMovieDetailContent params={params} />
+    </Suspense>
   );
 }

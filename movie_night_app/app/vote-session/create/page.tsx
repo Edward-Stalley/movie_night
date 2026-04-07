@@ -8,6 +8,7 @@ import { PAGE_SIZES } from '@/lib/config/pagination';
 import { toStoredMovies } from '@/lib/transform';
 import { MovieSortValue, SortOrder } from '@/lib/types/sort';
 import { getUnwatchedMovies } from '@/lib/queries/vote';
+import { Suspense } from 'react';
 
 type SearchParams = {
   page?: string;
@@ -16,7 +17,7 @@ type SearchParams = {
   selected?: string;
 };
 
-export default async function Voting({ searchParams }: { searchParams: SearchParams }) {
+async function VotingContent({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
   const sort: MovieSortValue = params.sort ?? 'addedOn';
   const order: SortOrder = params.order === 'asc' ? 'asc' : 'desc';
@@ -50,5 +51,13 @@ export default async function Voting({ searchParams }: { searchParams: SearchPar
       sortOrder={order}
       selectedMovies={selectedMovies}
     />
+  );
+}
+
+export default function Vote({ searchParams }: { searchParams: SearchParams }) {
+  return (
+    <Suspense fallback={<div>Loading Content...</div>}>
+      <VotingContent searchParams={searchParams} />
+    </Suspense>
   );
 }

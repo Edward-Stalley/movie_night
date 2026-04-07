@@ -8,6 +8,7 @@ import { getUsers } from '@/lib/queries/users';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { buildQuery } from '@/lib/utils/query';
 import { WatchedMovieSortValue, SortOrder } from '@/lib/types/sort';
+import { Suspense } from 'react';
 
 type SearchParams = {
   page?: string;
@@ -15,7 +16,7 @@ type SearchParams = {
   order?: SortOrder;
 };
 
-export default async function WatchedMovies({ searchParams }: { searchParams: SearchParams }) {
+async function WatchedMoviesDetail({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
   const sort: WatchedMovieSortValue = params.sort ?? 'watchedOn';
   const order: SortOrder = params.order ?? 'desc';
@@ -47,5 +48,13 @@ export default async function WatchedMovies({ searchParams }: { searchParams: Se
       sortValue={sort}
       sortOrder={order}
     />
+  );
+}
+
+export default function WatchedMovies({ searchParams }: { searchParams: SearchParams }) {
+  return (
+    <Suspense fallback={<div>Loading movies...</div>}>
+      <WatchedMoviesDetail searchParams={searchParams} />
+    </Suspense>
   );
 }

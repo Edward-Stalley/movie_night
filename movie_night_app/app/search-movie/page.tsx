@@ -7,6 +7,7 @@ import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import SearchedMoviesLayout from '../components/searchedMovies/SearchedMoviesLayout';
 import { SearchedMovieSortValue, SortOrder } from '@/lib/types/sort';
 import { sortSearchedMovies } from '@/lib/utils/sort/sortSearchedMovies';
+import { Suspense } from 'react';
 
 type SearchParams = {
   query?: string;
@@ -15,7 +16,7 @@ type SearchParams = {
   order?: SortOrder;
 };
 
-export default async function SearchMovie({ searchParams }: { searchParams: SearchParams }) {
+async function MoviesContent({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
 
   const query = params.query ?? '';
@@ -60,5 +61,13 @@ export default async function SearchMovie({ searchParams }: { searchParams: Sear
       sortValue={sort}
       sortOrder={order}
     />
+  );
+}
+
+export default async function SearchMovie({ searchParams }: { searchParams: SearchParams }) {
+  return (
+    <Suspense fallback={<div>Loading movies...</div>}>
+      <MoviesContent searchParams={searchParams} />
+    </Suspense>
   );
 }

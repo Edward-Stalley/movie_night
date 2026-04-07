@@ -6,8 +6,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import getUserFromId from '@/lib/utils/users/getUsersFromIds';
 import DeleteSessionButton from '@/app/components/vote-session/DeleteVoteSessionButton';
+import { connection } from 'next/server';
+import { Suspense } from 'react';
 
-export default async function VotingSessions() {
+async function VotingSessionsContent() {
+  await connection();
   const sessionRows = await getSessionRows();
   const sessions: VoteSession[] = sessionRows.map(toVoteSession);
 
@@ -78,5 +81,13 @@ export default async function VotingSessions() {
         <ul className="list bg-base-100 rounded-box shadow-md">{movieNightsession}</ul>
       </div>
     </div>
+  );
+}
+
+export default function VotingSessions() {
+  return (
+    <Suspense fallback={<div>Loading Sessions...</div>}>
+      <VotingSessionsContent />
+    </Suspense>
   );
 }

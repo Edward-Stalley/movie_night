@@ -7,6 +7,7 @@ import { auth } from '@/auth';
 import { PAGE_SIZES } from '@/lib/config/pagination';
 import { MovieSortValue, SortOrder } from '@/lib/types/sort';
 import { buildQuery } from '@/lib/utils/query';
+import { Suspense } from 'react';
 
 type SearchParams = {
   page?: string;
@@ -14,24 +15,23 @@ type SearchParams = {
   order?: SortOrder;
 };
 
-  // PreFetch Pages
-  export async function generateStaticParams() {
-    const { total } = await getMovies({
-      limit: 1,
-      offset: 0,
-      sortBy: 'title',
-      order: 'asc',
-    });
+// PreFetch Pages
+export async function generateStaticParams() {
+  const { total } = await getMovies({
+    limit: 1,
+    offset: 0,
+    sortBy: 'title',
+    order: 'asc',
+  });
 
-    const pages = Math.ceil(total / 20);
+  const pages = Math.ceil(total / 20);
 
-    return Array.from({ length: Math.min(pages, 4) }, (_, i) => ({
-      page: String(i + 1),
-    }));
-  }
+  return Array.from({ length: Math.min(pages, 4) }, (_, i) => ({
+    page: String(i + 1),
+  }));
+}
 
-
-export default async function Movies({ searchParams }: { searchParams: SearchParams }) {
+async function MoviesContent({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
   const sort: MovieSortValue = params.sort ?? 'addedOn';
   const order: SortOrder = params.order === 'asc' ? 'asc' : 'desc';
@@ -56,5 +56,13 @@ export default async function Movies({ searchParams }: { searchParams: SearchPar
       sortValue={sort}
       sortOrder={order}
     />
+  );
+}
+
+export default async function Movies({ searchParams }: { searchParams: SearchParams }) {
+  return (
+    <Suspense fallback={<div>Loading movies...</div>}>
+      <MoviesContent searchParams={searchParams} />
+    </Suspense>
   );
 }

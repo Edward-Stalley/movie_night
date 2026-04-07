@@ -13,6 +13,7 @@ import {
 } from '../types/db';
 import { VoteSessionStatus } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
+import { connection } from 'next/server';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -27,6 +28,8 @@ type CreateVoteSessionQuery = {
 export async function getVoteSessionMovieRows(
   id: number,
 ): Promise<MovieNightSessionWithMovieRow[]> {
+  'use cache';
+
   const res = await pool.query(
     `
 SELECT
@@ -51,6 +54,8 @@ WHERE vs.id = $1
 }
 
 export async function getSessionRows(): Promise<MovieNightSessionRow[]> {
+  await connection();
+
   const res = await pool.query(
     `
 SELECT
@@ -150,12 +155,12 @@ function isSortKey(value: string): value is SortKey {
   return value in MOVIE_SORT_MAP;
 }
 
-const _getUnwatchedMovies = async ({
+export async function getUnwatchedMovies({
   limit,
   offset,
   sortBy,
   order,
-}: MoviesQuery): Promise<PaginatedResult<MovieRow>> => {
+}: MoviesQuery): Promise<PaginatedResult<MovieRow>> {
   const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
   const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
 
@@ -192,13 +197,7 @@ const _getUnwatchedMovies = async ({
     data: res.rows as MovieRow[],
     total: countRes.rows[0].total,
   };
-};
-
-export const getUnwatchedMovies = unstable_cache(
-  async (query: MoviesQuery) => _getUnwatchedMovies(query),
-  ['unwatched-movies'],
-  { revalidate: 3600, tags: ['movies'] },
-);
+}
 
 // --------------------------
 // GET MOVIES BY IDs
