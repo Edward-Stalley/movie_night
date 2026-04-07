@@ -108,7 +108,6 @@ export async function addVote(vote: VoteKey) {
   );
 
   cacheLife('hours');
-  revalidateTag(`vote-session-votes-${vote.voteSessionId}`, 'max');
 
   return { id: res.rows[0].id };
 }
