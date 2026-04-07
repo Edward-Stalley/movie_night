@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout, VoteMoviesLayoutProps } from '@/lib/types/ui';
 import VoteMovieCard from './VoteMovieCard';
 import { VoteKey, WatchedMovieInsert } from '@/lib/types/db';
@@ -18,6 +18,17 @@ export default function VoteSessionLayout({
   voteSession,
   votesByMovie,
 }: VoteMoviesLayoutProps) {
+  const [votes, setVotes] = useState(votesByMovie);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const res = await fetch(`/api/vote-session/${voteSession.id}/votes`);
+      const data = await res.json();
+      setVotes(data);
+    }, 1000); // every 1 second
+    return () => clearInterval(interval);
+  }, []);
+
   const [layout] = useState<Layout>('grid');
   const headerTitle = 'Vote For Movie';
   const router = useRouter();
@@ -49,7 +60,7 @@ export default function VoteSessionLayout({
   const winner =
     votesByMovie.length === 0
       ? null
-      : votesByMovie.reduce((currentWinner, movie) => {
+      : votes.reduce((currentWinner, movie) => {
           if (movie.count > currentWinner.count) {
             return movie;
           }
@@ -83,7 +94,8 @@ export default function VoteSessionLayout({
   const moviesForVoting = (
     <div className="flex  gap-4 p-4 bg-base-300 rounded-box w-full list-none">
       {movies.map((movie) => {
-        const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
+        // const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
+        const voteInfo = votes.find((vote) => vote.movieId === movie.id);
         const userVoted = didUserVote(voteInfo);
         const displayWinner = !voteInProgress && winner?.movieId === voteInfo?.movieId;
         return (
