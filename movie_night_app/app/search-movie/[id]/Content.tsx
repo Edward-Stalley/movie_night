@@ -1,8 +1,13 @@
 import SearchedMovieCard from '@/app/components/searchedMovies/SearchedMovieCard';
 import { getSearchedMovieDetails } from '@/lib/external/tmdb';
 import { toSearchedMovie } from '@/lib/transform';
+import { notFound } from 'next/navigation';
 
-export default async function SearchMovieDetailContent({ params }: { params: Promise<{ id: string }> }) {
+export default async function SearchMovieDetailContent({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const numericId = Number(id);
 

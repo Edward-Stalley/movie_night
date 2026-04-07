@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import MovieDetailContent from './MovieDetailContent';
+import MovieDetailContent from './Content';
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
