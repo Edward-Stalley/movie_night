@@ -79,7 +79,8 @@ LIMIT $1 OFFSET $2
 
 // ## (DETAIL) SHOW: get individual watched movie
 export async function showWatchedMovie(id: number): Promise<WatchedMovieRow[] | null> {
-  await connection();
+  'use cache';
+  // await connection();
 
   const res = await pool.query(
     `

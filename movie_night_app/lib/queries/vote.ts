@@ -13,7 +13,6 @@ import {
 } from '../types/db';
 import { VoteSessionStatus } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
-import { connection } from 'next/server';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -57,7 +56,7 @@ WHERE vs.id = $1
 }
 
 export async function getSessionRows(): Promise<MovieNightSessionRow[]> {
-  await connection();
+  'use cache';
 
   const res = await pool.query(
     `
@@ -98,6 +97,7 @@ export async function closeVotingSession({
 }
 
 export async function addVote(vote: VoteKey) {
+  'use cache';
   const res = await pool.query<{ id: number }>(
     `
     INSERT INTO votes(vote_session_id, user_id, movie_id)
@@ -120,6 +120,8 @@ export async function deleteVote(voteId: number, voteSessionId: number): Promise
 }
 
 export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId }: VoteKey) {
+  'use cache';
+
   const res = await pool.query(
     `
     SELECT id

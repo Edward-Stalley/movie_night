@@ -59,7 +59,7 @@ OFFSET $2
 }
 
 export async function deleteMovie(id: number): Promise<void> {
-  await pool.query(`DELETE from movies WHERE id = ?`, [id]);
+  await pool.query(`DELETE from movies WHERE id = $1`, [id]);
   revalidateTag('movies', 'max');
   revalidateTag(`movies-${id}`, 'max');
 }
