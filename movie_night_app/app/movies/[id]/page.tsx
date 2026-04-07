@@ -1,21 +1,10 @@
-import MovieCard from '@/app/components/movies/MovieCard';
-import { getMovie } from '@/lib/queries/movies';
-import { toStoredMovies } from '@/lib/transform';
+import { Suspense } from 'react';
+import MovieDetailContent from './Content';
 
-export default async function MovieDetail({ params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
-
-  const numericId = Number(id);
-  const data = await getMovie(numericId);
-
-  if (!data) {
-    return <div>Movie Not Found</div>;
-  }
-  const movie = toStoredMovies(data);
-
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <div>
-      <MovieCard movie={movie} key={movie.id} layout="list" />
-    </div>
+    <Suspense>
+      <MovieDetailContent params={params} />
+    </Suspense>
   );
 }

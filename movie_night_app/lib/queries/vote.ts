@@ -13,6 +13,7 @@ import {
 } from '../types/db';
 import { VoteSessionStatus } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
+import { connection } from 'next/server';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -27,6 +28,8 @@ type CreateVoteSessionQuery = {
 export async function getVoteSessionMovieRows(
   id: number,
 ): Promise<MovieNightSessionWithMovieRow[]> {
+  'use cache';
+
   const res = await pool.query(
     `
 SELECT
@@ -47,10 +50,15 @@ WHERE vs.id = $1
     `,
     [id],
   );
+
+  cacheLife('hours');
+  cacheTag(`vote-session-movies-${id}`);
   return res.rows as MovieNightSessionWithMovieRow[];
 }
 
 export async function getSessionRows(): Promise<MovieNightSessionRow[]> {
+  await connection();
+
   const res = await pool.query(
     `
 SELECT
@@ -63,11 +71,14 @@ FROM vote_sessions
     `,
   );
 
+  cacheLife('hours');
+  cacheTag('vote-sessions');
   return res.rows as MovieNightSessionRow[];
 }
 
 export async function deleteVoteSession(sessionId: number): Promise<void> {
   await pool.query(`DELETE FROM vote_sessions WHERE id = $1`, [sessionId]);
+  revalidateTag('vote-sessions', 'max');
 }
 
 export async function closeVotingSession({
@@ -82,6 +93,7 @@ export async function closeVotingSession({
     [voteSessionId],
   );
 
+  revalidateTag('vote-sessions', 'max');
   return 'completed';
 }
 
@@ -95,11 +107,16 @@ export async function addVote(vote: VoteKey) {
     [vote.voteSessionId, vote.userId, vote.movieId],
   );
 
+  cacheLife('hours');
+  revalidateTag(`vote-session-votes-${vote.voteSessionId}`, 'max');
+
   return { id: res.rows[0].id };
 }
 
-export async function deleteVote(voteId: number): Promise<void> {
+export async function deleteVote(voteId: number, voteSessionId: number): Promise<void> {
   await pool.query(`DELETE FROM votes WHERE id = $1`, [voteId]);
+
+  revalidateTag(`vote-session-votes-${voteSessionId}`, 'max');
 }
 
 export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId }: VoteKey) {
@@ -121,6 +138,7 @@ export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId
 export async function getAllVotesForMovieSession({
   voteSessionId,
 }: VoteSessionFilter): Promise<VoteRow[]> {
+  'use cache';
   const res = await pool.query(
     `
     SELECT id, vote_session_id, user_id, movie_id
@@ -129,6 +147,8 @@ export async function getAllVotesForMovieSession({
     `,
     [voteSessionId],
   );
+
+  cacheTag(`vote-session-votes-${voteSessionId}`);
 
   return res.rows as VoteRow[];
 }
@@ -150,12 +170,12 @@ function isSortKey(value: string): value is SortKey {
   return value in MOVIE_SORT_MAP;
 }
 
-const _getUnwatchedMovies = async ({
+export async function getUnwatchedMovies({
   limit,
   offset,
   sortBy,
   order,
-}: MoviesQuery): Promise<PaginatedResult<MovieRow>> => {
+}: MoviesQuery): Promise<PaginatedResult<MovieRow>> {
   const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
   const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
 
@@ -192,13 +212,7 @@ const _getUnwatchedMovies = async ({
     data: res.rows as MovieRow[],
     total: countRes.rows[0].total,
   };
-};
-
-export const getUnwatchedMovies = unstable_cache(
-  async (query: MoviesQuery) => _getUnwatchedMovies(query),
-  ['unwatched-movies'],
-  { revalidate: 3600, tags: ['movies'] },
-);
+}
 
 // --------------------------
 // GET MOVIES BY IDs

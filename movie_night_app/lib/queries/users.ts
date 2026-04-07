@@ -1,4 +1,5 @@
 // # Table: users
+'use cache';
 
 import { DBUserInsert, DBUserRow } from '@/lib/types/db';
 import { pool } from '../db';

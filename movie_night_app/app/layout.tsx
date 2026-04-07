@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/app/components/layout/Navbar';
+import { Suspense } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,7 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="sunset">
       <body className={`${geistSans.variable} ${geistMono.variable}  min-h-screen flex flex-col`}>
-        <Navbar />
+        <Suspense>
+          <Navbar />
+        </Suspense>
         {/* Children (Pages) layer */}
         <main className="flex flex-1 flex-col">{children}</main>
         {/* Modal layer */}

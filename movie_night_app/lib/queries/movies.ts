@@ -1,5 +1,4 @@
 //  ## General Movies
-'use cache';
 
 import { pool } from '@/lib/db';
 import { MovieRow, MovieInsert, MoviesQuery } from '@/lib/types/db';
@@ -16,7 +15,6 @@ export async function getMovies({
   order,
 }: MoviesQuery): Promise<PaginatedResult<MovieRow>> {
   'use cache';
-
   console.log('DB HIT: getMovies', limit, offset, sortBy, order);
 
   const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
@@ -52,22 +50,23 @@ OFFSET $2
   `);
 
   cacheLife('hours');
-  cacheTag('movies-.*/');
+  cacheTag(`movies`);
+  cacheTag(`movies-${limit}-${offset}-${sortBy}-${order}`);
   return {
     data: res.rows as MovieRow[],
     total: countRes.rows[0].total,
   };
 }
 
-//  Detail (indiviudal Movie)
-
 export async function deleteMovie(id: number): Promise<void> {
   await pool.query(`DELETE from movies WHERE id = ?`, [id]);
-  revalidateTag('movies-.*/', 'max');
+  revalidateTag('movies', 'max');
+  revalidateTag(`movies-${id}`, 'max');
 }
 
+//  Detail (indiviudal Movie)
 export async function getMovie(id: number): Promise<MovieRow | null> {
-  'use cache';
+  'use cache'
 
   const res = await pool.query(
     `
@@ -86,12 +85,13 @@ export async function getMovie(id: number): Promise<MovieRow | null> {
     [id],
   );
 
+  cacheTag(`movies-${id}`);
+
   return res.rows[0] as MovieRow;
 }
 
 export async function getSelectedMoviesByIds(ids: number[]): Promise<MovieRow[]> {
   'use cache';
-
   if (ids.length === 0) return [];
 
   const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
@@ -111,6 +111,8 @@ WHERE m.id IN (${placeholders})
     `,
     ids,
   );
+
+  cacheTag(`movies-${ids}`);
 
   return res.rows as MovieRow[];
 }
@@ -136,7 +138,7 @@ export async function addMovie(movie: MovieInsert): Promise<StoredMovie> {
     ],
   );
 
-  revalidateTag('movies-.*/', 'max');
+  revalidateTag('movies', 'max');
 
   return {
     id: res.rows[0].id,
