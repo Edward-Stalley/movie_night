@@ -8,7 +8,7 @@ export async function toggleVoteAction({ voteSessionId, userId, movieId }: VoteK
   const existingVote = await getVoteByUserMovieSession({ voteSessionId, userId, movieId });
 
   if (existingVote) {
-    await deleteVote(existingVote.id);
+    await deleteVote(existingVote.id, voteSessionId);
   } else {
     await addVote({ voteSessionId, userId, movieId });
   }
