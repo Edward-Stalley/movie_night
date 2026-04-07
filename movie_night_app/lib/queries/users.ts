@@ -1,18 +1,22 @@
 // # Table: users
-'use cache';
-
 import { DBUserInsert, DBUserRow } from '@/lib/types/db';
 import { pool } from '../db';
+import { revalidateTag, unstable_cache } from 'next/cache';
 
 // # GET USERS (LIST)
-export async function getUsers(): Promise<DBUserRow[]> {
+export const _getUsers = async (): Promise<DBUserRow[]> => {
   const res = await pool.query(`
     SELECT id, name , image
     FROM users
     `);
 
   return res.rows as DBUserRow[];
-}
+};
+
+export const getUsers = unstable_cache(_getUsers, ['users'], {
+  revalidate: 3600,
+  tags: ['users'],
+});
 
 // # CREATE USER
 // # IF USER DOES NOT EXIST IN DB → CREATE USER
@@ -26,13 +30,15 @@ export async function upsertUser(user: DBUserInsert) {
     `,
     [user.name, user.image, user.provider, user.providerAccountId],
   );
+
+  revalidateTag('users', 'max');
 }
 
 // # GET USER (SHOW)
 // ## ( Get Individual USER by "provider_account_id" )
-export async function getUserByProviderAccountId(
+export const _getUserByProviderAccountId = async (
   providerAccountId: string,
-): Promise<DBUserRow | null> {
+): Promise<DBUserRow | null> => {
   const res = await pool.query(
     `
   SELECT id, name, image
@@ -44,4 +50,13 @@ export async function getUserByProviderAccountId(
 
   if (res.rows.length === 0) return null;
   return res.rows[0] as DBUserRow;
-}
+};
+
+export const getUserByProviderAccountId = unstable_cache(
+  _getUserByProviderAccountId,
+  ['user-by-providerId'],
+  {
+    revalidate: 3600,
+    tags: ['user-by-providerId'],
+  },
+);
