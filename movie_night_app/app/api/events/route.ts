@@ -9,15 +9,11 @@ export async function GET() {
 
       function send(event: string, data?: string) {
         try {
-          if (data) {
-            controller.enqueue(encoder.encode(`event: ${event}\ndata: ${data}\n\n`));
-          } else {
-            controller.enqueue(encoder.encode(`event: ${event}\n\n`));
-          }
-        } catch {
-          // Controller is closed
-        }
+          if (data) controller.enqueue(encoder.encode(`event: ${event}\ndata: ${data}\n\n`));
+          else controller.enqueue(encoder.encode(`event: ${event}\n\n`));
+        } catch {}
       }
+
       const heartbeat = setInterval(() => {
         try {
           controller.enqueue(encoder.encode(`:\n\n`));
@@ -30,8 +26,10 @@ export async function GET() {
       await client.query('LISTEN votes_updated');
 
       client.on('notification', (msg) => {
-        if (msg.channel === 'sessions_updated') send('sessions-updated');
-        if (msg.channel === 'votes_updated') send('votes-updated', msg.payload);
+        try {
+          if (msg.channel === 'sessions_updated') send('sessions-updated', msg.payload);
+          if (msg.channel === 'votes_updated') send('votes-updated', msg.payload);
+        } catch {}
       });
 
       return () => {

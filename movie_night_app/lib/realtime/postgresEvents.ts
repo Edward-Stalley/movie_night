@@ -1,7 +1,8 @@
 import { pool } from '@/lib/db';
 
 export async function notifySessionsUpdated() {
-  await pool.query('NOTIFY sessions_updated');
+  const msg = 'session updated';
+  await pool.query(`NOTIFY sessions_updated , '${msg}'`);
 }
 
 export async function notifyVotesUpdated(sessionId: number) {
