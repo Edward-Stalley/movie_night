@@ -1,6 +1,12 @@
+// api/events/route.ts
 import { getListenerClient } from '@/lib/realtime/pgListener';
 
 export async function GET() {
+  // Only require at runtime
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    console.log('SSE route running at runtime');
+  }
+
   const client = await getListenerClient();
 
   const stream = new ReadableStream({
@@ -22,8 +28,13 @@ export async function GET() {
         }
       }, 25000);
 
-      await client.query('LISTEN sessions_updated');
-      await client.query('LISTEN votes_updated');
+      // Wrap LISTEN calls in try/catch to prevent build-time errors
+      try {
+        await client.query('LISTEN sessions_updated');
+        await client.query('LISTEN votes_updated');
+      } catch (err) {
+        console.warn('Postgres LISTEN failed:', err);
+      }
 
       client.on('notification', (msg) => {
         try {
@@ -32,9 +43,7 @@ export async function GET() {
         } catch {}
       });
 
-      return () => {
-        clearInterval(heartbeat);
-      };
+      return () => clearInterval(heartbeat);
     },
   });
 

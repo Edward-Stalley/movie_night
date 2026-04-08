@@ -61,7 +61,9 @@ export const getVoteSessionMovieRows = unstable_cache(
   },
 );
 
-export const getSessionRows = async (): Promise<MovieNightSessionRow[]> => {
+export const _getSessionRows = async (): Promise<MovieNightSessionRow[]> => {
+  console.log('DB Query Sessions');
+
   const res = await pool.query(
     `
 SELECT
@@ -77,10 +79,10 @@ FROM vote_sessions
   return res.rows as MovieNightSessionRow[];
 };
 
-// export const getSessionRows = unstable_cache(_getSessionRows, ['vote-sessions'], {
-//   revalidate: 3600,
-//   tags: ['vote-sessions'],
-// });
+export const getSessionRows = unstable_cache(_getSessionRows, ['vote-sessions'], {
+  revalidate: 3600,
+  tags: ['vote-sessions'],
+});
 
 export async function deleteVoteSession(sessionId: number): Promise<void> {
   await pool.query(`DELETE FROM vote_sessions WHERE id = $1`, [sessionId]);

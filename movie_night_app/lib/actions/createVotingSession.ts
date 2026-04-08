@@ -21,7 +21,6 @@ export async function createVotingSessionAction({
   const voteSessionId = await createVotingSession({ movieNightDate, movieIds, createdBy });
   revalidateTag('vote-sessions', 'max');
   await notifySessionsUpdated();
-  console.log('running notify session?');
 
   return voteSessionId;
 }
