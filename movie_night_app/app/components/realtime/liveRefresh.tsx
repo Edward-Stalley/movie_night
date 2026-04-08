@@ -7,7 +7,6 @@ export default function LiveRefresh() {
   const router = useRouter();
   useEffect(() => {
     const es = new EventSource('/api/events');
-    console.log('called live refresh');
 
     es.onmessage = (event) => {
       if (event.data === 'sessions-updated') {

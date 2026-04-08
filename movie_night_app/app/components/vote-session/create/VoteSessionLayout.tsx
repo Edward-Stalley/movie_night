@@ -10,6 +10,7 @@ import { closeVotingSessionAction } from '@/lib/actions/closeVoting';
 import { useRouter } from 'next/navigation';
 import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 import { useRef } from 'react';
+import VoteSessionListener from '@/lib/realtime/voteSessionListener';
 
 export default function VoteSessionLayout({
   movies,
@@ -18,7 +19,6 @@ export default function VoteSessionLayout({
   voteSession,
   votesByMovie,
 }: VoteMoviesLayoutProps) {
-  
   const [layout] = useState<Layout>('grid');
   const headerTitle = 'Vote For Movie';
   const router = useRouter();
@@ -45,7 +45,6 @@ export default function VoteSessionLayout({
     };
 
     await toggleVoteAction(vote);
-    
   };
 
   const winner =
@@ -203,6 +202,7 @@ export default function VoteSessionLayout({
 
   return (
     <div className="flex flex-col m-10 justify-center">
+      <VoteSessionListener voteSessionId={voteSession.id} />
       <div className="flex flex-col justify-center items-center">
         <h1 className="text-6xl badge h-fit badge-secondary font-bold m-4 p-4  badge-outline text-center">
           {headerTitle}
@@ -212,7 +212,6 @@ export default function VoteSessionLayout({
           <div>{carouselMovies}</div>
         </div>
       </div>
-
       <button
         onClick={handleSubmitSessionFinalVote}
         disabled={!voteInProgress}

@@ -13,6 +13,7 @@ import {
 } from '../types/db';
 import { VoteSessionStatus } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
+import { notifySessionsUpdated , notifyVotesUpdated} from '../realtime/postgresEvents';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -60,7 +61,7 @@ export const getVoteSessionMovieRows = unstable_cache(
   },
 );
 
-export const _getSessionRows = async (): Promise<MovieNightSessionRow[]> => {
+export const getSessionRows = async (): Promise<MovieNightSessionRow[]> => {
   const res = await pool.query(
     `
 SELECT
@@ -76,14 +77,15 @@ FROM vote_sessions
   return res.rows as MovieNightSessionRow[];
 };
 
-export const getSessionRows = unstable_cache(_getSessionRows, ['vote-sessions'], {
-  revalidate: 3600,
-  tags: ['vote-sessions'],
-});
+// export const getSessionRows = unstable_cache(_getSessionRows, ['vote-sessions'], {
+//   revalidate: 3600,
+//   tags: ['vote-sessions'],
+// });
 
 export async function deleteVoteSession(sessionId: number): Promise<void> {
   await pool.query(`DELETE FROM vote_sessions WHERE id = $1`, [sessionId]);
-  revalidateTag('vote-sessions', 'max');
+  revalidateTag('vote-sessions', 'default');
+  await notifySessionsUpdated();
 }
 
 export async function closeVotingSession({
@@ -98,7 +100,7 @@ export async function closeVotingSession({
     [voteSessionId],
   );
 
-  revalidateTag('vote-sessions', 'max');
+  revalidateTag('vote-sessions', 'default');
   return 'completed';
 }
 
@@ -112,7 +114,8 @@ export async function addVote(vote: VoteKey) {
     [vote.voteSessionId, vote.userId, vote.movieId],
   );
 
-  revalidateTag(`vote-session-votes-${vote.voteSessionId}`, 'max');
+  revalidateTag(`vote-session-votes-${vote.voteSessionId}`, 'default');
+  // await notifyVotesUpdated(vote.voteSessionId);
 
   return { id: res.rows[0].id };
 }
@@ -120,7 +123,8 @@ export async function addVote(vote: VoteKey) {
 export async function deleteVote(voteId: number, voteSessionId: number): Promise<void> {
   await pool.query(`DELETE FROM votes WHERE id = $1`, [voteId]);
 
-  revalidateTag(`vote-session-votes-${voteSessionId}`, 'max');
+  revalidateTag(`vote-session-votes-${voteSessionId}`, 'default');
+  // await notifyVotesUpdated(voteSessionId);
 }
 
 export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId }: VoteKey) {
@@ -294,7 +298,8 @@ export async function createVotingSession({
     }
 
     await connection.query('COMMIT');
-    revalidateTag('vote-sessions', 'max');
+    revalidateTag('vote-sessions', 'default');
+    await notifySessionsUpdated();
 
     return voteSessionId;
   } catch (error) {
