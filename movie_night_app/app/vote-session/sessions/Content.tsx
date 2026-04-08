@@ -7,6 +7,7 @@ import Image from 'next/image';
 import getUserFromId from '@/lib/utils/users/getUsersFromIds';
 import DeleteSessionButton from '@/app/components/vote-session/DeleteVoteSessionButton';
 import { connection } from 'next/server';
+import LiveRefresh from '@/app/components/realtime/liveRefresh';
 
 export default async function VotingSessionsContent() {
   await connection();
@@ -76,6 +77,7 @@ export default async function VotingSessionsContent() {
       <div className="text-6xl mb-10 pl-2 badge badge-soft badge-secondary h-fit text-center  ">
         Movie Night Sessions
       </div>
+      <LiveRefresh />
       <div className="list">
         <ul className="list bg-base-100 rounded-box shadow-md">{movieNightsession}</ul>
       </div>
