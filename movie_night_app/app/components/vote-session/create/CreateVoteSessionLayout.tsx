@@ -172,13 +172,10 @@ export default function CreateVoteSessionLayout({
   return (
     <div className="bg-base-200 flex justify-center items-center flex-col">
       {voteStarted && <div className="flex rounded-2xl m-2">{carouselMovies}</div>}
-      <div className="flex justify-center items-center badge badge-soft h-fit gap-0 flex-col sm:flex-row">
-        <div className="pt-2 sm:pt-0">
-          <p className="text-xl badge badge-secondary badge-soft ">{headerTitle}</p>
-        </div>
+      <div className="flex justify-center items-center h-fit gap-0 flex-col sm:flex-row">
         <div>
           <form
-            className=" flex gap-2 p-2 rounded-2xl badge badge-soft badge-secondary h-14 m-2"
+            className=" flex gap-2 rounded-2xl badge badge-neutral h-14 m-2"
             onSubmit={handleSubmitCreateVote}
           >
             <DateInput
@@ -187,7 +184,7 @@ export default function CreateVoteSessionLayout({
               onChange={setMovieNightDate}
               min={getTodayLocal()}
             />
-            <button className="btn btn-secondary rounded-xl h-8">Create</button>
+            <button className="btn btn-secondary rounded-xl h-9 ">Create</button>
           </form>
         </div>
       </div>

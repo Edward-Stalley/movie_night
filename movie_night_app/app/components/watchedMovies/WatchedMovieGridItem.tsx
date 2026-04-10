@@ -39,7 +39,7 @@ export function WatchedMovieGridItem({
       {onDelete && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
       {onAdd && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
       <div className="flex gap-2 justify-center items-center p-1 w-full">
-        {watchedOn && <div className="">{watchedOn?.toDateString()}</div>}
+        {watchedOn && <div className="text-sm">{watchedOn?.toDateString()}</div>}
         {chosenByImage ? (
           <Image
             src={`${chosenByImage}`}
