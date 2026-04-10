@@ -180,7 +180,7 @@ export type VoteMovieCardCardProps = {
 export type CreateVotingSessionProps = {
   selectable?: boolean;
   selected?: boolean;
-  toggleSelect?: (id: number) => void;
+  toggleSelect?: (movie: StoredMovie) => void;
 };
 
 export type VotingSessionProps = {

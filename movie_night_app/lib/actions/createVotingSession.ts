@@ -1,7 +1,6 @@
 'use server';
 import { createVotingSession } from '@/lib/queries/vote';
 import { revalidateTag } from 'next/cache';
-import { notifySessionsUpdated } from '@/lib/realtime/postgresEvents';
 
 type CreateVotingSessionQuery = {
   movieNightDate: string;
@@ -20,7 +19,6 @@ export async function createVotingSessionAction({
 
   const voteSessionId = await createVotingSession({ movieNightDate, movieIds, createdBy });
   revalidateTag('vote-sessions', 'max');
-  await notifySessionsUpdated();
 
   return voteSessionId;
 }

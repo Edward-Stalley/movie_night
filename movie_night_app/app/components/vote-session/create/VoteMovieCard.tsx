@@ -21,7 +21,7 @@ export default function VoteMovieCard({
           urlRoute="movies"
           selectable={selectable}
           selected={selected}
-          toggleSelect={selectable ? () => toggleSelect?.(movie.id) : undefined}
+          toggleSelect={selectable ? () => toggleSelect?.(movie) : undefined}
         />
       )}
     </li>
