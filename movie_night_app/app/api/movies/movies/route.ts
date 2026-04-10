@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { addSearchedMovieToMoviesAction } from '@/lib/actions/addSearchedMovieToMovies';
 import { PAGE_SIZES } from '@/lib/config/pagination';
-import { getMovies, addMovie } from '@/lib/queries/movies';
+import { getMovies } from '@/lib/queries/movies';
 import { SearchedMovie } from '@/lib/types/domain';
 import { buildQuery } from '@/lib/utils/query';
 import { NextRequest, NextResponse } from 'next/server';
