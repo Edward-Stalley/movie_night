@@ -11,6 +11,7 @@ import { getTodayLocal } from '@/lib/utils/date/getTodayLocal';
 import VoteMovieCard from './VoteMovieCard';
 import { useRef, useEffect } from 'react';
 import { StoredMovie } from '@/lib/types/domain';
+import { toast } from 'sonner';
 
 export default function CreateVoteSessionLayout({
   movies,
@@ -46,15 +47,23 @@ export default function CreateVoteSessionLayout({
   const handleSubmitCreateVote = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    const voteSessionId = await createVotingSessionAction({
+    const result = await createVotingSessionAction({
       movieNightDate,
       movieIds: selectedIds,
       createdBy,
     });
 
+    if (!result.success) {
+      toast.error(result.message, {
+        className: 'error',
+      });
+
+      return;
+    }
+
     localStorage.removeItem('selectedMovies');
     setSelectedMovies([]);
-    router.replace(`/vote-session/sessions/${voteSessionId}`);
+    router.replace(`/vote-session/sessions/${result.data}`);
   };
 
   // ADD/REMOVE MOVIE FROM CAROUSEL

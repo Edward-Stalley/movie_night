@@ -13,6 +13,7 @@ import {
 } from '../types/db';
 import { VoteSessionStatus } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
+import { ActionResult, handleDbError } from '../db/errors/handleDbErrors';
 
 type CreateVoteSessionQuery = {
   movieNightDate: string;
@@ -266,12 +267,11 @@ export async function createVotingSession({
   movieNightDate,
   movieIds,
   createdBy,
-}: CreateVoteSessionQuery) {
+}: CreateVoteSessionQuery): Promise<ActionResult<number>> {
   const connection = await pool.connect();
 
   try {
     await connection.query('BEGIN');
-
     // STEP 1: CREATE VOTE SESSION
     const voteRes = await connection.query<{ id: number }>(
       `
@@ -298,10 +298,14 @@ export async function createVotingSession({
     await connection.query('COMMIT');
     revalidateTag('vote-sessions', 'max');
 
-    return voteSessionId;
+    return {
+      success: true,
+      data: voteSessionId,
+    };
   } catch (error) {
     await connection.query('ROLLBACK');
-    throw error;
+
+    return handleDbError(error);
   } finally {
     connection.release();
   }

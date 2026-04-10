@@ -14,11 +14,11 @@ export async function createVotingSessionAction({
   createdBy,
 }: CreateVotingSessionQuery) {
   if (!movieNightDate || movieIds.length === 0) {
-    throw new Error('Invalid vote data');
+    throw new Error('Invalid  Data');
   }
 
-  const voteSessionId = await createVotingSession({ movieNightDate, movieIds, createdBy });
+  const result = await createVotingSession({ movieNightDate, movieIds, createdBy });
   revalidateTag('vote-sessions', 'max');
 
-  return voteSessionId;
+  return result;
 }
