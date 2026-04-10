@@ -271,7 +271,6 @@ export async function createVotingSession({
 
   try {
     await connection.query('BEGIN');
-
     // STEP 1: CREATE VOTE SESSION
     const voteRes = await connection.query<{ id: number }>(
       `
@@ -301,6 +300,8 @@ export async function createVotingSession({
     return voteSessionId;
   } catch (error) {
     await connection.query('ROLLBACK');
+
+    // return handleDbError(error);
     throw error;
   } finally {
     connection.release();

@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useState } from 'react';
 import { GridOrList } from '@/app/components/layout/GridOrList';
@@ -11,6 +12,8 @@ import { getTodayLocal } from '@/lib/utils/date/getTodayLocal';
 import VoteMovieCard from './VoteMovieCard';
 import { useRef, useEffect } from 'react';
 import { StoredMovie } from '@/lib/types/domain';
+import { messages } from '@/lib/config/messages';
+import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
 
 export default function CreateVoteSessionLayout({
   movies,
@@ -46,15 +49,19 @@ export default function CreateVoteSessionLayout({
   const handleSubmitCreateVote = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    const voteSessionId = await createVotingSessionAction({
+    const result = await createVotingSessionAction({
       movieNightDate,
       movieIds: selectedIds,
       createdBy,
     });
 
+    if (!handleActionToast(result, messages.success.votes_session.created)) {
+      return;
+    }
+
     localStorage.removeItem('selectedMovies');
     setSelectedMovies([]);
-    router.replace(`/vote-session/sessions/${voteSessionId}`);
+    router.replace(`/vote-session/sessions/${result.data}`);
   };
 
   // ADD/REMOVE MOVIE FROM CAROUSEL
@@ -138,17 +145,24 @@ export default function CreateVoteSessionLayout({
 
   //  SAVE SELECTED MOVIES TO LOCAL STORAGE
   // SELECTED MOVIES PERSIST ON PAGE CHANGE
+
   useEffect(() => {
-    const saved = localStorage.getItem('selectedMovies');
-    if (saved) {
-      try {
-        setSelectedMovies(JSON.parse(saved));
-      } catch {
-        localStorage.removeItem('selectedMovies');
-      }
-    }
     setIsHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const saved = localStorage.getItem('selectedMovies');
+
+    if (!saved) return;
+
+    try {
+      setSelectedMovies(JSON.parse(saved));
+    } catch {
+      localStorage.removeItem('selectedMovies');
+    }
+  }, [isHydrated]);
 
   useEffect(() => {
     if (!isHydrated) return;

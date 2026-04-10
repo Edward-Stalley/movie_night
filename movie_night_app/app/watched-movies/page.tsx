@@ -1,6 +1,7 @@
 import { WatchedMovieSearchParams } from '@/lib/types/params';
 import { Suspense } from 'react';
 import WatchedMoviesDetail from './Content';
+import Loading from '../components/layout/Loading';
 
 export default function WatchedMovies({
   searchParams,
@@ -8,7 +9,7 @@ export default function WatchedMovies({
   searchParams: WatchedMovieSearchParams;
 }) {
   return (
-    <Suspense fallback={<div>Loading movies...</div>}>
+    <Suspense fallback={<Loading />}>
       <WatchedMoviesDetail searchParams={searchParams} />
     </Suspense>
   );

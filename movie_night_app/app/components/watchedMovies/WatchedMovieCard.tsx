@@ -1,9 +1,11 @@
 'use client';
 import { WatchedMovieCardProps } from '@/lib/types/ui';
-import { deleteMovieFromWatched } from '@/lib/api/watched-movies';
 import { useRouter } from 'next/navigation';
 import { WatchedMovieGridItem } from '@/app/components/watchedMovies/WatchedMovieGridItem';
 import { WatchedMovieListItem } from '@/app/components/watchedMovies/WatchedMovieListItem';
+import { deleteMovieFromWatchedAction } from '@/lib/actions/deleteWatchedMovie';
+import { messages } from '@/lib/config/messages';
+import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
 
 export default function WatchedMovieCard({
   movie,
@@ -15,8 +17,10 @@ export default function WatchedMovieCard({
   const router = useRouter();
 
   const handleDelete = async () => {
-    await deleteMovieFromWatched(movie);
-    router.push('/watched-movies');
+    const result = await deleteMovieFromWatchedAction(movie);
+
+    if (!handleActionToast(result, messages.success.watched_movies.deleted))
+      router.push('/watched-movies');
   };
 
   return (

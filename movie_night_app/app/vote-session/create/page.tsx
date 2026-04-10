@@ -1,6 +1,7 @@
 import { MovieSortValue, SortOrder } from '@/lib/types/sort';
 import { Suspense } from 'react';
 import VotingContent from './Content';
+import Loading from '@/app/components/layout/Loading';
 
 type SearchParams = {
   page?: string;
@@ -11,7 +12,7 @@ type SearchParams = {
 
 export default function Vote({ searchParams }: { searchParams: SearchParams }) {
   return (
-    <Suspense fallback={<div>Loading Content...</div>}>
+    <Suspense fallback={<Loading />}>
       <VotingContent searchParams={searchParams} />
     </Suspense>
   );

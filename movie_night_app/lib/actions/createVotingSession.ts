@@ -1,6 +1,8 @@
 'use server';
 import { createVotingSession } from '@/lib/queries/vote';
 import { revalidateTag } from 'next/cache';
+import { actionSuccess } from '../utils/messageHandling/actionResult';
+import { mapDbErrorToActionResult } from '../db/errors/mapDbErrorToActionResult';
 
 type CreateVotingSessionQuery = {
   movieNightDate: string;
@@ -13,12 +15,15 @@ export async function createVotingSessionAction({
   movieIds,
   createdBy,
 }: CreateVotingSessionQuery) {
-  if (!movieNightDate || movieIds.length === 0) {
-    throw new Error('Invalid vote data');
+  try {
+    if (!movieNightDate || movieIds.length === 0) {
+      return { success: false, message: 'Invalid Data' };
+    }
+
+    const voteSessionId = await createVotingSession({ movieNightDate, movieIds, createdBy });
+    revalidateTag('vote-sessions', 'max');
+    return actionSuccess(voteSessionId);
+  } catch (error) {
+    return mapDbErrorToActionResult(error);
   }
-
-  const voteSessionId = await createVotingSession({ movieNightDate, movieIds, createdBy });
-  revalidateTag('vote-sessions', 'max');
-
-  return voteSessionId;
 }
