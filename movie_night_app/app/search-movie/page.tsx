@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import MoviesContent from './Content';
 import { SearchMovieSearchParams } from '@/lib/types/params';
+import Loading from '../components/layout/Loading';
 
 export default async function SearchMovie({
   searchParams,
@@ -8,7 +9,7 @@ export default async function SearchMovie({
   searchParams: SearchMovieSearchParams;
 }) {
   return (
-    <Suspense fallback={<div>Loading movies...</div>}>
+    <Suspense fallback={<Loading />}>
       <MoviesContent searchParams={searchParams} />
     </Suspense>
   );

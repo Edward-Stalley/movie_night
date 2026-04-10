@@ -10,8 +10,11 @@ import { buildQuery } from '@/lib/utils/query';
 import { WatchedMovieSortValue, SortOrder } from '@/lib/types/sort';
 import { WatchedMovieSearchParams } from '@/lib/types/params';
 
-
-export default async function WatchedMoviesDetail({ searchParams }: { searchParams: WatchedMovieSearchParams }) {
+export default async function WatchedMoviesDetail({
+  searchParams,
+}: {
+  searchParams: WatchedMovieSearchParams;
+}) {
   const params = await searchParams;
   const sort: WatchedMovieSortValue = params.sort ?? 'watchedOn';
   const order: SortOrder = params.order ?? 'desc';

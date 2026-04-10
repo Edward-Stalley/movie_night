@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/app/components/layout/Navbar';
 import { Suspense } from 'react';
-import Toaster from './components/toast/Toaster';
+import ToasterComponent from './components/toast/Toaster';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -35,7 +35,7 @@ export default function RootLayout({
         </Suspense>
         {/* Children (Pages) layer */}
         <main className="flex flex-1 flex-col">
-          <Toaster />
+          <ToasterComponent />
           {children}
         </main>
         {/* Modal layer */}

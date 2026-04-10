@@ -1,1 +1,5 @@
-export type ActionResult<T> = { success: true; data: T } | { success: false; message: string };
+export type ActionResult<T = void> = {
+  success: boolean;
+  message?: string;
+  data?: T;
+};

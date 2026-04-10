@@ -1,4 +1,4 @@
-import { MoviePoster as MoviePosterTypes, SearchedMovieAddHandler } from '@/lib/types/ui';
+import { SearchedMovieAddHandler } from '@/lib/types/ui';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { AddSearchedMovieToMoviesButton } from './AddSearchedMovieToMoviesButton';
 import { SearchedMovie } from '@/lib/types/domain';

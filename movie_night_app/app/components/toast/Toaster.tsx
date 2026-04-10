@@ -1,6 +1,6 @@
 import { Toaster } from 'sonner';
 
-export default function () {
+export default function ToasterComponent() {
   return (
     <Toaster
       richColors

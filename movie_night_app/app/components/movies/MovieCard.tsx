@@ -3,10 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { WatchedMovieInsert } from '@/lib/types/db';
 import { deleteMovieFromMovies } from '@/lib/api/movies';
-import { addMovieToWatched } from '@/lib/api/watched-movies';
 import { MovieGridItem } from './MovieGridItem';
 import { MovieCardProps } from '@/lib/types/ui';
 import { MovieListItem } from './MovieListItem';
+import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
+import { messages } from '@/lib/config/messages';
+import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
 
 export default function MovieCard({ movie, layout, index }: MovieCardProps) {
   const router = useRouter();
@@ -21,8 +23,10 @@ export default function MovieCard({ movie, layout, index }: MovieCardProps) {
       watchedOn: new Date().toISOString().slice(0, 10),
       chosenBy: null,
     };
-    await addMovieToWatched(watchedMovieData);
-    router.refresh();
+
+    const result = await addWatchedMovieAction(watchedMovieData);
+
+    if (!handleActionToast(result, messages.success.watched_movies.added)) router.refresh();
   };
 
   return (
