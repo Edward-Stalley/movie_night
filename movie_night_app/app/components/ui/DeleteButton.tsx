@@ -9,7 +9,7 @@ type DeleteButtonProps = {
 export default function DeleteButton({ onDelete, id, className }: DeleteButtonProps) {
   return (
     <button
-      className={`btn btn-error ${className}`}
+      className={`btn btn-secondary btn-outline ${className}`}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();

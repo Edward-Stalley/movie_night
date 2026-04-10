@@ -45,9 +45,9 @@ export default function Session({ session, createdBy }: SessionsListProps) {
 
         <div>
           {session.status === 'inProgress' ? (
-            <div className="badge badge-secondary ">Vote in Progress</div>
+            <div className="badge badge-info ">Vote in Progress</div>
           ) : (
-            <div className="badge badge-info opacity-50">Complete</div>
+            <div className="badge badge-neutral opacity-50">Complete</div>
           )}
         </div>
       </Link>
