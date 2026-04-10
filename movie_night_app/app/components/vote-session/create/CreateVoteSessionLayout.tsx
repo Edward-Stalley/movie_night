@@ -4,36 +4,36 @@ import { useState } from 'react';
 import { GridOrList } from '@/app/components/layout/GridOrList';
 import { Layout, CreateVotingSessionLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_MOVIES } from '@/lib/config/sorts';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import DateInput from '@/app/components/ui/DateInput';
 import { createVotingSessionAction } from '@/lib/actions/createVotingSession';
 import { getTodayLocal } from '@/lib/utils/date/getTodayLocal';
 import VoteMovieCard from './VoteMovieCard';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
+import { StoredMovie } from '@/lib/types/domain';
 
 export default function CreateVoteSessionLayout({
   movies,
   pagination,
   sortValue,
   sortOrder,
-  selectedMovies,
   loggedInUser,
 }: CreateVotingSessionLayoutProps) {
   const [voteStarted] = useState<boolean>(true);
-  const searchParams = useSearchParams();
-  const initialSelected = searchParams.get('selected')
-    ? searchParams.get('selected')!.split(',').map(Number)
-    : [];
-
-  const [selectedIds, setSelectedIds] = useState<number[]>(initialSelected);
+  const [selectedMovies, setSelectedMovies] = useState<StoredMovie[]>([]);
+  const selectedIds = selectedMovies.map((m) => m.id);
+  const [isHydrated, setIsHydrated] = useState(false);
   const [layout, setLayout] = useState<Layout>('grid');
   const headerTitle = 'Create Vote Session';
   const router = useRouter();
   const [movieNightDate, setMovieNightDate] = useState(getTodayLocal());
   const createdBy = Number(loggedInUser?.id);
   const canToggleLayout = false;
-
+  const dateInputclassName = { input: 'h-10' };
   const carouselRef = useRef<HTMLDivElement>(null);
+  const nonCarouselMovies = movies.filter((movie) => !selectedIds.includes(movie.id));
+
+  //  SCROLL ARROW FUNCTIONS
   const scrollLeft = () => {
     carouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
   };
@@ -42,6 +42,7 @@ export default function CreateVoteSessionLayout({
     carouselRef.current?.scrollBy({ left: 300, behavior: 'smooth' });
   };
 
+  // CREATE
   const handleSubmitCreateVote = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
@@ -50,51 +51,49 @@ export default function CreateVoteSessionLayout({
       movieIds: selectedIds,
       createdBy,
     });
+
+    localStorage.removeItem('selectedMovies');
+    setSelectedMovies([]);
     router.replace(`/vote-session/sessions/${voteSessionId}`);
   };
 
-  const toggleSelect = (id: number) => {
-    const current = searchParams.get('selected')
-      ? searchParams.get('selected')!.split(',').map(Number)
-      : [];
+  // ADD/REMOVE MOVIE FROM CAROUSEL
+  const toggleSelect = (movie: StoredMovie) => {
+    setSelectedMovies((prev) => {
+      const exists = prev.some((m) => m.id === movie.id);
 
-    let updated;
+      if (exists) {
+        return prev.filter((m) => m.id !== movie.id);
+      }
 
-    if (current.includes(id)) {
-      updated = current.filter((m) => m !== id);
-    } else {
-      if (current.length >= 8) return;
-      updated = [...current, id];
-    }
+      if (prev.length >= 8) return prev;
 
-    setSelectedIds(updated);
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('selected', updated.join(','));
-
-    router.replace(`?${params.toString()}`);
+      return [...prev, movie];
+    });
   };
 
-  // VOTING
-  const selectedMoviesList = selectedMovies;
-
+  // CAROUSEL
   const carouselMovies = (
     <div className="relative w-64 sm:w-full max-w-6xl list-none">
       {/* LEFT ARROW */}
-      <button
-        onClick={scrollLeft}
-        className="hidden md:flex btn btn-circle absolute left-0 top-1/2 -translate-y-1/2 z-10"
-      >
-        ❮
-      </button>
+      {selectedMovies.length > 0 && (
+        <button
+          onClick={scrollLeft}
+          className="hidden md:flex btn btn-circle absolute left-0 top-1/2 -translate-y-1/2 z-10"
+        >
+          ❮
+        </button>
+      )}
 
       {/* RIGHT ARROW */}
-      <button
-        onClick={scrollRight}
-        className="hidden md:flex btn btn-circle absolute right-0 top-1/2 -translate-y-1/2 z-10"
-      >
-        ❯
-      </button>
+      {selectedMovies.length > 0 && (
+        <button
+          onClick={scrollRight}
+          className="hidden md:flex btn btn-circle absolute right-0 top-1/2 -translate-y-1/2 z-10"
+        >
+          ❯
+        </button>
+      )}
 
       {/* SCROLL CONTAINER */}
       <div
@@ -107,7 +106,7 @@ export default function CreateVoteSessionLayout({
         bg-base-100 rounded-box
       "
       >
-        {selectedMoviesList.map((movie) => (
+        {selectedMovies.map((movie) => (
           <div key={movie.id} className="snap-start shrink-0 w-36">
             <VoteMovieCard
               movie={movie}
@@ -115,7 +114,7 @@ export default function CreateVoteSessionLayout({
               CreateVotingSessionProps={{
                 selectable: voteStarted,
                 selected: selectedIds.includes(movie.id),
-                toggleSelect: toggleSelect,
+                toggleSelect: () => toggleSelect(movie),
               }}
             />
           </div>
@@ -123,8 +122,6 @@ export default function CreateVoteSessionLayout({
       </div>
     </div>
   );
-
-  const nonCarouselMovies = movies.filter((movie) => !selectedIds.includes(movie.id));
 
   const movieList = nonCarouselMovies.map((movie) => (
     <VoteMovieCard
@@ -134,15 +131,29 @@ export default function CreateVoteSessionLayout({
       CreateVotingSessionProps={{
         selectable: voteStarted,
         selected: selectedIds.includes(movie.id),
-        toggleSelect: toggleSelect,
+        toggleSelect: () => toggleSelect(movie),
       }}
     />
   ));
 
-  // Unique ClassName Object for DateInput
-  const className = {
-    input: 'h-10',
-  };
+  //  SAVE SELECTED MOVIES TO LOCAL STORAGE
+  // SELECTED MOVIES PERSIST ON PAGE CHANGE
+  useEffect(() => {
+    const saved = localStorage.getItem('selectedMovies');
+    if (saved) {
+      try {
+        setSelectedMovies(JSON.parse(saved));
+      } catch {
+        localStorage.removeItem('selectedMovies');
+      }
+    }
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+    localStorage.setItem('selectedMovies', JSON.stringify(selectedMovies));
+  }, [selectedMovies, isHydrated]);
 
   return (
     <div className="bg-base-200 flex justify-center items-center flex-col">
@@ -157,7 +168,7 @@ export default function CreateVoteSessionLayout({
             onSubmit={handleSubmitCreateVote}
           >
             <DateInput
-              className={className}
+              className={dateInputclassName}
               date={movieNightDate}
               onChange={setMovieNightDate}
               min={getTodayLocal()}
