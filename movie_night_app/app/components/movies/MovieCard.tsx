@@ -17,7 +17,6 @@ export default function MovieCard({ movie, layout, index, onDeleted, onAdd }: Mo
   const handleDelete = async () => {
     const result = await deleteMovieAction(movie);
 
-    console.log('delete in the client movie');
     const ok = handleActionToast(result, messages.success.movies.deleted);
 
     if (ok && onDeleted) {
@@ -26,7 +25,6 @@ export default function MovieCard({ movie, layout, index, onDeleted, onAdd }: Mo
   };
 
   const handleAddMovieToWatched = async () => {
-    console.log('adding movie to watched');
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,
       watchedOn: new Date().toISOString().slice(0, 10),
@@ -34,16 +32,11 @@ export default function MovieCard({ movie, layout, index, onDeleted, onAdd }: Mo
     };
 
     const result = await addWatchedMovieAction(watchedMovieData);
-
     const ok = handleActionToast(result, messages.success.watched_movies.added);
-    // const ok = handleActionToast(result, messages.success.watched_movies.added);
 
     if (ok && onAdd) {
-      console.log('inside ok for adding watched movie');
       onAdd(movie.id);
-
       router.refresh();
-      // router.push('/movies');
     }
   };
 

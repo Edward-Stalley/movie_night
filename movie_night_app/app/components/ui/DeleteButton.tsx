@@ -4,16 +4,18 @@ type DeleteButtonProps = {
   onDelete: (id: number) => Promise<void>;
   id: number;
   className?: string;
+  onDeleted?: (id: number) => void;
 };
 
-export default function DeleteButton({ onDelete, id, className }: DeleteButtonProps) {
+export default function DeleteButton({ onDelete, id, className, onDeleted }: DeleteButtonProps) {
   return (
     <button
       className={`btn btn-secondary btn-outline ${className}`}
-      onClick={(e) => {
+      onClick={async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        onDelete(id);
+        await onDelete(id);
+        onDeleted && onDeleted(id);
       }}
     >
       X

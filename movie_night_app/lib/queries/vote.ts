@@ -1,6 +1,4 @@
 import { pool } from '@/lib/db';
-import { unstable_cache } from 'next/cache';
-import { revalidateTag } from 'next/cache';
 
 import {
   VoteKey,
@@ -24,7 +22,7 @@ type CreateVoteSessionQuery = {
 // VOTE SESSION / MOVIE QUERIES
 // --------------------------
 
-export const _getVoteSessionMovieRows = async (
+export const getVoteSessionMovieRows = async (
   id: number,
 ): Promise<MovieNightSessionWithMovieRow[]> => {
   const res = await pool.query(
@@ -51,18 +49,7 @@ WHERE vs.id = $1
   return res.rows as MovieNightSessionWithMovieRow[];
 };
 
-export const getVoteSessionMovieRows = unstable_cache(
-  _getVoteSessionMovieRows,
-  ['vote-session-movies'],
-  {
-    revalidate: 3600,
-    tags: ['vote-session-movies'],
-  },
-);
-
-export const _getSessionRows = async (): Promise<MovieNightSessionRow[]> => {
-  console.log('DB Query Sessions');
-
+export const getSessionRows = async (): Promise<MovieNightSessionRow[]> => {
   const res = await pool.query(
     `
 SELECT
@@ -78,14 +65,8 @@ FROM vote_sessions
   return res.rows as MovieNightSessionRow[];
 };
 
-export const getSessionRows = unstable_cache(_getSessionRows, ['vote-sessions'], {
-  revalidate: 3600,
-  tags: ['vote-sessions'],
-});
-
 export async function deleteVoteSession(sessionId: number): Promise<void> {
   await pool.query(`DELETE FROM vote_sessions WHERE id = $1`, [sessionId]);
-  revalidateTag('vote-sessions', 'max');
 }
 
 export async function closeVotingSession({
@@ -100,7 +81,6 @@ export async function closeVotingSession({
     [voteSessionId],
   );
 
-  revalidateTag('vote-sessions', 'max');
   return 'completed';
 }
 
@@ -114,15 +94,11 @@ export async function addVote(vote: VoteKey) {
     [vote.voteSessionId, vote.userId, vote.movieId],
   );
 
-  revalidateTag(`vote-session-votes-${vote.voteSessionId}`, 'max');
-
   return { id: res.rows[0].id };
 }
 
 export async function deleteVote(voteId: number, voteSessionId: number): Promise<void> {
   await pool.query(`DELETE FROM votes WHERE id = $1`, [voteId]);
-
-  revalidateTag(`vote-session-votes-${voteSessionId}`, 'max');
 }
 
 export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId }: VoteKey) {
@@ -141,7 +117,7 @@ export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId
   return res.rows[0] ?? null;
 }
 
-export const _getAllVotesForMovieSession = async ({
+export const getAllVotesForMovieSession = async ({
   voteSessionId,
 }: VoteSessionFilter): Promise<VoteRow[]> => {
   const res = await pool.query(
@@ -155,12 +131,6 @@ export const _getAllVotesForMovieSession = async ({
 
   return res.rows as VoteRow[];
 };
-
-export const getAllVotesForMovieSession = ({ voteSessionId }: { voteSessionId: number }) =>
-  unstable_cache(
-    () => _getAllVotesForMovieSession({ voteSessionId }),
-    [`vote-session-votes-${voteSessionId}`],
-  )();
 
 // --------------------------
 // UNWATCHED MOVIES
@@ -179,7 +149,7 @@ function isSortKey(value: string): value is SortKey {
   return value in MOVIE_SORT_MAP;
 }
 
-export const _getUnwatchedMovies = async ({
+export const getUnwatchedMovies = async ({
   limit,
   offset,
   sortBy,
@@ -223,16 +193,11 @@ export const _getUnwatchedMovies = async ({
   };
 };
 
-export const getUnwatchedMovies = unstable_cache(_getUnwatchedMovies, ['unwatched-movies'], {
-  revalidate: 3600,
-  tags: ['unwatched-movies'],
-});
-
 // --------------------------
 // GET MOVIES BY IDs
 // --------------------------
 
-export const _getSelectedMoviesByIds = async (ids: number[]): Promise<MovieRow[]> => {
+export const getSelectedMoviesByIds = async (ids: number[]): Promise<MovieRow[]> => {
   if (ids.length === 0) return [];
 
   const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
@@ -254,9 +219,6 @@ WHERE m.id IN (${placeholders})
 
   return res.rows as MovieRow[];
 };
-
-export const getSelectedMoviesByIds = (ids: number[]) =>
-  unstable_cache(() => _getSelectedMoviesByIds(ids), [`selected-movies-${ids.join('-')}`]);
 
 // --------------------------
 // CREATE VOTING SESSION
@@ -295,13 +257,11 @@ export async function createVotingSession({
     }
 
     await connection.query('COMMIT');
-    revalidateTag('vote-sessions', 'max');
 
     return voteSessionId;
   } catch (error) {
     await connection.query('ROLLBACK');
 
-    // return handleDbError(error);
     throw error;
   } finally {
     connection.release();

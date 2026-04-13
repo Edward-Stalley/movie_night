@@ -2,20 +2,15 @@
 
 import { addVote, deleteVote, getVoteByUserMovieSession } from '@/lib/queries/vote';
 import { VoteKey } from '../types/db';
-// import { revalidatePath, revalidateTag } from 'next/cache';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 
 export async function toggleVoteAction({ voteSessionId, userId, movieId }: VoteKey) {
   const existingVote = await getVoteByUserMovieSession({ voteSessionId, userId, movieId });
-
   if (existingVote) {
     await deleteVote(existingVote.id, voteSessionId);
   } else {
     await addVote({ voteSessionId, userId, movieId });
   }
-
-  revalidateTag(`vote-session-votes-${voteSessionId}`, 'max');
-  // revalidatePath(`/vote-session/sessions/${voteSessionId}`);
-
+  revalidatePath(`/vote-session/sessions/${voteSessionId}`);
   return { success: 'true' };
 }
