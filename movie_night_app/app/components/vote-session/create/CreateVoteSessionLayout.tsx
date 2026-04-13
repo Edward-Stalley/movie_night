@@ -198,6 +198,8 @@ export default function CreateVoteSessionLayout({
           sortOrder={sortOrder}
           sortOptions={SORT_OPTIONS_MOVIES}
           canToggleLayout={canToggleLayout}
+          editMode={false}
+          setEditMode={() => {}}
         >
           {movieList}
         </GridOrList>

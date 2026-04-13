@@ -1,12 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { addSearchedMovieToMovies } from '@/lib/api/movies';
 import { SearchedMovieGridItem } from '@/app/components/searchedMovies/SearchedMovieGridItem';
 import { SearchedMovieCardProps } from '@/lib/types/ui';
 import { SearchedMovie } from '@/lib/types/domain';
 import { SearchedMovieListItem } from './SearchedMovieListItem';
-import { MovieInsert } from '@/lib/types/db';
 import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
 import { messages } from '@/lib/config/messages';
 import { addSearchedMovieToMoviesAction } from '@/lib/actions/addSearchedMovieToMovies';

@@ -217,5 +217,5 @@ export type ToolbarProps = {
   sortOrder: SortOrder;
   canToggleLayout?: boolean;
   editMode: boolean;
-  setEditMode: () => void;
+  setEditMode: (editMode: boolean) => void;
 };

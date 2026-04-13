@@ -32,6 +32,7 @@ export default async function WatchedMovieDetail({ params }: { params: Promise<{
         loggedInUser={loggedInUser}
         users={users}
         isDetailScreen={true}
+        editMode={false}
       />
     </ul>
   );
