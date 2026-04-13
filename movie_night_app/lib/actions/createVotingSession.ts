@@ -1,6 +1,5 @@
 'use server';
 import { createVotingSession } from '@/lib/queries/vote';
-import { revalidateTag } from 'next/cache';
 import { actionSuccess } from '../utils/messageHandling/actionResult';
 import { mapDbErrorToActionResult } from '../db/errors/mapDbErrorToActionResult';
 
@@ -21,7 +20,6 @@ export async function createVotingSessionAction({
     }
 
     const voteSessionId = await createVotingSession({ movieNightDate, movieIds, createdBy });
-    revalidateTag('vote-sessions', 'max');
     return actionSuccess(voteSessionId);
   } catch (error) {
     return mapDbErrorToActionResult(error);

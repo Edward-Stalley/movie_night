@@ -20,6 +20,7 @@ export default async function VotingSessionContent({
   params: Promise<{ id: string }>;
 }) {
   await connection();
+
   const { id } = await params;
   const numericId = Number(id);
 
@@ -50,7 +51,6 @@ export default async function VotingSessionContent({
   const voteRows = await getAllVotesForMovieSession({ voteSessionId: numericId });
   const votes = voteRows.map(toVote);
   const votesByMovie = countVotesByMovie(votes, users);
-
   return (
     <VoteSessionLayout
       movies={selectedMoviesList}

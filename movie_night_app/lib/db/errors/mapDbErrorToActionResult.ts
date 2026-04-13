@@ -4,7 +4,6 @@ import { actionError } from '@/lib/utils/messageHandling/actionResult';
 
 export function mapDbErrorToActionResult(error: unknown): ActionResult<never> {
   console.error('DB ERROR:', error);
-  console.log('in mapper?')
   const pgError = error as { code?: string; constraint?: string };
   // Unique constraint violations
   if (pgError.code === '23505') {
@@ -19,7 +18,6 @@ export function mapDbErrorToActionResult(error: unknown): ActionResult<never> {
 
   // Foreign key violation
   if (pgError.code === '23503') {
-    console.log('foreign error?')
     return actionError(messages.errors.foreign_key) as ActionResult<never>;
   }
 

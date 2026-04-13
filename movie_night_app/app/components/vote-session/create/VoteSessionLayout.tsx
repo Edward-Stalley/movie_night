@@ -42,7 +42,6 @@ export default function VoteSessionLayout({
       movieId: id,
       userId: Number(loggedInUser.id),
     };
-
     await toggleVoteAction(vote);
   };
 

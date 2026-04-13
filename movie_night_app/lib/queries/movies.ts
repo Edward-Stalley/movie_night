@@ -6,10 +6,6 @@ import { PaginatedResult } from '@/lib/types/pagination';
 import { StoredMovie } from '@/lib/types/domain';
 import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
 import { isSortKey } from '@/lib/utils/sort/isSortKey';
-// import { cacheLife, cacheTag, revalidatePath, revalidateTag } from 'next/cache';
-// import { revalidateTag, unstable_cache } from 'next/cache';
-
-// import { unstable_cache } from 'next/cache';
 
 export const getMovies = async ({
   limit,
@@ -17,8 +13,6 @@ export const getMovies = async ({
   sortBy,
   order,
 }: MoviesQuery): Promise<PaginatedResult<MovieRow>> => {
-  console.log('DB HIT: getMovies', limit, offset, sortBy, order);
-
   const sortColumn = isSortKey(sortBy) ? MOVIE_SORT_MAP[sortBy] : MOVIE_SORT_MAP.title;
 
   const sortDirection = order === 'asc' ? 'ASC' : 'DESC';
@@ -57,11 +51,6 @@ OFFSET $2
   };
 };
 
-// export const getMovies = unstable_cache(_getMovies, ['movies'], {
-//   tags: ['movies'],
-//   revalidate: 3600,
-// });
-
 export const deleteMovie = async (id: number): Promise<void> => {
   await pool.query(`DELETE from movies WHERE id = $1`, [id]);
 };
@@ -88,12 +77,6 @@ export const getMovie = async (id: number): Promise<MovieRow | null> => {
   return res.rows[0] as MovieRow;
 };
 
-// export const getMovie = (id: number) =>
-//   unstable_cache(() => _getMovie(id), [`movies-${id}`], {
-//     tags: [`movies`],
-//     revalidate: 3600,
-//   })();
-
 export const getSelectedMoviesByIds = async (ids: number[]): Promise<MovieRow[]> => {
   if (ids.length === 0) return [];
 
@@ -114,17 +97,8 @@ WHERE m.id IN (${placeholders})
     `,
     ids,
   );
-
-  // cacheTag(`movies-${ids}`);
-
   return res.rows as MovieRow[];
 };
-
-// export const getSelectedMoviesByIds = (ids: number[]) =>
-//   unstable_cache(() => _getSelectedMoviesByIds(ids), [`selected-movies-${ids.join('-')}`], {
-//     tags: ['movies'],
-//     revalidate: 3600,
-//   })();
 
 // ## (POST) : Add individual Movie to watched_movies.
 
@@ -146,8 +120,6 @@ export const addMovie = async (movie: MovieInsert): Promise<StoredMovie> => {
       movie.trailerUrl,
     ],
   );
-
-  // revalidateTag('movies', 'max');
 
   return {
     id: res.rows[0].id,
