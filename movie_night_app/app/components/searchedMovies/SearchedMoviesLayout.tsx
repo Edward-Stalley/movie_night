@@ -57,6 +57,7 @@ export default function SearchedMoviesLayout({
           sortOptions={SORT_OPTIONS_SEARCHED_MOVIES}
           editMode={editMode}
           setEditMode={handleToggleEditMode}
+          displayEditToggle={false}
         >
           {movieList}
         </GridOrList>

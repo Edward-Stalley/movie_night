@@ -200,6 +200,7 @@ export default function CreateVoteSessionLayout({
           canToggleLayout={canToggleLayout}
           editMode={false}
           setEditMode={() => {}}
+          displayEditToggle={false}
         >
           {movieList}
         </GridOrList>

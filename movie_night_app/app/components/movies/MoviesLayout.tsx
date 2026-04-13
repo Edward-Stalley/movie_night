@@ -59,6 +59,7 @@ export default function MoviesLayout({
       sortOptions={SORT_OPTIONS_MOVIES}
       editMode={editMode}
       setEditMode={handleToggleEditMode}
+      displayEditToggle={true}
     >
       {movieList}
     </GridOrList>

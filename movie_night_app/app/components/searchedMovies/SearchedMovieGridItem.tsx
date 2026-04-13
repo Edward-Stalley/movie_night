@@ -25,7 +25,7 @@ export function SearchedMovieGridItem({
         title={movie.title}
         className="rounded-2xl"
       />
-      {onAdd && editMode && <AddSearchedMovieToMoviesButton onAdd={onAdd} isDetailScreen={false} />}
+      {onAdd &&  <AddSearchedMovieToMoviesButton onAdd={onAdd} isDetailScreen={false} />}
     </div>
   );
 }
