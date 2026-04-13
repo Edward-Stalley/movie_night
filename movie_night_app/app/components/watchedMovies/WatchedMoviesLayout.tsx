@@ -26,6 +26,11 @@ export default function WatchedMoviesLayout({
     setWatchedMovieListState(movies);
   }, [movies]);
 
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const handleToggleEditMode = () => {
+    setEditMode((prev) => !prev);
+  };
+
   const movieList = watchedMovieListState.map((movie) => {
     return (
       <WatchedMovieCard
@@ -36,6 +41,7 @@ export default function WatchedMoviesLayout({
         users={users}
         isDetailScreen={false}
         onDeleted={handleDeleteWatchedMovie}
+        editMode={editMode}
       />
     );
   });
@@ -50,6 +56,8 @@ export default function WatchedMoviesLayout({
         sortValue={sortValue}
         sortOrder={sortOrder}
         sortOptions={SORT_OPTIONS_WATCHED_MOVIES}
+        editMode={editMode}
+        setEditMode={handleToggleEditMode}
       >
         {movieList}
       </GridOrList>

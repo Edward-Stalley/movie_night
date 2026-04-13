@@ -17,6 +17,7 @@ type MovieGridItemProps = MoviePosterTypes & {
   voteCompleted?: boolean;
   toggleVote?: () => void;
   index?: number;
+  editMode: boolean;
 };
 
 export function MovieGridItem({
@@ -30,6 +31,7 @@ export function MovieGridItem({
   selected,
   voteInSession,
   index,
+  editMode,
 }: MovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl flex flex-col">
@@ -42,10 +44,11 @@ export function MovieGridItem({
         className="rounded-2xl"
         priority={index !== undefined && index < 4}
       />
-      {onDelete && !selectable && !voteInSession && (
+
+      {onDelete && editMode && !selectable && !voteInSession && (
         <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />
       )}
-      {onAdd && !selectable && !voteInSession && (
+      {onAdd && editMode && !selectable && !voteInSession && (
         <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />
       )}
     </div>

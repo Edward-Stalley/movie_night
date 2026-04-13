@@ -80,7 +80,7 @@ export default function VoteSessionLayout({
   const loggedInUserId = Number(loggedInUser?.id);
 
   const moviesForVoting = (
-    <div className="flex  gap-4 p-4 bg-base-300 rounded-box w-full list-none">
+    <div className="flex gap-4 p-4  rounded-box w-full list-none">
       {movies.map((movie) => {
         const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
         const userVoted = didUserVote(voteInfo);
@@ -115,7 +115,13 @@ export default function VoteSessionLayout({
               </div>
               {voteInfo?.users.map((user) => (
                 <div className="" key={user.id}>
-                  {user.name}
+                  <Image
+                    src={`${user.image}`}
+                    alt={''}
+                    width={30}
+                    height={30}
+                    className="rounded-2xl h-auto w-auto "
+                  />
                 </div>
               ))}
             </div>
@@ -152,11 +158,12 @@ export default function VoteSessionLayout({
       <div
         ref={carouselRef}
         className="
-        flex gap-4 p-4 
+        flex gap-4 m-4
         overflow-x-auto scroll-smooth
         snap-x snap-mandatory
         scrollbar-hide
-        bg-base-100 rounded-box
+        bg-neutral rounded-box
+        justify-center 
       "
       >
         {moviesForVoting}
