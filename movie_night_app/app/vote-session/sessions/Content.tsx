@@ -4,9 +4,11 @@ import { toUser, toVoteSession } from '@/lib/transform';
 import { User, VoteSession } from '@/lib/types/domain';
 import { connection } from 'next/server';
 import SessionsLayout from '@/app/components/vote-session/SessionsLayout';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function VotingSessionsContent() {
   await connection();
+  noStore();
   const sessionRows = await getSessionRows();
   const sessions: VoteSession[] = sessionRows.map(toVoteSession);
 

@@ -8,9 +8,10 @@ import DeleteSessionButton from '@/app/components/vote-session/DeleteVoteSession
 interface SessionsListProps {
   session: VoteSession;
   createdBy: User;
+  onDeleted?: (id: number) => void;
 }
 
-export default function Session({ session, createdBy }: SessionsListProps) {
+export default function Session({ session, createdBy, onDeleted }: SessionsListProps) {
   return (
     <li
       key={session.id}
@@ -53,7 +54,7 @@ export default function Session({ session, createdBy }: SessionsListProps) {
       </Link>
 
       <div>
-        <DeleteSessionButton id={session.id} className="rounded-full" />
+        <DeleteSessionButton id={session.id} className="rounded-full" onDeleted={onDeleted} />
       </div>
     </li>
   );

@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { GridOrList } from '../layout/GridOrList';
 import { Layout, WatchedMoviesLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_WATCHED_MOVIES } from '@/lib/config/sorts';
-import router from 'next/navigation';
 
 export default function WatchedMoviesLayout({
   movies,
