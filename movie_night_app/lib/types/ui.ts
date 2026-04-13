@@ -58,6 +58,7 @@ export type WatchedMovieCardProps = {
   loggedInUser?: LoggedInUser;
   users: User[];
   isDetailScreen: boolean;
+  onDeleted?: (id: number) => void;
 };
 
 export type IconProps = React.SVGProps<SVGSVGElement>;
@@ -168,6 +169,8 @@ export type MovieCardProps = {
   layout?: Layout;
   isDetailScreen?: boolean;
   index?: number;
+  onDeleted?: (id: number) => void;
+  onAdd?: (id: number) => void;
 };
 
 export type VoteMovieCardCardProps = {

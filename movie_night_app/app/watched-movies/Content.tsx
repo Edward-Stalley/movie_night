@@ -9,12 +9,14 @@ import { PAGE_SIZES } from '@/lib/config/pagination';
 import { buildQuery } from '@/lib/utils/query';
 import { WatchedMovieSortValue, SortOrder } from '@/lib/types/sort';
 import { WatchedMovieSearchParams } from '@/lib/types/params';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function WatchedMoviesDetail({
   searchParams,
 }: {
   searchParams: WatchedMovieSearchParams;
 }) {
+  noStore();
   const params = await searchParams;
   const sort: WatchedMovieSortValue = params.sort ?? 'watchedOn';
   const order: SortOrder = params.order ?? 'desc';

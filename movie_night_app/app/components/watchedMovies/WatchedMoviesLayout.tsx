@@ -1,10 +1,11 @@
 'use client';
 
 import WatchedMovieCard from '@/app/components/watchedMovies/WatchedMovieCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GridOrList } from '../layout/GridOrList';
 import { Layout, WatchedMoviesLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_WATCHED_MOVIES } from '@/lib/config/sorts';
+import router from 'next/navigation';
 
 export default function WatchedMoviesLayout({
   movies,
@@ -16,15 +17,26 @@ export default function WatchedMoviesLayout({
 }: WatchedMoviesLayoutProps) {
   const [layout, setLayout] = useState<Layout>('grid');
   const headerTitle = 'Watched Movies';
-  const movieList = movies.map((movie) => {
+  const [watchedMovieListState, setWatchedMovieListState] = useState(movies);
+
+  const handleDeleteWatchedMovie = (deletedId: number) => {
+    setWatchedMovieListState((prev) => prev.filter((m) => m.id !== deletedId));
+  };
+
+  useEffect(() => {
+    setWatchedMovieListState(movies);
+  }, [movies]);
+
+  const movieList = watchedMovieListState.map((movie) => {
     return (
       <WatchedMovieCard
-        key={movie.tmdbId}
+        key={movie.id}
         movie={movie}
         layout={layout}
         loggedInUser={loggedInUser}
         users={users}
         isDetailScreen={false}
+        onDeleted={handleDeleteWatchedMovie}
       />
     );
   });

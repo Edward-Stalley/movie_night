@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { WatchedMovieInsert } from '@/lib/types/db';
-import { deleteMovieFromMovies } from '@/lib/api/movies';
+// import { deleteMovieFromMovies } from '@/lib/api/movies';
+import { deleteMovieAction } from '@/lib/actions/deleteMovie';
 import { MovieGridItem } from './MovieGridItem';
 import { MovieCardProps } from '@/lib/types/ui';
 import { MovieListItem } from './MovieListItem';
@@ -10,14 +11,22 @@ import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 import { messages } from '@/lib/config/messages';
 import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
 
-export default function MovieCard({ movie, layout, index }: MovieCardProps) {
+export default function MovieCard({ movie, layout, index, onDeleted, onAdd }: MovieCardProps) {
   const router = useRouter();
+
   const handleDelete = async () => {
-    await deleteMovieFromMovies(movie);
-    router.refresh();
+    const result = await deleteMovieAction(movie);
+
+    console.log('delete in the client movie');
+    const ok = handleActionToast(result, messages.success.movies.deleted);
+
+    if (ok && onDeleted) {
+      onDeleted(movie.id);
+    }
   };
 
   const handleAddMovieToWatched = async () => {
+    console.log('adding movie to watched');
     const watchedMovieData: WatchedMovieInsert = {
       movieId: movie.id,
       watchedOn: new Date().toISOString().slice(0, 10),
@@ -26,7 +35,16 @@ export default function MovieCard({ movie, layout, index }: MovieCardProps) {
 
     const result = await addWatchedMovieAction(watchedMovieData);
 
-    if (!handleActionToast(result, messages.success.watched_movies.added)) router.refresh();
+    const ok = handleActionToast(result, messages.success.watched_movies.added);
+    // const ok = handleActionToast(result, messages.success.watched_movies.added);
+
+    if (ok && onAdd) {
+      console.log('inside ok for adding watched movie');
+      onAdd(movie.id);
+
+      router.refresh();
+      // router.push('/movies');
+    }
   };
 
   return (

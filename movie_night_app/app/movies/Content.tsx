@@ -8,6 +8,7 @@ import { PAGE_SIZES } from '@/lib/config/pagination';
 import { MovieSortValue, SortOrder } from '@/lib/types/sort';
 import { buildQuery } from '@/lib/utils/query';
 import { MovieSearchParams } from '@/lib/types/params';
+import { unstable_noStore as noStore } from 'next/cache';
 
 // PreFetch Pages
 export async function generateStaticParams() {
@@ -26,6 +27,7 @@ export async function generateStaticParams() {
 }
 
 export default async function MoviesContent({ searchParams }: { searchParams: MovieSearchParams }) {
+  noStore();
   const params = await searchParams;
   const sort: MovieSortValue = params.sort ?? 'addedOn';
   const order: SortOrder = params.order === 'asc' ? 'asc' : 'desc';
