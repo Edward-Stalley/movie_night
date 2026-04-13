@@ -13,6 +13,7 @@ export function GridOrList({
   canToggleLayout,
   editMode,
   setEditMode,
+  displayEditToggle,
 }: GridOrListProps) {
   return (
     <div>
@@ -27,6 +28,7 @@ export function GridOrList({
           canToggleLayout={canToggleLayout}
           editMode={editMode}
           setEditMode={setEditMode}
+          displayEditToggle={displayEditToggle}
         />
       )}
       {layout === 'list' && (

@@ -17,7 +17,7 @@ export function Sort({ options, value, order }: SortProps) {
   const sortOptions = options;
 
   return (
-    <div className="dropdown dropdown-end bg-neutral h-8 rounded-2xl items-center justify-center flex p-2">
+    <div className="dropdown dropdown-end bg-neutral h-6 rounded-2xl items-center justify-center flex p-2">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle flex w-fit">
         Sort ▼
       </div>

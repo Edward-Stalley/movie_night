@@ -91,6 +91,7 @@ export type GridOrListProps = {
   sortOrder: SortOrder;
   editMode: boolean;
   setEditMode: (editMode: boolean) => void;
+  displayEditToggle: boolean;
 };
 
 export type SearchedMovieGridOrListProps = {
@@ -218,4 +219,5 @@ export type ToolbarProps = {
   canToggleLayout?: boolean;
   editMode: boolean;
   setEditMode: (editMode: boolean) => void;
+  displayEditToggle: boolean;
 };

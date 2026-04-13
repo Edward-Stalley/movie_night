@@ -58,6 +58,7 @@ export default function WatchedMoviesLayout({
         sortOptions={SORT_OPTIONS_WATCHED_MOVIES}
         editMode={editMode}
         setEditMode={handleToggleEditMode}
+        displayEditToggle={true}
       >
         {movieList}
       </GridOrList>

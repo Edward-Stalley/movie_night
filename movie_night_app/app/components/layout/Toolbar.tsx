@@ -14,6 +14,7 @@ export default function Toolbar({
   canToggleLayout = true,
   editMode,
   setEditMode,
+  displayEditToggle,
 }: ToolbarProps) {
   return (
     <div className="bg-base-200">
@@ -21,11 +22,11 @@ export default function Toolbar({
         {/* LEFT GROUP */}
         <div className="flex gap-2 items-center">
           {canToggleLayout && <LayoutToggle layout={layout} onChange={setLayout} />}
-          <EditModeToggle editMode={editMode} setEditMode={setEditMode} />
+          {displayEditToggle && <EditModeToggle editMode={editMode} setEditMode={setEditMode} />}
         </div>
 
         {/* RIGHT GROUP */}
-        <div className="flex gap-2 items-center ml-auto">
+        <div className="flex gap-2 items-center ml-auto ">
           <Sort options={sortOptions} value={sortValue} order={sortOrder} />
         </div>
 
