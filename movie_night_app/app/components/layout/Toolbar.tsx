@@ -16,7 +16,7 @@ export default function Toolbar({
   setEditMode,
 }: ToolbarProps) {
   return (
-    <div className="bg-base-200 p-2">
+    <div className="bg-base-200">
       <div className="navbar flex flex-wrap gap-4 md:flex-nowrap md:justify-between">
         {/* LEFT GROUP */}
         <div className="flex gap-2 items-center">
