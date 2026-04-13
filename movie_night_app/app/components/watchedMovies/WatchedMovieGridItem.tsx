@@ -14,6 +14,7 @@ type MovieGridItemProps = MoviePosterTypes & {
   watchedOn?: Date;
   chosenByName?: string;
   chosenByImage?: string;
+  editMode: boolean;
 };
 
 export function WatchedMovieGridItem({
@@ -26,6 +27,7 @@ export function WatchedMovieGridItem({
   watchedOn,
   chosenByName,
   chosenByImage,
+  editMode,
 }: MovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 rounded-2xl border-2 flex flex-col justify-center items-center">
@@ -36,8 +38,8 @@ export function WatchedMovieGridItem({
         urlRoute={urlRoute}
         className="rounded-t-2xl"
       />
-      {onDelete && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
-      {onAdd && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
+      {onDelete && editMode && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
+      {onAdd && editMode && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
       <div className="flex gap-2 justify-center items-center p-1 w-full">
         {watchedOn && <div className="text-sm">{watchedOn?.toDateString()}</div>}
         {chosenByImage ? (

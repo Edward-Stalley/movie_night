@@ -4,7 +4,8 @@ export function AddSearchedMovieToMoviesButton({ onAdd }: AddWatchedMovieButtonP
   return (
     <button
       onClick={onAdd}
-      className="opacity-0 group-hover:opacity-100 btn btn-primary btn-soft  absolute bottom-0 rounded-tr-2xl rounded-bl-2xl rounded-br-none rounded-tl-none"
+      className=" btn btn-primary btn-soft  absolute bottom-0 rounded-t-none rounded-b-2xl w-full"
+      // className="opacity-0 group-hover:opacity-100 btn btn-primary btn-soft  absolute bottom-0 rounded-tr-2xl rounded-bl-2xl rounded-br-none rounded-tl-none"
     >
       +
     </button>

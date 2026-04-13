@@ -26,6 +26,11 @@ export default function SearchedMoviesLayout({
     setMovieTitle(queryFromUrl);
   }, [queryFromUrl]);
 
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const handleToggleEditMode = () => {
+    setEditMode((prev) => !prev);
+  };
+
   const movieList = movies.map((movie) => (
     <SearchedMovieCard
       key={movie.tmdbId}
@@ -33,6 +38,7 @@ export default function SearchedMoviesLayout({
       layout={layout}
       isDetailScreen={false}
       loggedInUser={loggedInUser}
+      editMode={editMode}
     />
   ));
 
@@ -49,6 +55,8 @@ export default function SearchedMoviesLayout({
           sortValue={sortValue}
           sortOrder={sortOrder}
           sortOptions={SORT_OPTIONS_SEARCHED_MOVIES}
+          editMode={editMode}
+          setEditMode={handleToggleEditMode}
         >
           {movieList}
         </GridOrList>

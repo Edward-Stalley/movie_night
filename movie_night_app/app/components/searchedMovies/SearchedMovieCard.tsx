@@ -11,7 +11,12 @@ import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult
 import { messages } from '@/lib/config/messages';
 import { addSearchedMovieToMoviesAction } from '@/lib/actions/addSearchedMovieToMovies';
 
-export default function SearchedMovieCard({ movie, layout, loggedInUser }: SearchedMovieCardProps) {
+export default function SearchedMovieCard({
+  movie,
+  layout,
+  loggedInUser,
+  editMode,
+}: SearchedMovieCardProps) {
   const router = useRouter();
 
   const addToMovieList = async (movie: SearchedMovie) => {
@@ -27,6 +32,7 @@ export default function SearchedMovieCard({ movie, layout, loggedInUser }: Searc
           movie={movie}
           urlRoute="search-movie"
           onAdd={() => addToMovieList(movie)}
+          editMode={editMode}
         />
       )}
 

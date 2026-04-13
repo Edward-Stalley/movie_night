@@ -2,6 +2,7 @@ import { ToolbarProps } from '@/lib/types/ui';
 import LayoutToggle from '@/app/components/ui/LayoutToggle';
 import Pagination from '@/app/components/ui/Pagination';
 import { Sort } from '@/app/components/ui/Sort';
+import EditModeToggle from '../ui/EditModeToggle';
 
 export default function Toolbar({
   layout,
@@ -11,6 +12,8 @@ export default function Toolbar({
   sortValue,
   sortOrder,
   canToggleLayout = true,
+  editMode,
+  setEditMode,
 }: ToolbarProps) {
   return (
     <div className="bg-base-200 p-2">
@@ -18,6 +21,7 @@ export default function Toolbar({
         {/* LEFT GROUP */}
         <div className="flex gap-2 items-center">
           {canToggleLayout && <LayoutToggle layout={layout} onChange={setLayout} />}
+          <EditModeToggle editMode={editMode} setEditMode={setEditMode} />
         </div>
 
         {/* RIGHT GROUP */}

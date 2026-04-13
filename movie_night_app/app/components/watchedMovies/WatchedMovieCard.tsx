@@ -14,6 +14,7 @@ export default function WatchedMovieCard({
   users,
   isDetailScreen,
   onDeleted,
+  editMode,
 }: WatchedMovieCardProps) {
   const router = useRouter();
 
@@ -24,7 +25,6 @@ export default function WatchedMovieCard({
     if (ok && onDeleted) {
       onDeleted(movie.id);
       router.refresh();
-      // router.push('/watched-movies');
     }
   };
 
@@ -40,6 +40,7 @@ export default function WatchedMovieCard({
           watchedOn={movie.watchedOn}
           chosenByName={movie.chosenByName}
           chosenByImage={movie.chosenByImage}
+          editMode={editMode}
         />
       )}
 

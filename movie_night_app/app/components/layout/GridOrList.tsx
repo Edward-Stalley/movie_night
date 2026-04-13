@@ -11,6 +11,8 @@ export function GridOrList({
   sortOrder,
   sortOptions,
   canToggleLayout,
+  editMode,
+  setEditMode,
 }: GridOrListProps) {
   return (
     <div>
@@ -23,6 +25,8 @@ export function GridOrList({
           sortValue={sortValue}
           sortOrder={sortOrder}
           canToggleLayout={canToggleLayout}
+          editMode={editMode}
+          setEditMode={setEditMode}
         />
       )}
       {layout === 'list' && (
