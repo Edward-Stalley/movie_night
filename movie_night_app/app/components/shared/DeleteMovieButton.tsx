@@ -1,6 +1,6 @@
 import { DeleteMovieButtonProps } from '@/lib/types/ui';
 
-export function DeleteMovieButton({ onDelete, isDetailScreen }: DeleteMovieButtonProps) {
+export function DeleteMovieButton({ onDelete }: DeleteMovieButtonProps) {
   return (
     <button
       onClick={onDelete}

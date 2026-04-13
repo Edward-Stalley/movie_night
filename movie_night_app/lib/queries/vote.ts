@@ -97,7 +97,7 @@ export async function addVote(vote: VoteKey) {
   return { id: res.rows[0].id };
 }
 
-export async function deleteVote(voteId: number, voteSessionId: number): Promise<void> {
+export async function deleteVote(voteId: number): Promise<void> {
   await pool.query(`DELETE FROM votes WHERE id = $1`, [voteId]);
 }
 

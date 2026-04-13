@@ -15,5 +15,13 @@ export default async function SearchMovieDetailContent({
   if (!data) return <div>Movie Not Found</div>;
   const movie = toSearchedMovie(data);
 
-  return <SearchedMovieCard movie={movie} key={movie.tmdbId} layout="list" isDetailScreen={true} />;
+  return (
+    <SearchedMovieCard
+      movie={movie}
+      key={movie.tmdbId}
+      layout="list"
+      isDetailScreen={true}
+      editMode={false}
+    />
+  );
 }
