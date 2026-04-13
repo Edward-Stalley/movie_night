@@ -3,7 +3,6 @@ import { pool } from '@/lib/db';
 import { WatchedMoviesQuery, WatchedMovieRow, WatchedMovieInsert } from '@/lib/types/db';
 import { UserId } from '../types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
-// import { revalidateTag, unstable_cache } from 'next/cache';
 
 const SORT_MAP = {
   watchedOn: 'wm.watched_on',
@@ -26,8 +25,6 @@ export const getWatchedMovies = async ({
   sortBy,
   order,
 }: WatchedMoviesQuery): Promise<PaginatedResult<WatchedMovieRow>> => {
-  console.log('DB HIT: fetching watched movies', { limit, offset, sortBy, order });
-
   const sortColumn = SORT_MAP[sortBy as SortKey] ?? SORT_MAP.watchedOn;
   const sortDirection = ORDER_MAP[order as keyof typeof ORDER_MAP] ?? ORDER_MAP.desc;
 
@@ -70,11 +67,6 @@ LIMIT $1 OFFSET $2
   return { data: rows, total };
 };
 
-// export const getWatchedMovies = unstable_cache(_getWatchedMovies, ['watched-movies'], {
-//   tags: ['watched-movies'],
-//   revalidate: 3600,
-// });
-
 // ## (DETAIL) SHOW: get individual watched movie
 export const showWatchedMovie = async (id: number): Promise<WatchedMovieRow[] | null> => {
   const res = await pool.query(
@@ -110,12 +102,6 @@ WHERE m.id = $1
   return res.rows as WatchedMovieRow[];
 };
 
-// export const showWatchedMovie = (id: number) =>
-//   unstable_cache(() => _showWatchedMovie(id), [`watched-movies-${id}`], {
-//     tags: [`watched-movies`],
-//     revalidate: 3600,
-//   })();
-
 // ## (POST) : Add individual watched movie
 export async function addWatchedMovie(
   movie: WatchedMovieInsert,
@@ -129,17 +115,12 @@ RETURNING id
     [movie.movieId, movie.watchedOn, movie.chosenBy],
   );
 
-  // revalidateTag('watched-movies', 'max');
-  // revalidateTag('movies', 'max');
-
   return { ...movie, id: res.rows[0].id };
 }
 
 // ## (DELETE) : Delete watched movie
 export async function deleteWatchedMovie(id: number): Promise<void> {
   await pool.query('DELETE FROM watched_movies WHERE id = $1', [id]);
-  // revalidateTag('watched-movies', 'max');
-  // revalidateTag('movies', 'max');
 }
 
 // ## (UPDATE) : Update chosen_by
@@ -152,10 +133,6 @@ WHERE id = $2
     `,
     [userId, watchedMovieId],
   );
-
-  // revalidateTag('watched-movies', 'max');
-  // revalidateTag('movies', 'max');
-  // revalidateTag(`watched-movies-${watchedMovieId}`, 'max');
 }
 
 // ## (UPDATE) : Update watched_on
@@ -168,8 +145,4 @@ WHERE id = $2
     `,
     [watchedOn, watchedMovieId],
   );
-
-  // revalidateTag('watched-movies', 'max');
-  // revalidateTag('movies', 'max');
-  // revalidateTag(`watched-movies-${watchedMovieId}`, 'max');
 }
