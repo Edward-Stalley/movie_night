@@ -11,5 +11,5 @@ export default async function MovieDetailContent({ params }: { params: Promise<{
   if (!data) return <div>Movie Not Found</div>;
   const movie = toStoredMovies(data);
 
-  return <MovieCard movie={movie} key={movie.id} layout="list" />;
+  return <MovieCard movie={movie} key={movie.id} layout="list" editMode={false} />;
 }

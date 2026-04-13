@@ -59,6 +59,7 @@ export type WatchedMovieCardProps = {
   users: User[];
   isDetailScreen: boolean;
   onDeleted?: (id: number) => void;
+  editMode: boolean;
 };
 
 export type IconProps = React.SVGProps<SVGSVGElement>;
@@ -88,6 +89,8 @@ export type GridOrListProps = {
   sortOptions: SortOption[];
   sortValue: string;
   sortOrder: SortOrder;
+  editMode: boolean;
+  setEditMode: (editMode: boolean) => void;
 };
 
 export type SearchedMovieGridOrListProps = {
@@ -163,6 +166,7 @@ export type SearchedMovieCardProps = {
   layout: string | null;
   loggedInUser?: LoggedInUser;
   isDetailScreen: boolean;
+  editMode: boolean;
 };
 export type MovieCardProps = {
   movie: StoredMovie;
@@ -171,6 +175,7 @@ export type MovieCardProps = {
   index?: number;
   onDeleted?: (id: number) => void;
   onAdd?: (id: number) => void;
+  editMode: boolean;
 };
 
 export type VoteMovieCardCardProps = {
@@ -211,4 +216,6 @@ export type ToolbarProps = {
   sortValue: string;
   sortOrder: SortOrder;
   canToggleLayout?: boolean;
+  editMode: boolean;
+  setEditMode: (editMode: boolean) => void;
 };

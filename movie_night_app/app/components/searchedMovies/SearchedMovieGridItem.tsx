@@ -7,9 +7,15 @@ type SearchedMovieGridItemProps = {
   onAdd: SearchedMovieAddHandler;
   movie: SearchedMovie;
   urlRoute?: string;
+  editMode: boolean;
 };
 
-export function SearchedMovieGridItem({ movie, urlRoute, onAdd }: SearchedMovieGridItemProps) {
+export function SearchedMovieGridItem({
+  movie,
+  urlRoute,
+  onAdd,
+  editMode,
+}: SearchedMovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl">
       <MoviePoster
@@ -19,7 +25,7 @@ export function SearchedMovieGridItem({ movie, urlRoute, onAdd }: SearchedMovieG
         title={movie.title}
         className="rounded-2xl"
       />
-      {onAdd && <AddSearchedMovieToMoviesButton onAdd={onAdd} isDetailScreen={false} />}
+      {onAdd && editMode && <AddSearchedMovieToMoviesButton onAdd={onAdd} isDetailScreen={false} />}
     </div>
   );
 }

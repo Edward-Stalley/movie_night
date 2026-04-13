@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { WatchedMovieInsert } from '@/lib/types/db';
-// import { deleteMovieFromMovies } from '@/lib/api/movies';
 import { deleteMovieAction } from '@/lib/actions/deleteMovie';
 import { MovieGridItem } from './MovieGridItem';
 import { MovieCardProps } from '@/lib/types/ui';
@@ -11,7 +10,14 @@ import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 import { messages } from '@/lib/config/messages';
 import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
 
-export default function MovieCard({ movie, layout, index, onDeleted, onAdd }: MovieCardProps) {
+export default function MovieCard({
+  movie,
+  layout,
+  index,
+  onDeleted,
+  onAdd,
+  editMode,
+}: MovieCardProps) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -51,9 +57,9 @@ export default function MovieCard({ movie, layout, index, onDeleted, onAdd }: Mo
           onDelete={handleDelete}
           onAdd={handleAddMovieToWatched}
           index={index}
+          editMode={editMode}
         />
       )}
-
       {layout === 'list' && <MovieListItem movie={movie} />}
     </li>
   );

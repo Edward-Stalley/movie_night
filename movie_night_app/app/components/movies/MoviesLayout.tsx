@@ -27,6 +27,11 @@ export default function MoviesLayout({
     setMovieListState((prev) => prev.filter((m) => m.id !== addedId));
   };
 
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const handleToggleEditMode = () => {
+    setEditMode((prev) => !prev);
+  };
+
   useEffect(() => {
     setMovieListState(movies);
   }, [movies]);
@@ -37,6 +42,7 @@ export default function MoviesLayout({
       movie={movie}
       layout={layout}
       index={index}
+      editMode={editMode}
       onDeleted={handleDeleteMovie}
       onAdd={handleAddMovieToWatched}
     />
@@ -51,6 +57,8 @@ export default function MoviesLayout({
       sortValue={sortValue}
       sortOrder={sortOrder}
       sortOptions={SORT_OPTIONS_MOVIES}
+      editMode={editMode}
+      setEditMode={handleToggleEditMode}
     >
       {movieList}
     </GridOrList>
