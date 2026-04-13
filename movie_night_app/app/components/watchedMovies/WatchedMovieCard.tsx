@@ -13,14 +13,19 @@ export default function WatchedMovieCard({
   layout,
   users,
   isDetailScreen,
+  onDeleted,
 }: WatchedMovieCardProps) {
   const router = useRouter();
 
   const handleDelete = async () => {
     const result = await deleteMovieFromWatchedAction(movie);
 
-    if (!handleActionToast(result, messages.success.watched_movies.deleted))
-      router.push('/watched-movies');
+    const ok = handleActionToast(result, messages.success.watched_movies.deleted);
+    if (ok && onDeleted) {
+      onDeleted(movie.id);
+      router.refresh();
+      // router.push('/watched-movies');
+    }
   };
 
   return (

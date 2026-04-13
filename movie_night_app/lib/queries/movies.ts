@@ -6,9 +6,12 @@ import { PaginatedResult } from '@/lib/types/pagination';
 import { StoredMovie } from '@/lib/types/domain';
 import { MOVIE_SORT_MAP } from '@/lib/config/sorts';
 import { isSortKey } from '@/lib/utils/sort/isSortKey';
-import { revalidateTag, unstable_cache } from 'next/cache';
+// import { cacheLife, cacheTag, revalidatePath, revalidateTag } from 'next/cache';
+// import { revalidateTag, unstable_cache } from 'next/cache';
 
-const _getMovies = async ({
+// import { unstable_cache } from 'next/cache';
+
+export const getMovies = async ({
   limit,
   offset,
   sortBy,
@@ -54,18 +57,17 @@ OFFSET $2
   };
 };
 
-export const getMovies = unstable_cache(_getMovies, ['movies'], {
-  revalidate: 3600,
-  tags: ['movies'],
-});
+// export const getMovies = unstable_cache(_getMovies, ['movies'], {
+//   tags: ['movies'],
+//   revalidate: 3600,
+// });
 
 export const deleteMovie = async (id: number): Promise<void> => {
   await pool.query(`DELETE from movies WHERE id = $1`, [id]);
-  revalidateTag('movies', 'max');
 };
 
 //  Detail (indiviudal Movie)
-const _getMovie = async (id: number): Promise<MovieRow | null> => {
+export const getMovie = async (id: number): Promise<MovieRow | null> => {
   const res = await pool.query(
     `
     SELECT
@@ -86,13 +88,13 @@ const _getMovie = async (id: number): Promise<MovieRow | null> => {
   return res.rows[0] as MovieRow;
 };
 
-export const getMovie = (id: number) =>
-  unstable_cache(() => _getMovie(id), [`movies-${id}`], {
-    revalidate: 3600,
-    tags: [`movies`],
-  })();
+// export const getMovie = (id: number) =>
+//   unstable_cache(() => _getMovie(id), [`movies-${id}`], {
+//     tags: [`movies`],
+//     revalidate: 3600,
+//   })();
 
-export const _getSelectedMoviesByIds = async (ids: number[]): Promise<MovieRow[]> => {
+export const getSelectedMoviesByIds = async (ids: number[]): Promise<MovieRow[]> => {
   if (ids.length === 0) return [];
 
   const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
@@ -113,14 +115,16 @@ WHERE m.id IN (${placeholders})
     ids,
   );
 
+  // cacheTag(`movies-${ids}`);
+
   return res.rows as MovieRow[];
 };
 
-export const getSelectedMoviesByIds = (ids: number[]) =>
-  unstable_cache(() => _getSelectedMoviesByIds(ids), [`selected-movies-${ids.join('-')}`], {
-    revalidate: 3600,
-    tags: ['movies'],
-  })();
+// export const getSelectedMoviesByIds = (ids: number[]) =>
+//   unstable_cache(() => _getSelectedMoviesByIds(ids), [`selected-movies-${ids.join('-')}`], {
+//     tags: ['movies'],
+//     revalidate: 3600,
+//   })();
 
 // ## (POST) : Add individual Movie to watched_movies.
 
@@ -143,7 +147,7 @@ export const addMovie = async (movie: MovieInsert): Promise<StoredMovie> => {
     ],
   );
 
-  revalidateTag('movies', 'max');
+  // revalidateTag('movies', 'max');
 
   return {
     id: res.rows[0].id,

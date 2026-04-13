@@ -5,6 +5,7 @@ import MovieCard from '@/app/components/movies/MovieCard';
 import { GridOrList } from '@/app/components/layout/GridOrList';
 import { Layout, MoviesLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_MOVIES } from '@/lib/config/sorts';
+import { useEffect } from 'react';
 
 export default function MoviesLayout({
   movies,
@@ -15,8 +16,30 @@ export default function MoviesLayout({
   const [layout, setLayout] = useState<Layout>('grid');
   const headerTitle = 'Movies';
 
-  const movieList = movies.map((movie, index) => (
-    <MovieCard key={movie.id} movie={movie} layout={layout} index={index} />
+  const [movieListState, setMovieListState] = useState(movies);
+
+  const handleDeleteMovie = (deletedId: number) => {
+    setMovieListState((prev) => prev.filter((m) => m.id !== deletedId));
+  };
+
+  // This also removes the movie from Movies array. Adds it to Watched Movies.
+  const handleAddMovieToWatched = (addedId: number) => {
+    setMovieListState((prev) => prev.filter((m) => m.id !== addedId));
+  };
+
+  useEffect(() => {
+    setMovieListState(movies);
+  }, [movies]);
+
+  const movieList = movieListState.map((movie, index) => (
+    <MovieCard
+      key={movie.id}
+      movie={movie}
+      layout={layout}
+      index={index}
+      onDeleted={handleDeleteMovie}
+      onAdd={handleAddMovieToWatched}
+    />
   ));
 
   return (

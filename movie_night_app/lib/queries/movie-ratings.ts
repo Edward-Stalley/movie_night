@@ -18,7 +18,7 @@ export async function upsertReview(review: ReviewInsert) {
   );
 
   revalidateTag('watched-movies', 'max');
-  revalidateTag('movies', 'max');
+  // revalidateTag('movies', 'max');
   revalidateTag(`watched-movies-${review.watchedMovieId}`, 'max');
 
   return res.rows;
