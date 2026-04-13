@@ -11,7 +11,7 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
     <Link
       href={buildPageHref(searchParams, { page: String(p) })}
       key={p}
-      className={`join-item btn ${p === page && 'btn-active btn-primary'}`}
+      className={`join-item btn h-fit rounded-2xl ${p === page && 'btn-active btn-primary h-fit rounded-2xl'}`}
     >
       {p}
     </Link>
@@ -24,7 +24,7 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
     <div className="flex items-center p-0 w-fit rounded-2xl">
       <Link
         href={buildPageHref(searchParams, { page: String(prevPage) })}
-        className={`btn ${page === 1 && 'btn-disabled'}`}
+        className={`btn h-fit mr-1 w-1 ${page === 1 && 'btn-disabled'}`}
         aria-disabled={page === 1}
       >
         {'<'}
@@ -32,7 +32,7 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
       <div className="join">{pageButtons}</div>
       <Link
         href={buildPageHref(searchParams, { page: String(nextPage) })}
-        className={`btn ${page === totalPages && 'btn-disabled'}`}
+        className={`btn h-fit ml-1 w-1 ${page === totalPages && 'btn-disabled'}`}
         aria-disabled={page === totalPages}
       >
         {'>'}
