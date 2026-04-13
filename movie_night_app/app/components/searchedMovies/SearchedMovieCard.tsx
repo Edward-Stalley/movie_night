@@ -6,13 +6,18 @@ import { SearchedMovieGridItem } from '@/app/components/searchedMovies/SearchedM
 import { SearchedMovieCardProps } from '@/lib/types/ui';
 import { SearchedMovie } from '@/lib/types/domain';
 import { SearchedMovieListItem } from './SearchedMovieListItem';
+import { MovieInsert } from '@/lib/types/db';
+import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
+import { messages } from '@/lib/config/messages';
+import { addSearchedMovieToMoviesAction } from '@/lib/actions/addSearchedMovieToMovies';
 
-export default function SearchedMovieCard({ movie, layout }: SearchedMovieCardProps) {
+export default function SearchedMovieCard({ movie, layout, loggedInUser }: SearchedMovieCardProps) {
   const router = useRouter();
 
   const addToMovieList = async (movie: SearchedMovie) => {
-    await addSearchedMovieToMovies(movie);
-    router.refresh();
+    const result = await addSearchedMovieToMoviesAction(movie, Number(loggedInUser?.id));
+
+    if (!handleActionToast(result, messages.success.movies.added)) router.refresh();
   };
 
   return (

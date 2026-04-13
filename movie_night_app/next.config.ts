@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     qualities: [100, 75],
   },
   reactCompiler: true,
-  cacheComponents:true,
+  // cacheComponents:true,
 };
 
 export default nextConfig;

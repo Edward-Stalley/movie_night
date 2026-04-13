@@ -2,15 +2,20 @@
 
 import { addWatchedMovie } from '@/lib/queries/watched-movies';
 import { WatchedMovieInsert } from '../types/db';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { actionSuccess } from '../utils/messageHandling/actionResult';
 import { mapDbErrorToActionResult } from '../db/errors/mapDbErrorToActionResult';
 
 export async function addWatchedMovieAction({ movieId, watchedOn, chosenBy }: WatchedMovieInsert) {
+  console.log('before try');
+
   try {
     const result = await addWatchedMovie({ movieId, watchedOn, chosenBy });
-    revalidateTag('movies', 'max');
-    revalidateTag('watched-movies', 'max');
+
+    // console.log('REVALIDATING MOVIES PATH');
+    revalidatePath('/movies');
+    revalidatePath('/watched-movies');
+
     return actionSuccess(result.id);
   } catch (error) {
     return mapDbErrorToActionResult(error);
