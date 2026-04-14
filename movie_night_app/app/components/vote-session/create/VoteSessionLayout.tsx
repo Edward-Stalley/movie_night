@@ -29,12 +29,21 @@ export default function VoteSessionLayout({
   const [tieBreakerWinnerId, setTieBreakerWinnerId] = useState<number | null>(null);
 
   const carouselRef = useRef<HTMLDivElement>(null);
+  const tieBreakerCarouselRef = useRef<HTMLDivElement>(null);
   const scrollLeft = () => {
     carouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
   };
 
   const scrollRight = () => {
     carouselRef.current?.scrollBy({ left: 300, behavior: 'smooth' });
+  };
+
+  const scrollTieLeft = () => {
+    tieBreakerCarouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
+  };
+
+  const scrollTieRight = () => {
+    tieBreakerCarouselRef.current?.scrollBy({ left: 300, behavior: 'smooth' });
   };
 
   const toggleVote = async (id: number) => {
@@ -222,7 +231,7 @@ export default function VoteSessionLayout({
     <div className="relative w-full  sm:w-full md:w-full max-w-full list-none">
       {/* LEFT ARROW */}
       <button
-        onClick={scrollLeft}
+        onClick={scrollTieLeft}
         className="hidden md:flex btn btn-circle absolute left-0 top-1/2 -translate-y-1/2 z-10"
       >
         ❮
@@ -230,7 +239,7 @@ export default function VoteSessionLayout({
 
       {/* RIGHT ARROW */}
       <button
-        onClick={scrollRight}
+        onClick={scrollTieRight}
         className="hidden md:flex btn btn-circle absolute right-0 top-1/2 -translate-y-1/2 z-10"
       >
         ❯
@@ -238,8 +247,8 @@ export default function VoteSessionLayout({
 
       {/* SCROLL CONTAINER */}
       <div
-        ref={carouselRef}
-        className=" flex gap-4 m-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-neutral rounded-box justify-center"
+        ref={tieBreakerCarouselRef}
+        className="flex justify-start gap-4 m-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-neutral rounded-box scroll-pl-4"
       >
         {tieBreakerMovieList}
       </div>
@@ -271,9 +280,9 @@ export default function VoteSessionLayout({
           </div>
         </div>
 
-        <div className="p-1 text-xs opacity-60 tracking-wide">
+        <div className="p-1 text-xs opacity-60 tracking-wide flex pl-2 items-center">
           {voteSession.status === 'inProgress' ? (
-            <div className="badge badge-info">Vote in Progress</div>
+            <div className="badge badge-info">In Progress</div>
           ) : (
             <div className="badge badge-info">Completed</div>
           )}
@@ -308,7 +317,7 @@ export default function VoteSessionLayout({
       {/* TIEBREAKER */}
       {tieBreakerModalOpen && (
         <dialog className="modal modal-open">
-          <div className="modal-box max-w3xl w-full overflow-hidden">
+          <div className="modal-box max-w-3xl w-full overflow-hidden">
             <h3 className="font-bold text-2xl">Uh Oh! It's a tie 🤝</h3>
             {loggedInUser?.id == createdBy.id && (
               <div>
