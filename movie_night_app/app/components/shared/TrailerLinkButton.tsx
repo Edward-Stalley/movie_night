@@ -1,4 +1,4 @@
-import { LinkIcon } from "@heroicons/react/20/solid";
+import { LinkIcon } from '@heroicons/react/20/solid';
 
 type TrailerLinkType = {
   trailerLink: string;
@@ -13,7 +13,7 @@ export function TrailerLinkButton({ trailerLink }: TrailerLinkType) {
         target="blank"
         rel="noopener noreferrer"
       >
-      <LinkIcon className="h-5 w-5"/>
+        <LinkIcon className="h-5 w-5" />
       </a>
     </button>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 type DeleteButtonProps = {
   onDelete: (id: number) => Promise<void>;
@@ -20,7 +20,7 @@ export default function DeleteButton({ onDelete, id, className, onDeleted }: Del
         onDeleted && onDeleted(id);
       }}
     >
-      <TrashIcon className="h-5 w-5"/>
+      <TrashIcon className="h-5 w-5" />
     </button>
   );
 }
