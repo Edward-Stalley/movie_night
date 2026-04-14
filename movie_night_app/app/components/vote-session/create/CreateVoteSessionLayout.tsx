@@ -105,13 +105,7 @@ export default function CreateVoteSessionLayout({
       {/* SCROLL CONTAINER */}
       <div
         ref={carouselRef}
-        className="
-        flex gap-4 p-4 
-        overflow-x-auto scroll-smooth
-        snap-x snap-mandatory
-        scrollbar-hide
-        bg-base-100 rounded-box
-      "
+        className=" flex gap-4 p-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-base-100 rounded-box"
       >
         {selectedMovies.map((movie) => (
           <div key={movie.id} className="snap-start shrink-0 w-36">

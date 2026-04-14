@@ -7,6 +7,7 @@ import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { DeleteMovieButton } from '@/app/components/shared/DeleteMovieButton';
 import { AddMovieToWatchedButton } from './AddMovieToWatchedButton';
 import Image from 'next/image';
+import { toIso } from '@/lib/transform';
 
 type MovieGridItemProps = MoviePosterTypes & {
   onDelete: MovieDeleteHandler;
@@ -41,7 +42,7 @@ export function WatchedMovieGridItem({
       {onDelete && editMode && <DeleteMovieButton onDelete={onDelete} isDetailScreen={false} />}
       {onAdd && editMode && <AddMovieToWatchedButton onAdd={onAdd} isDetailScreen={false} />}
       <div className="flex gap-2 justify-center items-center p-1 w-full">
-        {watchedOn && <div className="text-sm">{watchedOn?.toDateString()}</div>}
+        {watchedOn && <div className="text-sm">{toIso(watchedOn)}</div>}
         {chosenByImage ? (
           <Image
             src={`${chosenByImage}`}

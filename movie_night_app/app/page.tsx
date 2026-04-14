@@ -108,7 +108,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-6 md:hidden px-4 py-6 bg-base-200 relative  bg-linear-to-b from-black via-gray-900 to-slate-900">
         {/* BOX 2 — POSTER GRID */}
-        <div className="relative p-10 grid  grid-cols-6 grid-rows-12 min-h-200 gap-1">
+        <div className="relative grid grid-cols-6 grid-rows-8 gap-1 p-10">
           {posters}
           {/* BOX 1 — TITLE */}
           <div className="col-start-2 row-start-2 col-span-4 row-span-2 z-10">
