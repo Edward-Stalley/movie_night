@@ -12,12 +12,12 @@ type Props = {
 
 export default function LayoutToggle({ layout, onChange }: Props) {
   return (
-    <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-fit p-2  border h-10 flex items-center ">
-      <label className="label ">
+    <fieldset className="bg-base-100 border-base-300 rounded-box w-fit border  flex items-center">
+      <label className="label  ">
         <input
           type="checkbox"
           defaultChecked
-          className="toggle"
+          className="toggle toggle-sm "
           onClick={() => onChange(layout === 'list' ? 'grid' : 'list')}
         />
         {layout === 'list' ? (

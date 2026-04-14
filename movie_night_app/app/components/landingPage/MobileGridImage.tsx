@@ -24,7 +24,7 @@ export default function MobileGridImage({
       <div
         className={`relative w-full h-full overflow-hidden ${rounding ? rounding : 'rounded-2xl'}`}
       >
-        <Image src={src} alt="" fill className="object-cover" />
+        <Image src={src} alt="" fill className="object-cover" priority />
       </div>
     </div>
   );

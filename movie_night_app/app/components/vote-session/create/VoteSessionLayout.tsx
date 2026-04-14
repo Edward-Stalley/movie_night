@@ -157,14 +157,7 @@ export default function VoteSessionLayout({
       {/* SCROLL CONTAINER */}
       <div
         ref={carouselRef}
-        className="
-        flex gap-4 m-4
-        overflow-x-auto scroll-smooth
-        snap-x snap-mandatory
-        scrollbar-hide
-        bg-neutral rounded-box
-        justify-center 
-      "
+        className=" flex gap-4 m-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-neutral rounded-box justify-center"
       >
         {moviesForVoting}
       </div>

@@ -11,13 +11,13 @@ type Props = {
 export default function EditModeToggle({ editMode, setEditMode }: Props) {
   return (
     <fieldset
-      className={`${editMode && 'bg-secondary'}fieldset bg-base-100 border-base-300 rounded-box w-fit p-2  border h-10 flex items-center`}
+      className={`${editMode && 'bg-secondary'}bg-base-100 border-base-300 rounded-box w-fit border  flex items-center`}
     >
       <label className="label ">
         <input
           type="checkbox"
           defaultChecked
-          className={`toggle ${editMode && 'border-secondary'}`}
+          className={`toggle toggle-sm ${editMode && 'border-secondary'}`}
           onClick={() => setEditMode(editMode === true ? false : true)}
         />
         <p className={`${editMode && 'text-secondary'} text-sm`}>
