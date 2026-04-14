@@ -131,6 +131,11 @@ export type VoteMoviesLayoutProps = {
   votesByMovie: VoteByMovie[];
 };
 
+export type TieBreakerCardCardProps = {
+  movie: StoredMovie;
+  finalVote: (movieId: number) => void;
+};
+
 export type Vote = {
   id: number;
   voteSessionId: number;

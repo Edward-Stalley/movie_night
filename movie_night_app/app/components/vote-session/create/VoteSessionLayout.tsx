@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Layout, VoteMoviesLayoutProps } from '@/lib/types/ui';
+import { Layout, VoteByMovie, VoteMoviesLayoutProps } from '@/lib/types/ui';
 import VoteMovieCard from './VoteMovieCard';
 import { VoteKey, WatchedMovieInsert } from '@/lib/types/db';
 import { toggleVoteAction } from '@/lib/actions/toggleVoteAction';
@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 import { useRef } from 'react';
 import { ArrowPathIcon } from '@heroicons/react/20/solid';
+import { StoredMovie } from '@/lib/types/domain';
+import TieBreakerVoteCard from './TieBreakerVoteCard';
 
 export default function VoteSessionLayout({
   movies,
@@ -22,6 +24,9 @@ export default function VoteSessionLayout({
   const [layout] = useState<Layout>('grid');
   const headerTitle = 'Vote For Movie';
   const router = useRouter();
+  const [tieBreakerModalOpen, setTieBreakerModalOpen] = useState<boolean>(false);
+  const [tieBreakerMovies, setTieBreakerMovies] = useState<StoredMovie[]>([]);
+  const [tieBreakerWinnerId, setTieBreakerWinnerId] = useState<number | null>(null);
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const scrollLeft = () => {
@@ -46,20 +51,58 @@ export default function VoteSessionLayout({
     await toggleVoteAction(vote);
   };
 
-  const winner =
-    votesByMovie.length === 0
-      ? null
-      : votesByMovie.reduce((currentWinner, movie) => {
-          if (movie.count > currentWinner.count) {
-            return movie;
-          }
-          return currentWinner;
-        });
+  const maxVotes = votesByMovie.length === 0 ? null : Math.max(...votesByMovie.map((m) => m.count));
+  const tiebreakers = maxVotes === null ? null : votesByMovie.filter((m) => m.count === maxVotes);
+
+  let winner: VoteByMovie | null;
+
+  const handleFinalVote = async (movieId: number) => {
+    setTieBreakerWinnerId(movieId);
+    await closeVotingSessionAction(voteSession.id);
+
+    const data: WatchedMovieInsert = {
+      movieId: movieId,
+      watchedOn: voteSession.movieNightDate.toLocaleDateString('en-CA'),
+      chosenBy: createdBy.id,
+    };
+
+    setTieBreakerModalOpen(false);
+    await addWatchedMovieAction(data);
+
+    router.refresh();
+  };
 
   const voteInProgress = voteSession.status === 'inProgress';
+  const tieBreakerMovieList = tieBreakerMovies?.map((movie) => (
+    <div className="w-40 shrink-0 snap-center" key={movie.id}>
+      <TieBreakerVoteCard key={movie.id} movie={movie} finalVote={handleFinalVote} />
+    </div>
+  ));
 
   const handleSubmitSessionFinalVote = async () => {
+    if (!tiebreakers) return; // safety guard
+
+    // TIE BREAKER
+    if (tiebreakers.length > 1) {
+      setTieBreakerModalOpen(true);
+      const tieMovieIds = tiebreakers.map((t) => t.movieId);
+      setTieBreakerMovies(movies.filter((movie) => tieMovieIds.includes(movie.id)));
+      return;
+    }
+
+    // FINAL PROCESS
     await closeVotingSessionAction(voteSession.id);
+
+    const winner =
+      votesByMovie.length === 0
+        ? null
+        : votesByMovie.reduce((currentWinner, movie) => {
+            if (movie.count > currentWinner.count) {
+              return movie;
+            }
+            return currentWinner;
+          });
+
     if (!winner) return; // safety guard
 
     const data: WatchedMovieInsert = {
@@ -85,7 +128,17 @@ export default function VoteSessionLayout({
       {movies.map((movie) => {
         const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
         const userVoted = didUserVote(voteInfo);
-        const displayWinner = !voteInProgress && winner?.movieId === voteInfo?.movieId;
+        const computedWinner =
+          tieBreakerWinnerId ??
+          (votesByMovie.length === 0
+            ? null
+            : votesByMovie.reduce((currentWinner, movie) => {
+                if (movie.count > currentWinner.count) return movie;
+                return currentWinner;
+              }).movieId);
+
+        const displayWinner = !voteInProgress && computedWinner === movie.id;
+
         return (
           <div
             key={movie.id}
@@ -165,6 +218,34 @@ export default function VoteSessionLayout({
     </div>
   );
 
+  const carouselTieBreakerMovies = (
+    <div className="relative w-full  sm:w-full md:w-full max-w-full list-none">
+      {/* LEFT ARROW */}
+      <button
+        onClick={scrollLeft}
+        className="hidden md:flex btn btn-circle absolute left-0 top-1/2 -translate-y-1/2 z-10"
+      >
+        ❮
+      </button>
+
+      {/* RIGHT ARROW */}
+      <button
+        onClick={scrollRight}
+        className="hidden md:flex btn btn-circle absolute right-0 top-1/2 -translate-y-1/2 z-10"
+      >
+        ❯
+      </button>
+
+      {/* SCROLL CONTAINER */}
+      <div
+        ref={carouselRef}
+        className=" flex gap-4 m-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-neutral rounded-box justify-center"
+      >
+        {tieBreakerMovieList}
+      </div>
+    </div>
+  );
+
   const sessionDetail = (
     <div
       key={voteSession.id}
@@ -208,10 +289,7 @@ export default function VoteSessionLayout({
           {headerTitle}
         </h1>
         <div className="w-full">{sessionDetail}</div>
-        <button
-          className="btn btn-soft btn-primary ml-4 mr-4"
-          onClick={() => router.refresh()}
-        >
+        <button className="btn btn-soft btn-primary ml-4 mr-4" onClick={() => router.refresh()}>
           <ArrowPathIcon className="h-5 w-5" />
         </button>
         <div className="flex justify-center items-center">
@@ -226,6 +304,37 @@ export default function VoteSessionLayout({
         {voteInProgress ? 'Close Voting' : 'Voting Over'}
       </button>
       {/* TO DO: ADD VOTE GRAPH */}
+
+      {/* TIEBREAKER */}
+      {tieBreakerModalOpen && (
+        <dialog className="modal modal-open">
+          <div className="modal-box max-w3xl w-full overflow-hidden">
+            <h3 className="font-bold text-2xl">Uh Oh! It's a tie 🤝</h3>
+            {loggedInUser?.id == createdBy.id && (
+              <div>
+                <p className="py-4">You get the final vote!</p>
+                <div className="">{carouselTieBreakerMovies}</div>
+              </div>
+            )}
+            {loggedInUser?.id != createdBy.id && (
+              <div>
+                <p className="py-4">Wait a sec. {createdBy.name} is choosing.</p>
+              </div>
+            )}
+
+            <div className="modal-action">
+              <button className="btn" onClick={() => setTieBreakerModalOpen(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          {/* backdrop click closes */}
+          <form method="dialog" className="modal-backdrop">
+            <button onClick={() => setTieBreakerModalOpen(false)}>close</button>
+          </form>
+        </dialog>
+      )}
     </div>
   );
 }
