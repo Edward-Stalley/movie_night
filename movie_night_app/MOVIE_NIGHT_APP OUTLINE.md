@@ -48,6 +48,8 @@ MOVIE_NIGHT_APP
 - Change all 'interface' to 'type' for typescript [Done]
 - Add randomizer
 - Tie in Vote?
+- Landing Page Length
+- Modals
 - 
 
 ---
@@ -55,10 +57,10 @@ MOVIE_NIGHT_APP
 ## BUGS
 
 - Foreign Film titles (due to original title being used?) break display and sort
-- Fix delete button not working
-- voting needs to update straight away (refresh)
-- refactor (movies, unwatched movies) both filter out watched
-- fix button presses / interactivity on phones
+- Fix delete button not working [Done]
+- voting needs to update straight away (refresh) []
+- refactor (movies, unwatched movies) both filter out watched [Done]
+- fix button presses / interactivity on phones [Done]
 
 
 ---

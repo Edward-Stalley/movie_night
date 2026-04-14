@@ -17,25 +17,26 @@ export default function Toolbar({
   displayEditToggle,
 }: ToolbarProps) {
   return (
-    <div className="bg-base-200">
-      <div className="navbar flex flex-wrap gap-4 md:flex-nowrap md:justify-between">
+    <div className=" mt-2 bg-">
+      {/* FULL WIDTH ROW (mobile only) */}
+      {pagination && (
+        <div className="justify-center w-full md:w-auto flex">
+          <Pagination page={pagination.page} totalPages={pagination.totalPages} />
+        </div>
+      )}
+      <div className="flex flex-wrap gap-1 md:flex-nowrap md:justify-between items-center">
         {/* LEFT GROUP */}
-        <div className="flex gap-2 items-center">
+        <div className="flex sm:gap-2 gap-1 ml-2">
           {canToggleLayout && <LayoutToggle layout={layout} onChange={setLayout} />}
-          {displayEditToggle && <EditModeToggle editMode={editMode} setEditMode={setEditMode} />}
+          {displayEditToggle && layout === 'grid' && (
+            <EditModeToggle editMode={editMode} setEditMode={setEditMode} />
+          )}
         </div>
 
         {/* RIGHT GROUP */}
         <div className="flex gap-2 items-center ml-auto ">
           <Sort options={sortOptions} value={sortValue} order={sortOrder} />
         </div>
-
-        {/* FULL WIDTH ROW (mobile only) */}
-        {pagination && (
-          <div className="w-full md:w-auto flex sm:justify-center md:justify-start">
-            <Pagination page={pagination.page} totalPages={pagination.totalPages} />
-          </div>
-        )}
       </div>
     </div>
   );
