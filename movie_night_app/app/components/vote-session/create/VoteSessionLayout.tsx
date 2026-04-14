@@ -10,6 +10,7 @@ import { closeVotingSessionAction } from '@/lib/actions/closeVoting';
 import { useRouter } from 'next/navigation';
 import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 import { useRef } from 'react';
+import { ArrowPathIcon } from '@heroicons/react/20/solid';
 
 export default function VoteSessionLayout({
   movies,
@@ -137,7 +138,7 @@ export default function VoteSessionLayout({
   );
 
   const carouselMovies = (
-    <div className="relative w-64 sm:w-full max-w-6xl">
+    <div className="relative w-86 sm:w-full md:w-full max-w-6xl">
       {/* LEFT ARROW */}
       <button
         onClick={scrollLeft}
@@ -167,56 +168,63 @@ export default function VoteSessionLayout({
   const sessionDetail = (
     <div
       key={voteSession.id}
-      className="list-row flex gap-4 items-center bg-base-300 p-2 rounded-2xl flex-col sm:flex-row"
+      className="list-row flex justify-center gap-4 items-center bg-neutral pt-2 pb-2 mt-4 mb-4 rounded-2xl flex-col sm:flex-row"
     >
       <div className="w-full sm:w-fit text-center text-2xl sm:text-4xl font-thin opacity-30 tabular-nums sm:pr-4">
         <p>Movie Night {voteSession.id}</p>
       </div>
-      <div>
-        <Image
-          src={`${createdBy.image}`}
-          alt={'user-image'}
-          width={30}
-          height={30}
-          className="rounded-2xl h-auto w-auto "
-        />
-      </div>
-
-      <div className="list-col-grow">
-        <div>{createdBy.name}</div>
-        <div className="text-xs uppercase font-semibold opacity-60">
-          {voteSession.movieNightDate.toDateString()}
+      <div className="flex">
+        <div className="flex gap-2">
+          <Image
+            src={`${createdBy.image}`}
+            alt={'user-image'}
+            width={36}
+            height={36}
+            className="rounded-2xl h-auto w-auto "
+          />
+          <div className="list-col-grow">
+            <div>{createdBy.name}</div>
+            <div className="text-xs uppercase font-semibold opacity-60">
+              {voteSession.movieNightDate.toDateString()}
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="p-4 pb-2 text-xs opacity-60 tracking-wide">
-        {voteSession.status === 'inProgress' ? (
-          <div className="badge badge-info">Vote in Progress</div>
-        ) : (
-          <div className="badge badge-info">Completed</div>
-        )}
+
+        <div className="p-1 text-xs opacity-60 tracking-wide">
+          {voteSession.status === 'inProgress' ? (
+            <div className="badge badge-info">Vote in Progress</div>
+          ) : (
+            <div className="badge badge-info">Completed</div>
+          )}
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div className="flex flex-col m-10 justify-center">
+    <div className="flex flex-col m-2 justify-center">
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-6xl badge h-fit badge-secondary font-bold m-4 p-4  badge-outline text-center">
+        <h1 className="text-6xl badge h-fit badge-secondary font-bold badge-outline text-center">
           {headerTitle}
         </h1>
-        <div className="p-4">{sessionDetail}</div>
-        <div className="flex justify-center items-center b">
+        <div className="w-full">{sessionDetail}</div>
+        <button
+          className="btn btn-soft btn-primary ml-4 mr-4"
+          onClick={() => router.refresh()}
+        >
+          <ArrowPathIcon className="h-5 w-5" />
+        </button>
+        <div className="flex justify-center items-center">
           <div>{carouselMovies}</div>
         </div>
       </div>
       <button
         onClick={handleSubmitSessionFinalVote}
         disabled={!voteInProgress}
-        className={`btn  p-10 ml-4 mr-4 text-2xl font-bold ${voteInProgress ? 'btn-secondary' : 'btn-info'}`}
+        className={`btn btn-soft border border-secondary  p-2 ml-4 mr-4 text-2xl font-bold ${voteInProgress ? 'btn-secondary' : 'btn-info'}`}
       >
         {voteInProgress ? 'Close Voting' : 'Voting Over'}
       </button>
-
       {/* TO DO: ADD VOTE GRAPH */}
     </div>
   );

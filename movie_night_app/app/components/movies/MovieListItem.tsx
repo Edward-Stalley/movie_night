@@ -12,10 +12,12 @@ export function MovieListItem({ movie }: MovieListItemProps) {
   const trailerId = getYouTubeId(movie.trailerUrl);
 
   return (
-    <div className="flex flex-col gap-4 bg-base-300 m-2 rounded-2xl relative">
-      <div className="flex flex-col gap-2 pl-2 lg:flex-row md:flex-row">
-        <p className='font-extrabold text-lg'>{movie.title}</p>
-        <div className="flex ">
+    <div className="flex flex-col gap-4 bg-base-300 m-2 rounded-xl relative p-2 border-b-primary border-b">
+      <p className="font-extrabold text-lg">{movie.title}</p>
+
+      <div className="flex gap-2 pl-2 justify-between">
+        {/* Poster */}
+        <div className="flex max-w-36 shrink-0">
           <MoviePoster
             id={movie.id}
             posterPath={movie.posterPath}
@@ -24,19 +26,26 @@ export function MovieListItem({ movie }: MovieListItemProps) {
             className="rounded-2xl"
           />
         </div>
-        <div className=" p-4 bg-base-200 rounded-2xl flex-2 ">{movie.overview}</div>
-        <div className="flex flex-col  bg-base-200 p-2 flex-1  ">
-          <div className="flex-1 rounded-2xl p-2">
-            <div className="border-b-2 p-2 flex justify-between">
-              <p className="font-bold text-1xl text-primary ">Trailer</p>
-              {movie.trailerUrl && <TrailerLinkButton trailerLink={movie.trailerUrl} />}
-            </div>
 
-            {trailerId ? (
-              <YouTubeEmbed videoid={trailerId} />
-            ) : (
-              <p className="p-2">No Trailer Available</p>
-            )}
+        {/* Content Wrapper */}
+        <div className="flex flex-col md:flex-row flex-1 gap-4">
+          {/* OVERVIEW */}
+          <div className="p-4 rounded-2xl md:flex-1">{movie.overview}</div>
+
+          {/* TRAILER */}
+          <div className="md:w-72 md:shrink-0">
+            <div className="flex-1 rounded-2xl p-2">
+              <div className="border-b-2 p-2 flex justify-between items-center">
+                <p className="font-bold text-1xl text-primary">Trailer</p>
+                {movie.trailerUrl && <TrailerLinkButton trailerLink={movie.trailerUrl} />}
+              </div>
+
+              {trailerId ? (
+                <YouTubeEmbed videoid={trailerId} />
+              ) : (
+                <p className="p-2">No Trailer Available</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
