@@ -17,13 +17,7 @@ export default function Toolbar({
   displayEditToggle,
 }: ToolbarProps) {
   return (
-    <div className=" mt-2 bg-">
-      {/* FULL WIDTH ROW (mobile only) */}
-      {pagination && (
-        <div className="justify-center w-full md:w-auto flex">
-          <Pagination page={pagination.page} totalPages={pagination.totalPages} />
-        </div>
-      )}
+    <div className=" mt-2 flex flex-col gap-4">
       <div className="flex flex-wrap gap-1 md:flex-nowrap md:justify-between items-center">
         {/* LEFT GROUP */}
         <div className="flex sm:gap-2 gap-1 ml-2">
@@ -38,6 +32,13 @@ export default function Toolbar({
           <Sort options={sortOptions} value={sortValue} order={sortOrder} />
         </div>
       </div>
+
+      {/* FULL WIDTH ROW (mobile only) */}
+      {pagination && (
+        <div className="justify-center w-full md:w-auto flex">
+          <Pagination page={pagination.page} totalPages={pagination.totalPages} />
+        </div>
+      )}
     </div>
   );
 }
