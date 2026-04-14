@@ -1,5 +1,8 @@
 'use client';
 
+// import { EyeIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, PencilIcon } from '@heroicons/react/20/solid';
+
 type Props = {
   editMode: boolean;
   setEditMode: (editMode: boolean) => void;
@@ -17,7 +20,13 @@ export default function EditModeToggle({ editMode, setEditMode }: Props) {
           className={`toggle ${editMode && 'border-secondary'}`}
           onClick={() => setEditMode(editMode === true ? false : true)}
         />
-        <p className={`${editMode && 'text-secondary'} text-sm`}>{editMode ? 'Edit' : 'Display'}</p>
+        <p className={`${editMode && 'text-secondary'} text-sm`}>
+          {editMode ? (
+            <PencilIcon className="w-6 h-6 text-secondary" />
+          ) : (
+            <EyeIcon className="w-6 h-6 text-primary" />
+          )}
+        </p>
       </label>
     </fieldset>
   );

@@ -1,5 +1,8 @@
 'use client';
 
+import { ListBulletIcon } from '@heroicons/react/20/solid';
+import { TableCellsIcon } from '@heroicons/react/24/outline';
+
 type Layout = 'list' | 'grid';
 
 type Props = {
@@ -17,7 +20,11 @@ export default function LayoutToggle({ layout, onChange }: Props) {
           className="toggle"
           onClick={() => onChange(layout === 'list' ? 'grid' : 'list')}
         />
-        List / Grid
+        {layout === 'list' ? (
+          <ListBulletIcon className="h-5 w-5" />
+        ) : (
+          <TableCellsIcon className="h-5 w-5" />
+        )}
       </label>
     </fieldset>
   );
