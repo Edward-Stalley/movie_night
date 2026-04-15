@@ -26,7 +26,7 @@ export function WatchedMovieListItem({
     return r.ratedById === Number(loggedInUser?.id);
   });
   return (
-    <div className="relative flex gap-4 bg-base-300 m-2 p-2 rounded-2xl flex-col sm:flex-row border ">
+    <div className="relative flex gap-4 bg-base-300 m-2 p-2 rounded-none flex-col sm:flex-row border-b ">
       <div className="ml-2 w-28 sm:w-32 md:w-36 shrink-0">
         <div className="relative  aspect-2/3  w-full overflow-hidden rounded-2xl">
           <MoviePoster

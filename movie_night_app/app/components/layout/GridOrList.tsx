@@ -32,7 +32,7 @@ export function GridOrList({
         />
       )}
       {layout === 'list' && (
-        <ul className="list bg-base-100 rounded-box shadow-md">
+        <ul className="list bg-base-200 rounded-none shadow-md">
           <li className=" text-base-content text-2xl md:text-3xl font-bold p-4 pb-2 opacity-40 tracking-wide">
             {headerTitle}
           </li>
@@ -40,7 +40,7 @@ export function GridOrList({
         </ul>
       )}
       {layout === 'grid' && (
-        <ul className="bg-base-100 p-3 sm:p-4 md:p-5 grid gap-2 sm:gap-3 md:gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8">
+        <ul className="bg-base-200 p-3 sm:p-4 md:p-5 grid gap-2 sm:gap-3 md:gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8">
           {children}
         </ul>
       )}
