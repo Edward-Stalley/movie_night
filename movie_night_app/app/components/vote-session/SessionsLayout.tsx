@@ -42,14 +42,21 @@ export default function SessionsLayout({ sessions, users }: SessionsLayoutProps)
   });
 
   return (
-    <div className=" flex flex-col gap-2 m-2 ">
-      <div className="text-2xl pl-2 pb-2 pt-4 h-fit text-left ">Movie Night Sessions</div>
-      <div className="list">
-        <ul className="list bg-base-100 rounded-box shadow-md">{movieNightsession}</ul>
+    <div className=" flex flex-col gap-2 p-2 bg-base-200 flex-1 ">
+      <div className="text-xl pl-2 pb-2 pt-4 h-fit text-left ">Movie Night Sessions</div>
+      <div className="flex justify-between flex-col flex-1">
+        <>
+          {/* <div className="list"> */}
+          <ul className="list bg-base-200">{movieNightsession}</ul>
+          {/* </div> */}
+        </>
+        <button
+          className="btn btn-soft btn-primary rounded-2xl rounded-t-none"
+          onClick={() => router.refresh()}
+        >
+          Refresh Session List
+        </button>
       </div>
-      <button className="btn btn-soft btn-primary" onClick={() => router.refresh()}>
-        Refresh Session List
-      </button>
     </div>
   );
 }

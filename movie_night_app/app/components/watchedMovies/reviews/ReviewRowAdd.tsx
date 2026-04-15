@@ -4,7 +4,6 @@ import { LoggedInUser, WatchedMovie } from '@/lib/types/domain';
 import { ReviewInsert } from '@/lib/types/db';
 import StarRating from '@/app/components/shared/StarRating';
 import { useState } from 'react';
-import { InvertedCommas } from '@/app/components/icons';
 import { useRouter } from 'next/navigation';
 import { saveReview } from '@/lib/api/reviews';
 
@@ -49,22 +48,23 @@ export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
 
   const textArea = (
     <form
-      className="p-2 rounded-2xl flex flex-col sm:flex-row gap-2 bg-neutral w-full"
+      className="p-2 rounded-2xl flex flex-col sm:flex-row gap-2 bg-base-200 w-full"
       onSubmit={handleSubmit}
     >
       <textarea
         value={reviewComment}
         onChange={(e) => setReviewComment(e.target.value)}
-        className="w-full p-2 bg-accent-content rounded-2xl text-base-content"
-        placeholder= "Write Review Here..."
+        className="w-full p-2 bg-base-300 rounded-2xl text-base-content"
+        placeholder="Write Review Here..."
       />
-
-      <button className="btn btn-primary btn-soft sm:w-auto w-full">Submit</button>
+      <div className="flex justify-end">
+        <button className="btn btn-primary sm:w-auto w-fit rounded-2xl">Submit</button>
+      </div>
     </form>
   );
 
   return (
-    <div className="bg-accent-content m-1 rounded-2xl p-3 flex flex-col sm:flex-row gap-3">
+    <div className="bg-accent-content m-1 mt-2 rounded-2xl p-3 flex flex-col sm:flex-row gap-3 border ">
       {/* LEFT */}
       <div className="sm:min-w-27.5">
         <div>{loggedInUser?.name}</div>

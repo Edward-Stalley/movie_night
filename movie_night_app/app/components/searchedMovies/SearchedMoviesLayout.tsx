@@ -44,6 +44,7 @@ export default function SearchedMoviesLayout({
 
   return (
     <>
+      
       <Searchbar movieTitle={movieTitle} setMovieTitle={setMovieTitle} />
 
       {!emptyState && (

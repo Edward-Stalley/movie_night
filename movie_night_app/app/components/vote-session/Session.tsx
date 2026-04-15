@@ -13,11 +13,10 @@ interface SessionsListProps {
 }
 
 export default function Session({ session, createdBy, onDeleted }: SessionsListProps) {
-  
   return (
     <li
       key={session.id}
-      className="list-row flex items-center justify-between p-3 my-2 rounded-2xl bg-base-200"
+      className="list-row flex items-center justify-between p-3 my-2 bg-base-200 border-b rounded-none"
     >
       <Link
         key={session.id}
