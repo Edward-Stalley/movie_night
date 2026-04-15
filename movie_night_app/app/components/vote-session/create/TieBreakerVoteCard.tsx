@@ -2,6 +2,7 @@
 
 import { TieBreakerCardCardProps } from '@/lib/types/ui';
 import { VoteMovieGridItem } from './VoteMovieGridItem';
+import { EyeIcon } from '@heroicons/react/20/solid';
 
 export default function VoteMovieCard({ movie, finalVote }: TieBreakerCardCardProps) {
   return (
@@ -13,10 +14,10 @@ export default function VoteMovieCard({ movie, finalVote }: TieBreakerCardCardPr
         urlRoute="movies"
       />
       <button
-        className="btn btn-secondary h-8  w-full absolute bottom-0 rounded-t-none"
+        className="btn btn-secondary h-8  w-full bottom-0 mt-2"
         onClick={() => finalVote(movie.id)}
       >
-        Choose
+     <EyeIcon className='h-5 w-5'/>
       </button>
     </li>
   );

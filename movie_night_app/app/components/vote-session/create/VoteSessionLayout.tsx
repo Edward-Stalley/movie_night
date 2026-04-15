@@ -10,7 +10,7 @@ import { closeVotingSessionAction } from '@/lib/actions/closeVoting';
 import { useRouter } from 'next/navigation';
 import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 import { useRef } from 'react';
-import { ArrowPathIcon } from '@heroicons/react/20/solid';
+import { ArrowPathIcon, MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/20/solid';
 import { StoredMovie } from '@/lib/types/domain';
 import TieBreakerVoteCard from './TieBreakerVoteCard';
 
@@ -27,6 +27,8 @@ export default function VoteSessionLayout({
   const [tieBreakerModalOpen, setTieBreakerModalOpen] = useState<boolean>(false);
   const [tieBreakerMovies, setTieBreakerMovies] = useState<StoredMovie[]>([]);
   const [tieBreakerWinnerId, setTieBreakerWinnerId] = useState<number | null>(null);
+  const [pendingVoteMovieId, setPendingVoteMovieId] = useState<number | null>(null);
+  const [isClosingVoting, setIsClosingVoting] = useState(false);
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const tieBreakerCarouselRef = useRef<HTMLDivElement>(null);
@@ -57,7 +59,13 @@ export default function VoteSessionLayout({
       movieId: id,
       userId: Number(loggedInUser.id),
     };
-    await toggleVoteAction(vote);
+
+    setPendingVoteMovieId(id);
+    try {
+      await toggleVoteAction(vote);
+    } finally {
+      setPendingVoteMovieId(null);
+    }
   };
 
   const maxVotes = votesByMovie.length === 0 ? null : Math.max(...votesByMovie.map((m) => m.count));
@@ -83,45 +91,50 @@ export default function VoteSessionLayout({
 
   const voteInProgress = voteSession.status === 'inProgress';
   const tieBreakerMovieList = tieBreakerMovies?.map((movie) => (
-    <div className="w-40 shrink-0 snap-center" key={movie.id}>
+    <div className="w-40 shrink-0 " key={movie.id}>
       <TieBreakerVoteCard key={movie.id} movie={movie} finalVote={handleFinalVote} />
     </div>
   ));
 
   const handleSubmitSessionFinalVote = async () => {
     if (!tiebreakers) return; // safety guard
+    setIsClosingVoting(true);
 
-    // TIE BREAKER
-    if (tiebreakers.length > 1) {
-      setTieBreakerModalOpen(true);
-      const tieMovieIds = tiebreakers.map((t) => t.movieId);
-      setTieBreakerMovies(movies.filter((movie) => tieMovieIds.includes(movie.id)));
-      return;
+    try {
+      // TIE BREAKER
+      if (tiebreakers.length > 1) {
+        setTieBreakerModalOpen(true);
+        const tieMovieIds = tiebreakers.map((t) => t.movieId);
+        setTieBreakerMovies(movies.filter((movie) => tieMovieIds.includes(movie.id)));
+        return;
+      }
+
+      // FINAL PROCESS
+      await closeVotingSessionAction(voteSession.id);
+
+      const winner =
+        votesByMovie.length === 0
+          ? null
+          : votesByMovie.reduce((currentWinner, movie) => {
+              if (movie.count > currentWinner.count) {
+                return movie;
+              }
+              return currentWinner;
+            });
+
+      if (!winner) return; // safety guard
+
+      const data: WatchedMovieInsert = {
+        movieId: winner.movieId,
+        watchedOn: voteSession.movieNightDate.toLocaleDateString('en-CA'),
+        chosenBy: createdBy.id,
+      };
+
+      await addWatchedMovieAction(data);
+      router.refresh();
+    } finally {
+      setIsClosingVoting(false);
     }
-
-    // FINAL PROCESS
-    await closeVotingSessionAction(voteSession.id);
-
-    const winner =
-      votesByMovie.length === 0
-        ? null
-        : votesByMovie.reduce((currentWinner, movie) => {
-            if (movie.count > currentWinner.count) {
-              return movie;
-            }
-            return currentWinner;
-          });
-
-    if (!winner) return; // safety guard
-
-    const data: WatchedMovieInsert = {
-      movieId: winner.movieId,
-      watchedOn: voteSession.movieNightDate.toLocaleDateString('en-CA'),
-      chosenBy: createdBy.id,
-    };
-
-    await addWatchedMovieAction(data);
-    router.refresh();
   };
 
   const didUserVote = (voteInfo?: { users: { id: string }[] }) =>
@@ -133,7 +146,7 @@ export default function VoteSessionLayout({
   const loggedInUserId = Number(loggedInUser?.id);
 
   const moviesForVoting = (
-    <div className="flex gap-4 p-4  rounded-box w-full list-none">
+    <div className="flex gap-2 p-4 rounded-box list-none">
       {movies.map((movie) => {
         const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
         const userVoted = didUserVote(voteInfo);
@@ -147,46 +160,59 @@ export default function VoteSessionLayout({
               }).movieId);
 
         const displayWinner = !voteInProgress && computedWinner === movie.id;
+        //voting
+        const isThisMoviePending = pendingVoteMovieId === movie.id;
 
         return (
           <div
             key={movie.id}
             className={`flex flex-col items-center bg-base-100 p-3 rounded-2xl relative ${displayWinner && 'border border-info'}`}
           >
-            <VoteMovieCard
-              key={movie.id}
-              movie={movie}
-              layout={layout}
-              VotingSessionProps={{
-                status: voteSession.status,
-                canVote: !!loggedInUser,
-              }}
-            />
+            <div key={movie.id} className=" shrink-0 w-36">
+              <VoteMovieCard
+                key={movie.id}
+                movie={movie}
+                layout={layout}
+                VotingSessionProps={{
+                  status: voteSession.status,
+                  canVote: !!loggedInUser,
+                }}
+              />
+            </div>
             {/* VOTES */}
             {voteInProgress && (
               <button
-                className=" btn btn-secondary cursor-pointer w-full rounded-2xl m-2 text-4xl"
+                disabled={isThisMoviePending}
+                className={`${userVoted ? ' btn-secondary ' : 'btn-primary'} btn btn-soft cursor-pointer w-full m-2 text-4xl`}
                 onClick={() => toggleVote(movie.id)}
               >
-                {userVoted ? '-' : '+'}
+                {isThisMoviePending ? (
+                  <span className="loading loading-spinner"></span>
+                ) : userVoted ? (
+                  <MinusCircleIcon className="h-5 w-5" />
+                ) : (
+                  <PlusCircleIcon className="h-5 w-5" />
+                )}
               </button>
             )}
 
-            <div className="flex flex-col gap-2 mt-6  w-full rounded-2xl justify-center items-center badge badge-soft p-2 h-fit">
-              <div className="text-3xl badge badge-secondary p-4 badge-outline ">
+            <div className="flex flex-col gap-2 h-full w-full rounded-2xl justify-start items-center badge badge-soft p-2">
+              <div className="text-3xl badge badge-secondary p-4 badge-outline">
                 {voteInfo?.count ? voteInfo?.count : 0}
               </div>
-              {voteInfo?.users.map((user) => (
-                <div className="" key={user.id}>
-                  <Image
-                    src={`${user.image}`}
-                    alt={''}
-                    width={30}
-                    height={30}
-                    className="rounded-2xl h-auto w-auto "
-                  />
-                </div>
-              ))}
+              <div className=" flex gap-1 w-full overflow-scroll">
+                {voteInfo?.users.map((user) => (
+                  <div className="" key={user.id}>
+                    <Image
+                      src={`${user.image}`}
+                      alt={''}
+                      width={30}
+                      height={30}
+                      className="rounded-2xl h-auto w-auto "
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
             {displayWinner && (
               <div className="absolute top-0 right-0 bg-info text-base-200 p-2 rounded-tr-xl">
@@ -200,7 +226,7 @@ export default function VoteSessionLayout({
   );
 
   const carouselMovies = (
-    <div className="relative w-86 sm:w-full md:w-full max-w-6xl">
+    <div className="relative w-full sm:w-full md:w-full max-w-6xl ">
       {/* LEFT ARROW */}
       <button
         onClick={scrollLeft}
@@ -220,7 +246,7 @@ export default function VoteSessionLayout({
       {/* SCROLL CONTAINER */}
       <div
         ref={carouselRef}
-        className=" flex gap-4 m-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-neutral rounded-box justify-center"
+        className="flex overflow-x-auto scroll-smooth  scrollbar-hide bg-neutral rounded-box rounded-b-none justify-start "
       >
         {moviesForVoting}
       </div>
@@ -228,7 +254,7 @@ export default function VoteSessionLayout({
   );
 
   const carouselTieBreakerMovies = (
-    <div className="relative w-full  sm:w-full md:w-full max-w-full list-none">
+    <div className="relative w-full sm:w-full md:w-full max-w-full list-none">
       {/* LEFT ARROW */}
       <button
         onClick={scrollTieLeft}
@@ -248,7 +274,7 @@ export default function VoteSessionLayout({
       {/* SCROLL CONTAINER */}
       <div
         ref={tieBreakerCarouselRef}
-        className="flex justify-start gap-4 m-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-neutral rounded-box scroll-pl-4"
+        className="flex justify-start gap-4 m-4 overflow-x-auto scroll-smooth scrollbar-hide py-2 rounded-box scroll-pl-4   "
       >
         {tieBreakerMovieList}
       </div>
@@ -258,12 +284,12 @@ export default function VoteSessionLayout({
   const sessionDetail = (
     <div
       key={voteSession.id}
-      className="list-row flex justify-center gap-4 items-center bg-neutral pt-2 pb-2 mt-4 mb-4 rounded-2xl flex-col sm:flex-row"
+      className="list-row flex justify-center gap-2 items-center p-2 flex-col sm:flex-row bg-base-100"
     >
-      <div className="w-full sm:w-fit text-center text-2xl sm:text-4xl font-thin opacity-30 tabular-nums sm:pr-4">
+      {/* <div className="sm:w-fit text-xl sm:text-4xl font-thin opacity-30 sm:pr-4 flex justify-center w-full">
         <p>Movie Night {voteSession.id}</p>
-      </div>
-      <div className="flex">
+      </div> */}
+      <div className="flex w-full justify-center gap-4">
         <div className="flex gap-2">
           <Image
             src={`${createdBy.image}`}
@@ -292,33 +318,45 @@ export default function VoteSessionLayout({
   );
 
   return (
-    <div className="flex flex-col m-2 justify-center">
-      <div className="flex flex-col justify-center items-center">
-        <h1 className="text-6xl badge h-fit badge-secondary font-bold badge-outline text-center">
+    <div className="flex flex-col flex-1 bg-base-200 justify-between pb-5">
+      <div className="w-full">{sessionDetail}</div>
+      <div className="w-full flex justify-center ">
+        <h1 className="text-2xl badge h-fit badge-secondary font-bold badge-outline text-center bg-base-300 ">
           {headerTitle}
         </h1>
-        <div className="w-full">{sessionDetail}</div>
-        <button className="btn btn-soft btn-primary ml-4 mr-4" onClick={() => router.refresh()}>
-          <ArrowPathIcon className="h-5 w-5" />
-        </button>
-        <div className="flex justify-center items-center">
-          <div>{carouselMovies}</div>
+      </div>
+      <div className="flex justify-center items-center w-screen bg-base-300 px-4 h-full ">
+        <div className="flex p-2 w-full justify-center ">
+          {isClosingVoting ? <div className="loading"></div> : carouselMovies}
         </div>
       </div>
-      <button
-        onClick={handleSubmitSessionFinalVote}
-        disabled={!voteInProgress}
-        className={`btn btn-soft border border-secondary  p-2 ml-4 mr-4 text-2xl font-bold ${voteInProgress ? 'btn-secondary' : 'btn-info'}`}
-      >
-        {voteInProgress ? 'Close Voting' : 'Voting Over'}
-      </button>
-      {/* TO DO: ADD VOTE GRAPH */}
+      {voteInProgress && (
+        <button className="btn btn-soft mx-6 rounded-none" onClick={() => router.refresh()}>
+          <ArrowPathIcon className="h-5 w-5" />
+        </button>
+      )}
+      {loggedInUser?.id == createdBy.id && (
+        <button
+          onClick={handleSubmitSessionFinalVote}
+          disabled={!voteInProgress || isClosingVoting}
+          className={` btn btn-soft border p-2 ml-6 mr-6 text-md rounded-t-none ${voteInProgress ? 'btn-secondary' : 'btn-info'}`}
+        >
+          {isClosingVoting ? (
+            <span className="loading loading-spinner"></span>
+          ) : voteInProgress ? (
+            'Close Voting'
+          ) : (
+            'Voting Over'
+          )}
+        </button>
+      )}
 
+      {/* TO DO: ADD VOTE GRAPH */}
       {/* TIEBREAKER */}
       {tieBreakerModalOpen && (
-        <dialog className="modal modal-open">
-          <div className="modal-box max-w-3xl w-full overflow-hidden">
-            <h3 className="font-bold text-2xl">Uh Oh! It's a tie 🤝</h3>
+        <dialog className="modal modal-open p-4">
+          <div className="modal-box max-w-3xl w-full overflow-hidden bg-base-100">
+            <h3 className="font-bold text-2xl">Uh Oh! It's a tie.</h3>
             {loggedInUser?.id == createdBy.id && (
               <div>
                 <p className="py-4">You get the final vote!</p>

@@ -33,7 +33,7 @@ export function GridOrList({
       )}
       {layout === 'list' && (
         <ul className="list bg-base-100 rounded-box shadow-md">
-          <li className=" text-base-content text-4xl font-bold p-4 pb-2 opacity-40 tracking-wide">
+          <li className=" text-base-content text-2xl md:text-3xl font-bold p-4 pb-2 opacity-40 tracking-wide">
             {headerTitle}
           </li>
           {children}

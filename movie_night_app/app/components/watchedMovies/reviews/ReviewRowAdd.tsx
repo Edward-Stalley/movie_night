@@ -56,7 +56,7 @@ export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
         value={reviewComment}
         onChange={(e) => setReviewComment(e.target.value)}
         className="w-full p-2 bg-accent-content rounded-2xl text-base-content"
-        placeholder="Write Review Here..."
+        placeholder= "Write Review Here..."
       />
 
       <button className="btn btn-primary btn-soft sm:w-auto w-full">Submit</button>
@@ -72,7 +72,6 @@ export function ReviewRowAdd({ loggedInUser, movie }: AddReviewRowProps) {
       </div>
 
       {/* RIGHT */}
-      <InvertedCommas />
       <div className="flex gap-2 items-start w-full">
         <div className="w-full max-w-xl">{textArea}</div>
       </div>
