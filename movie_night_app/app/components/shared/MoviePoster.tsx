@@ -12,10 +12,12 @@ export function MoviePoster({
 }: MoviePosterTypes) {
   const image = (
     <Image
-      className={`block w-full h-auto ${className}`}
+      className={`${className}`}
       src={`https://image.tmdb.org/t/p/w500/${posterPath}`}
-      width={210}
-      height={315}
+      fill
+      // sizes="(max-width: 768px) 33vw, 200px"
+      // width={210}
+      // height={315}
       priority={priority}
       alt={`${title} (${id})`}
       loading={priority ? 'eager' : 'lazy'}

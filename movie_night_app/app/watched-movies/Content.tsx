@@ -11,7 +11,7 @@ import { WatchedMovieSortValue, SortOrder } from '@/lib/types/sort';
 import { WatchedMovieSearchParams } from '@/lib/types/params';
 import { unstable_noStore as noStore } from 'next/cache';
 
-export default async function WatchedMoviesDetail({
+export default async function WatchedMoviesContent({
   searchParams,
 }: {
   searchParams: WatchedMovieSearchParams;

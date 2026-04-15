@@ -35,6 +35,7 @@ export default function CreateVoteSessionLayout({
   const dateInputclassName = { input: 'h-10' };
   const carouselRef = useRef<HTMLDivElement>(null);
   const nonCarouselMovies = movies.filter((movie) => !selectedIds.includes(movie.id));
+  const [isCreatingVote, setCreatingVote] = useState(false);
 
   //  SCROLL ARROW FUNCTIONS
   const scrollLeft = () => {
@@ -47,21 +48,26 @@ export default function CreateVoteSessionLayout({
 
   // CREATE
   const handleSubmitCreateVote = async (e: React.SubmitEvent) => {
-    e.preventDefault();
+    try {
+      setCreatingVote(true);
+      e.preventDefault();
 
-    const result = await createVotingSessionAction({
-      movieNightDate,
-      movieIds: selectedIds,
-      createdBy,
-    });
+      const result = await createVotingSessionAction({
+        movieNightDate,
+        movieIds: selectedIds,
+        createdBy,
+      });
 
-    if (!handleActionToast(result, messages.success.votes_session.created)) {
-      return;
+      if (!handleActionToast(result, messages.success.votes_session.created)) {
+        return;
+      }
+
+      localStorage.removeItem('selectedMovies');
+      setSelectedMovies([]);
+      router.replace(`/vote-session/sessions/${result.data}`);
+    } finally {
+      setCreatingVote(false);
     }
-
-    localStorage.removeItem('selectedMovies');
-    setSelectedMovies([]);
-    router.replace(`/vote-session/sessions/${result.data}`);
   };
 
   // ADD/REMOVE MOVIE FROM CAROUSEL
@@ -103,24 +109,26 @@ export default function CreateVoteSessionLayout({
       )}
 
       {/* SCROLL CONTAINER */}
-      <div
-        ref={carouselRef}
-        className=" flex gap-4 p-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-base-100 rounded-box"
-      >
-        {selectedMovies.map((movie) => (
-          <div key={movie.id} className="snap-start shrink-0 w-36">
-            <VoteMovieCard
-              movie={movie}
-              layout={layout}
-              CreateVotingSessionProps={{
-                selectable: voteStarted,
-                selected: selectedIds.includes(movie.id),
-                toggleSelect: () => toggleSelect(movie),
-              }}
-            />
-          </div>
-        ))}
-      </div>
+      {selectedMovies.length > 0 && (
+        <div
+          ref={carouselRef}
+          className=" flex gap-4 p-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-base-100 rounded-box"
+        >
+          {selectedMovies.map((movie) => (
+            <div key={movie.id} className="snap-start shrink-0 w-36">
+              <VoteMovieCard
+                movie={movie}
+                layout={layout}
+                CreateVotingSessionProps={{
+                  selectable: voteStarted,
+                  selected: selectedIds.includes(movie.id),
+                  toggleSelect: () => toggleSelect(movie),
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 
@@ -138,7 +146,7 @@ export default function CreateVoteSessionLayout({
   ));
 
   //  SAVE SELECTED MOVIES TO LOCAL STORAGE
-  // SELECTED MOVIES PERSIST ON PAGE CHANGE
+  //  SELECTED MOVIES PERSIST ON PAGE CHANGE
 
   useEffect(() => {
     setIsHydrated(true);
@@ -164,21 +172,28 @@ export default function CreateVoteSessionLayout({
   }, [selectedMovies, isHydrated]);
 
   return (
-    <div className="bg-base-200 flex justify-center items-center flex-col">
-      {voteStarted && <div className="flex rounded-2xl m-2">{carouselMovies}</div>}
+    <div className="bg-base-200">
+      {voteStarted && <div className="flex rounded-2xl m-2 justify-center">{carouselMovies}</div>}
       <div className="flex justify-center items-center h-fit gap-0 flex-col sm:flex-row">
         <div>
           <form
             className=" flex gap-2 rounded-2xl badge badge-neutral h-14 m-2"
             onSubmit={handleSubmitCreateVote}
           >
-            <DateInput
-              className={dateInputclassName}
-              date={movieNightDate}
-              onChange={setMovieNightDate}
-              min={getTodayLocal()}
-            />
-            <button className="btn btn-secondary rounded-xl h-9 ">Create</button>
+            {isCreatingVote ? (
+              <div className="loading" />
+            ) : (
+              <>
+                <DateInput
+                  className={dateInputclassName}
+                  date={movieNightDate}
+                  onChange={setMovieNightDate}
+                  min={getTodayLocal()}
+                />
+
+                <button className="btn btn-secondary rounded-xl h-9 ">Create</button>
+              </>
+            )}
           </form>
         </div>
       </div>
