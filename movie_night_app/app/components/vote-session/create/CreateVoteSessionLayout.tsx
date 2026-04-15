@@ -177,7 +177,7 @@ export default function CreateVoteSessionLayout({
       <div className="flex justify-center items-center mt-4 gap-0 flex-col sm:flex-row">
         <div>
           <form
-            className=" flex gap-2 rounded-2xl"
+            className=" flex gap-2 rounded-2xl items-center"
             onSubmit={handleSubmitCreateVote}
           >
             {isCreatingVote ? (

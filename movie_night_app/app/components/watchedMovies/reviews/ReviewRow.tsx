@@ -8,6 +8,7 @@ import { EditPen } from '@/app/components/icons';
 import { useRouter } from 'next/navigation';
 import { saveReview } from '@/lib/api/reviews';
 import { ReviewInsert } from '@/lib/types/db';
+import { PencilIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 
 type EditableReviewRowProps = {
   loggedInUser?: LoggedInUser;
@@ -73,8 +74,9 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
         className="w-full p-2 bg-accent-content rounded-2xl text-base-content"
         placeholder="Write Review Here..."
       />
-
-      <button className="btn btn-primary btn-soft sm:w-auto w-full">Submit</button>
+      <div className="flex justify-end">
+        <button className="btn btn-primary sm:w-auto w-fit rounded-2xl">Submit</button>
+      </div>{' '}
     </form>
   );
 
@@ -84,8 +86,8 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
 
   const editToggleButton = (
     <div className=" flex justify-start items-center">
-      <button className=" " onClick={toggleEditMode}>
-        <EditPen className={'btn btn-primary btn-circle h-5 '} fill={''} />
+      <button className=" btn btn-primary h-fit p-0" onClick={toggleEditMode}>
+        <PencilSquareIcon className="w-5 h-5" />
       </button>
     </div>
   );
@@ -110,10 +112,8 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
           onClick={editing ? handleRatingClick : undefined}
           isEditing={editing}
         />
-
-        <div className="flex gap-2 pt-2 items-start">
-          <InvertedCommas />
-
+        <div className="flex gap-2 pt-2 items-start justify-center">
+          {!editing && <InvertedCommas />}
           <div className="w-full max-w-xl wrap-break-word">
             {isAuthor ? (editing ? textArea : displayComment) : displayComment}
           </div>
