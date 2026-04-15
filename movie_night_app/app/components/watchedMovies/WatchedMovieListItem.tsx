@@ -26,18 +26,22 @@ export function WatchedMovieListItem({
     return r.ratedById === Number(loggedInUser?.id);
   });
   return (
-    <div className=" relative flex gap-4 bg-base-300 m-2 p-2 rounded-2xl flex-col sm:flex-row ">
-      <MoviePoster
-        id={movie.movieId}
-        posterPath={movie.posterPath}
-        title={movie.title}
-        urlRoute="watched-movies"
-        className="rounded-2xl"
-      />
+    <div className="relative flex gap-4 bg-base-300 m-2 p-2 rounded-2xl flex-col sm:flex-row border ">
+      <div className="ml-2 w-28 sm:w-32 md:w-36 shrink-0">
+        <div className="relative  aspect-2/3  w-full overflow-hidden rounded-2xl">
+          <MoviePoster
+            id={movie.movieId}
+            posterPath={movie.posterPath}
+            title={movie.title}
+            urlRoute="watched-movies"
+            className="rounded-2xl"
+          />
+        </div>
+      </div>
       {/* <DeleteMovieButton onDelete={onDelete} isDetailScreen={isDetailScreen} /> */}
 
-      <div className="flex flex-col">
-        {!isDetailScreen && <div className="text-3xl">{movie.title}</div>}
+      <div className="flex flex-col p-2">
+        {!isDetailScreen && <div className="text-sm font-bold">{movie.title}</div>}
         <div>
           <div className="flex gap-1">
             <WatchedDateInput movie={movie} />

@@ -43,7 +43,7 @@ export default function SessionsLayout({ sessions, users }: SessionsLayoutProps)
 
   return (
     <div className=" flex flex-col gap-2 m-2 ">
-      <div className="text-4xl pl-2 pb-2 pt-4 h-fit text-left ">Movie Night Sessions</div>
+      <div className="text-2xl pl-2 pb-2 pt-4 h-fit text-left ">Movie Night Sessions</div>
       <div className="list">
         <ul className="list bg-base-100 rounded-box shadow-md">{movieNightsession}</ul>
       </div>

@@ -15,16 +15,18 @@ export function MovieListItem({ movie }: MovieListItemProps) {
     <div className="flex flex-col gap-4 bg-base-300 m-2 rounded-xl relative p-2 border-b-primary border-b">
       <p className="font-extrabold text-lg">{movie.title}</p>
 
-      <div className="flex gap-2 pl-2 justify-between">
+      <div className="flex items-start gap-2 pl-2 justify-between">
         {/* Poster */}
-        <div className="flex max-w-36 shrink-0">
-          <MoviePoster
-            id={movie.id}
-            posterPath={movie.posterPath}
-            title={movie.title}
-            urlRoute="movies"
-            className="rounded-2xl"
-          />
+        <div className="w-28 sm:w-32 md:w-36 shrink-0">
+          <div className="relative  aspect-2/3  w-full overflow-hidden rounded-2xl">
+            <MoviePoster
+              id={movie.id}
+              posterPath={movie.posterPath}
+              title={movie.title}
+              urlRoute="movies"
+              className="object-cover"
+            />
+          </div>
         </div>
 
         {/* Content Wrapper */}
