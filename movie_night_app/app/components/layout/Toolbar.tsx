@@ -17,7 +17,7 @@ export default function Toolbar({
   displayEditToggle,
 }: ToolbarProps) {
   return (
-    <div className=" m-2 flex flex-col gap-4">
+    <div className=" p-2 flex flex-col gap-4 bg-base-200 ">
       <div className="flex flex-wrap gap-1 md:flex-nowrap md:justify-between items-center">
         {/* LEFT GROUP */}
         <div className="flex sm:gap-2 gap-1 ml-2">

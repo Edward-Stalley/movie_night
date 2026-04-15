@@ -20,8 +20,8 @@ export default function Searchbar({ movieTitle, setMovieTitle }: SearchbarProps)
     });
   };
   return (
-    <div className="">
-      <div className=" bg-base-100 flex items-center justify-center m-2">
+    <div className=" bg-base-200 flex flex-col flex-1">
+      <div className=" bg-base-200 flex items-center justify-center p-2">
         <input
           placeholder="Type Film Name..."
           value={movieTitle}
@@ -30,7 +30,10 @@ export default function Searchbar({ movieTitle, setMovieTitle }: SearchbarProps)
           className="input m-2 input-primary text-base-content rounded-2xl"
         ></input>
 
-        <button onClick={handleSearch} className="btn btn-primary hover:btn-active rounded-2xl w-20">
+        <button
+          onClick={handleSearch}
+          className="btn btn-primary hover:btn-active rounded-2xl w-20"
+        >
           {isPending ? <div className=" loading" /> : 'Search'}
         </button>
       </div>

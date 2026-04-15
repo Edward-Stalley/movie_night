@@ -6,7 +6,7 @@ import { auth } from '@/auth';
 import { mapSessionToLoggedInUser } from '@/lib/auth/session';
 import { getUsers } from '@/lib/queries/users';
 
-export default async function WatchedMovieDetail({ params }: { params: Promise<{ id: string }> }) {
+export default async function WatchedMovieContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const numericId = Number(id);
 
@@ -21,8 +21,8 @@ export default async function WatchedMovieDetail({ params }: { params: Promise<{
   const users: User[] = userRows.map(toUser);
 
   return (
-    <ul className="list bg-base-100 rounded-box shadow-md">
-      <li className=" text-base-content text-1xl font-bold p-4 pb-2 opacity-40 tracking-wide">
+    <ul className="list bg-base-300 rounded-box shadow-md flex-1 rounded-none">
+      <li className=" text-base-content text-1xl font-bold p-4 pb-2 opacity-40 tracking-wide ">
         {m.title}
       </li>
       <WatchedMovieCard
