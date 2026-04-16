@@ -60,7 +60,9 @@ export default function MovieCard({
           editMode={editMode}
         />
       )}
-      {layout === 'list' && <MovieListItem movie={movie} />}
+      {layout === 'list' && (
+        <MovieListItem movie={movie} editMode={editMode} onDelete={handleDelete} />
+      )}
     </li>
   );
 }

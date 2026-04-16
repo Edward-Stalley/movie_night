@@ -15,7 +15,7 @@ export default function WatchedMoviesLayout({
   sortOrder,
 }: WatchedMoviesLayoutProps) {
   const [layout, setLayout] = useState<Layout>('grid');
-  const headerTitle = 'Watched Movies';
+  const headerTitle = '';
   const [watchedMovieListState, setWatchedMovieListState] = useState(movies);
 
   const handleDeleteWatchedMovie = (deletedId: number) => {

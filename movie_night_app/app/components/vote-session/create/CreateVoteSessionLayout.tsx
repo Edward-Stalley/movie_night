@@ -87,12 +87,12 @@ export default function CreateVoteSessionLayout({
 
   // CAROUSEL
   const carouselMovies = (
-    <div className="relative w-64 sm:w-full max-w-6xl list-none">
+    <div className="relative w-11/12 sm:w-full max-w-6xl list-none">
       {/* LEFT ARROW */}
       {selectedMovies.length > 0 && (
         <button
           onClick={scrollLeft}
-          className="hidden md:flex btn btn-circle absolute left-0 top-1/2 -translate-y-1/2 z-10"
+          className="w-8 h-8 md:flex btn btn-circle absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10"
         >
           ❮
         </button>
@@ -102,7 +102,7 @@ export default function CreateVoteSessionLayout({
       {selectedMovies.length > 0 && (
         <button
           onClick={scrollRight}
-          className="hidden md:flex btn btn-circle absolute right-0 top-1/2 -translate-y-1/2 z-10"
+          className="w-8 h-8 md:flex btn btn-circle absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10"
         >
           ❯
         </button>
@@ -115,16 +115,18 @@ export default function CreateVoteSessionLayout({
           className=" flex gap-4 p-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide bg-base-100 rounded-box"
         >
           {selectedMovies.map((movie) => (
-            <div key={movie.id} className="snap-start shrink-0 w-36">
-              <VoteMovieCard
-                movie={movie}
-                layout={layout}
-                CreateVotingSessionProps={{
-                  selectable: voteStarted,
-                  selected: selectedIds.includes(movie.id),
-                  toggleSelect: () => toggleSelect(movie),
-                }}
-              />
+            <div key={movie.id} className="snap-start shrink-0 w-20">
+              <div className="">
+                <VoteMovieCard
+                  movie={movie}
+                  layout={layout}
+                  CreateVotingSessionProps={{
+                    selectable: voteStarted,
+                    selected: selectedIds.includes(movie.id),
+                    toggleSelect: () => toggleSelect(movie),
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -173,13 +175,14 @@ export default function CreateVoteSessionLayout({
 
   return (
     <div className="bg-base-200">
-      {voteStarted && <div className="flex rounded-2xl  justify-center">{carouselMovies}</div>}
+      {voteStarted && (
+        <div className="flex rounded-2xl  justify-center bg-base-100 h-50 items-center m-2">
+          {selectedMovies.length > 0 ? carouselMovies: <p className='text-sm badge badge-ghost'>Add Movies From List Below</p>}
+        </div>
+      )}
       <div className="flex justify-center items-center mt-4 gap-0 flex-col sm:flex-row">
         <div>
-          <form
-            className=" flex gap-2 rounded-2xl items-center"
-            onSubmit={handleSubmitCreateVote}
-          >
+          <form className=" flex gap-2 rounded-2xl items-center" onSubmit={handleSubmitCreateVote}>
             {isCreatingVote ? (
               <div className="loading" />
             ) : (
