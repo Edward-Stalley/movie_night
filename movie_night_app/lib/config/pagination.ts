@@ -1,5 +1,5 @@
 export const PAGE_SIZES = {
-  movies: 10,
-  watchedMovies: 10,
-  searchedMovies: 5,
+  movies: 9,
+  watchedMovies: 9,
+  searchedMovies: 9,
 };
