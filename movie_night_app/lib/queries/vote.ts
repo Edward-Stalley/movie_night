@@ -8,6 +8,7 @@ import {
   VoteRow,
   MoviesQuery,
   MovieRow,
+  AllVotesFilter,
 } from '../types/db';
 import { VoteSessionStatus } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
@@ -30,6 +31,7 @@ export const getVoteSessionMovieRows = async (
 SELECT
   vs.id AS id,
   vs.movie_night_date AS "movieNightDate",
+  vs.winning_movie_id AS "winningMovieId",
   vs.created_by AS "createdBy",
   vs.created_at AS "createdAt",
   vs.status,
@@ -57,7 +59,8 @@ SELECT
   movie_night_date AS "movieNightDate",
   created_by AS "createdBy",
   created_at AS "createdAt",
-  status
+  status,
+  winning_movie_id AS "winningMovieId"
 FROM vote_sessions
     `,
   );
@@ -71,14 +74,17 @@ export async function deleteVoteSession(sessionId: number): Promise<void> {
 
 export async function closeVotingSession({
   voteSessionId,
+  winningMovieId,
 }: VoteSessionFilter): Promise<VoteSessionStatus> {
   await pool.query(
     `
     UPDATE vote_sessions 
-    SET status = 'completed'
+    SET status = 'completed',
+    winning_movie_id = $2
     WHERE id = $1
+    
     `,
-    [voteSessionId],
+    [voteSessionId, winningMovieId],
   );
 
   return 'completed';
@@ -119,7 +125,7 @@ export async function getVoteByUserMovieSession({ voteSessionId, userId, movieId
 
 export const getAllVotesForMovieSession = async ({
   voteSessionId,
-}: VoteSessionFilter): Promise<VoteRow[]> => {
+}: AllVotesFilter): Promise<VoteRow[]> => {
   const res = await pool.query(
     `
     SELECT id, vote_session_id, user_id, movie_id

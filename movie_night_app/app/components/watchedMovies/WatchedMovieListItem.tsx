@@ -30,7 +30,7 @@ export function WatchedMovieListItem({
   });
   return (
     <div className="relative flex gap-4 bg-base-300 m-2 p-2 rounded-none flex-col sm:flex-row border-b ">
-      <div className="text-lg badge font-bold pl-2 w-50 flex justify-start">{movie.title}</div>
+      <div className="text-xl font-bold pl-4 flex justify-start w-full md:w-50  ">{movie.title}</div>
       <div className="flex flex-1">
         <div className="ml-2 w-28 sm:w-32 md:w-36 shrink-0">
           <div className="relative  aspect-2/3  w-full overflow-hidden rounded-2xl">
@@ -43,7 +43,7 @@ export function WatchedMovieListItem({
             />
           </div>
         </div>
-        <div className="flex flex-col pl-4 pt-2 pb-2 gap-1 flex-1 bg-neutral rounded-2xl ml-2 mr-3 justify-between ">
+        <div className="flex flex-col pl-4 pt-2 pb-2 gap-1 flex-1 rounded-2xl ml-2 mr-3 justify-between ">
           <div>
             <label className="font-bold">Watched On:</label>
             <div className="flex justify-start pl-2 mt-1">
@@ -51,7 +51,7 @@ export function WatchedMovieListItem({
             </div>
           </div>
           <div>
-            <label className="text-primary font-bold ">Chosen By:</label>
+            <label className="font-bold ">Chosen By:</label>
             <div className=" pl-2 mt-1 ">
               <ChosenByInput movie={movie} users={users} />
             </div>

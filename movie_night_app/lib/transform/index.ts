@@ -149,6 +149,7 @@ export function toVoteSessionMovie(
   return {
     id: rows[0].id,
     movieNightDate: new Date(rows[0].movieNightDate),
+    winningMovieId: rows[0].winningMovieId,
     createdBy: rows[0].createdBy,
     createdAt: rows[0].createdAt,
     status: mapStatusToDomain(rows[0].status),
@@ -164,6 +165,7 @@ export function toVoteSession(rows: MovieNightSessionRow): VoteSession {
   return {
     id: rows.id,
     movieNightDate: new Date(rows.movieNightDate),
+    winningMovieId: rows.winningMovieId,
     createdBy: rows.createdBy,
     createdAt: rows.createdAt,
     status: mapStatusToDomain(rows.status),

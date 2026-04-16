@@ -18,7 +18,7 @@ export function VoteMovieGridItem({
   toggleSelect,
 }: VoteMovieGridItemProps) {
   return (
-    <div className="bg-primary group relative transition-transform duration-300 hover:scale-103  border-2 rounded-2xl overflow-hidden">
+    <div className="group relative transition-transform duration-300 hover:scale-103  border-2 rounded-2xl overflow-hidden">
       <div className="relative w-full aspect-2/3">
         <MoviePoster
           id={id}
