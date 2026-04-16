@@ -10,7 +10,13 @@ import { closeVotingSessionAction } from '@/lib/actions/closeVoting';
 import { useRouter } from 'next/navigation';
 import { addWatchedMovieAction } from '@/lib/actions/addWatchedMovie';
 import { useRef } from 'react';
-import { ArrowPathIcon, MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowPathIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+  MinusCircleIcon,
+  PlusCircleIcon,
+} from '@heroicons/react/20/solid';
 import { StoredMovie } from '@/lib/types/domain';
 import TieBreakerVoteCard from './TieBreakerVoteCard';
 
@@ -166,7 +172,7 @@ export default function VoteSessionLayout({
         return (
           <div
             key={movie.id}
-            className={`flex flex-col items-center bg-base-100 p-3 rounded-2xl relative ${displayWinner && 'border border-info'}`}
+            className={`flex flex-col items-center bg-base-300 p-3 rounded-2xl relative ${displayWinner && 'border border-info'}`}
           >
             <div key={movie.id} className=" shrink-0 w-36">
               <VoteMovieCard
@@ -246,7 +252,7 @@ export default function VoteSessionLayout({
       {/* SCROLL CONTAINER */}
       <div
         ref={carouselRef}
-        className="flex overflow-x-auto scroll-smooth  scrollbar-hide bg-neutral rounded-box rounded-b-none justify-start "
+        className=" flex overflow-x-auto scroll-smooth  scrollbar-hide bg-base-100 rounded-box rounded-b-none justify-start "
       >
         {moviesForVoting}
       </div>
@@ -274,7 +280,7 @@ export default function VoteSessionLayout({
       {/* SCROLL CONTAINER */}
       <div
         ref={tieBreakerCarouselRef}
-        className="flex justify-start gap-4 m-4 overflow-x-auto scroll-smooth scrollbar-hide py-2 rounded-box scroll-pl-4   "
+        className="flex justify-start gap-4 m-4  overflow-x-auto scroll-smooth scrollbar-hide py-2 rounded-box scroll-pl-4   "
       >
         {tieBreakerMovieList}
       </div>
@@ -284,11 +290,8 @@ export default function VoteSessionLayout({
   const sessionDetail = (
     <div
       key={voteSession.id}
-      className="list-row flex justify-center gap-2 items-center p-2 flex-col sm:flex-row bg-base-100"
+      className="mt-2 list-row flex justify-center gap-2 items-center p-2 flex-col sm:flex-row bg-base-100"
     >
-      {/* <div className="sm:w-fit text-xl sm:text-4xl font-thin opacity-30 sm:pr-4 flex justify-center w-full">
-        <p>Movie Night {voteSession.id}</p>
-      </div> */}
       <div className="flex w-full justify-center gap-4">
         <div className="flex gap-2">
           <Image
@@ -314,42 +317,63 @@ export default function VoteSessionLayout({
           )}
         </div>
       </div>
+      <div className="sm:w-fit text-xl sm:text-4xl font-thin opacity-30 sm:pr-4 flex justify-center w-full">
+        {/* <p>Movie Night {voteSession.id}</p> */}
+      </div>
     </div>
   );
 
   return (
-    <div className="flex flex-col flex-1 bg-base-200 justify-between pb-5">
-      <div className="w-full">{sessionDetail}</div>
-      <div className="w-full flex justify-center ">
-        <h1 className="text-2xl badge h-fit badge-secondary font-bold badge-outline text-center bg-base-300 ">
+    <div className="flex flex-col bg-base-200 pb-5 flex-1">
+      <div className="w-full mb-10">{sessionDetail}</div>
+      <div className="flex justify-center">
+        <h1 className="text-xl badge h-fit badge-secondary font-bold badge-outline text-center bg-base-300 ">
           {headerTitle}
         </h1>
       </div>
-      <div className="flex justify-center items-center w-screen bg-base-300 px-4 h-full ">
-        <div className="flex p-2 w-full justify-center ">
-          {isClosingVoting ? <div className="loading"></div> : carouselMovies}
+
+      <div className="flex flex-col flex-1 justify-between">
+
+        <div className="flex justify-center items-center w-full bg-base-200 px-4 ">
+          <div className="flex p-2 w-full justify-center">
+            {isClosingVoting ? <div className="loading"></div> : carouselMovies}
+          </div>
+        </div>
+
+        <div className="flex justify-center items-center w-full gap-4">
+          <button
+            className="btn btn-soft rounded-none w-36"
+            disabled={!voteInProgress}
+            onClick={() => router.refresh()}
+          >
+            <ArrowPathIcon className="h-5 w-5" />
+            <p>Refresh</p>
+          </button>
+          <div className="flex items-center justify-center">
+            <button
+              onClick={handleSubmitSessionFinalVote}
+              disabled={loggedInUser?.id != createdBy.id || !voteInProgress || isClosingVoting}
+              className={` text-xs btn btn-soft w-36 border p-2 text-md rounded-none ${voteInProgress ? 'btn' : 'btn-info'}`}
+            >
+              {isClosingVoting ? (
+                <span className="loading loading-spinner"></span>
+              ) : voteInProgress ? (
+                <>
+                  <LockOpenIcon className="h-5 w-5" />
+                  <p>Close Voting</p>
+                </>
+              ) : (
+                <>
+                  <LockClosedIcon className="h-5 w-5" />
+                  <p>Voting Over</p>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
-      {voteInProgress && (
-        <button className="btn btn-soft mx-6 rounded-none" onClick={() => router.refresh()}>
-          <ArrowPathIcon className="h-5 w-5" />
-        </button>
-      )}
-      {loggedInUser?.id == createdBy.id && (
-        <button
-          onClick={handleSubmitSessionFinalVote}
-          disabled={!voteInProgress || isClosingVoting}
-          className={` btn btn-soft border p-2 ml-6 mr-6 text-md rounded-t-none ${voteInProgress ? 'btn-secondary' : 'btn-info'}`}
-        >
-          {isClosingVoting ? (
-            <span className="loading loading-spinner"></span>
-          ) : voteInProgress ? (
-            'Close Voting'
-          ) : (
-            'Voting Over'
-          )}
-        </button>
-      )}
+
+      {/* )} */}
 
       {/* TO DO: ADD VOTE GRAPH */}
       {/* TIEBREAKER */}

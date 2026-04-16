@@ -5,6 +5,7 @@ import Session from './Session';
 import getUserFromId from '@/lib/utils/users/getUsersFromIds';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { ArrowPathIcon } from '@heroicons/react/16/solid';
 
 type SessionsLayoutProps = {
   sessions: VoteSession[];
@@ -13,7 +14,7 @@ type SessionsLayoutProps = {
 
 export default function SessionsLayout({ sessions, users }: SessionsLayoutProps) {
   const router = useRouter();
-
+  const headerTitle = 'Movie Night Sessions';
   const [sessionListState, setSessionListState] = useState(sessions);
 
   useEffect(() => {
@@ -43,19 +44,21 @@ export default function SessionsLayout({ sessions, users }: SessionsLayoutProps)
 
   return (
     <div className=" flex flex-col gap-2 p-2 bg-base-200 flex-1 ">
-      <div className="text-xl pl-2 pb-2 pt-4 h-fit text-left ">Movie Night Sessions</div>
+      <div className="flex justify-start mt-5">
+        <h1 className="text-xl badge h-fit badge-primary badge-soft font-bold badge-outline text-center bg-base-300 ">
+          {headerTitle}
+        </h1>
+      </div>
       <div className="flex justify-between flex-col flex-1">
         <>
-          {/* <div className="list"> */}
           <ul className="list bg-base-200">{movieNightsession}</ul>
-          {/* </div> */}
         </>
-        <button
-          className="btn btn-soft btn-primary rounded-2xl rounded-t-none"
-          onClick={() => router.refresh()}
-        >
-          Refresh Session List
-        </button>
+        <div className="flex justify-end gap-4">
+          <button className="btn btn-soft rounded-none w-36" onClick={() => router.refresh()}>
+            <ArrowPathIcon className="h-5 w-5" />
+            <p>Refresh</p>
+          </button>
+        </div>
       </div>
     </div>
   );
