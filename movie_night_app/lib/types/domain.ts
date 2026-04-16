@@ -40,6 +40,7 @@ export type VoteSessionWithMovie = {
   createdBy: number;
   createdAt: Date;
   status: VoteSessionStatus;
+  winningMovieId: number | null;
   movies: {
     id: number;
     title: string;
@@ -53,6 +54,7 @@ export type VoteSession = {
   createdBy: number;
   createdAt: Date;
   status: VoteSessionStatus;
+  winningMovieId: number | null;
 };
 
 export type VoteSessionStatus = 'inProgress' | 'completed';

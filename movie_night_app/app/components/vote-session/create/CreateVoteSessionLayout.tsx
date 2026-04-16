@@ -176,8 +176,8 @@ export default function CreateVoteSessionLayout({
   return (
     <div className="bg-base-200">
       {voteStarted && (
-        <div className="flex rounded-2xl  justify-center bg-base-100 h-50 items-center m-2">
-          {selectedMovies.length > 0 ? carouselMovies: <p className='text-sm badge badge-ghost'>Add Movies From List Below</p>}
+        <div className="flex rounded-2xl  justify-center bg-base-100 h-50 items-center m-4">
+          {selectedMovies.length > 0 ? carouselMovies: <p className='text-sm'>Add Movies From List Below</p>}
         </div>
       )}
       <div className="flex justify-center items-center mt-4 gap-0 flex-col sm:flex-row">
