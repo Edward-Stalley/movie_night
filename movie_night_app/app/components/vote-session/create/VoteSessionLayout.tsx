@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Layout, VoteByMovie, VoteMoviesLayoutProps } from '@/lib/types/ui';
 import VoteMovieCard from './VoteMovieCard';
 import { VoteKey, WatchedMovieInsert } from '@/lib/types/db';
@@ -32,7 +32,6 @@ export default function VoteSessionLayout({
   const router = useRouter();
   const [tieBreakerModalOpen, setTieBreakerModalOpen] = useState<boolean>(false);
   const [tieBreakerMovies, setTieBreakerMovies] = useState<StoredMovie[]>([]);
-  const [tieBreakerWinnerId, setTieBreakerWinnerId] = useState<number | null>(null);
   const [pendingVoteMovieId, setPendingVoteMovieId] = useState<number | null>(null);
   const [isClosingVoting, setIsClosingVoting] = useState(false);
 
@@ -74,36 +73,43 @@ export default function VoteSessionLayout({
     }
   };
 
-  const maxVotes = votesByMovie.length === 0 ? null : Math.max(...votesByMovie.map((m) => m.count));
-  const tiebreakers = maxVotes === null ? null : votesByMovie.filter((m) => m.count === maxVotes);
+  const maxVotes = votesByMovie.length > 0 ? Math.max(...votesByMovie.map((m) => m.count)) : 0;
+  const tiebreakers = votesByMovie.filter((m) => m.count === maxVotes);
 
-  let winner: VoteByMovie | null;
+  const finalizeSessionWithWinner = async (movieId: number | null) => {
+    await closeVotingSessionAction(voteSession.id, movieId);
 
-  const handleFinalVote = async (movieId: number) => {
-    setTieBreakerWinnerId(movieId);
-    await closeVotingSessionAction(voteSession.id);
+    if (!movieId) {
+      router.refresh();
+      return;
+    }
 
     const data: WatchedMovieInsert = {
-      movieId: movieId,
+      movieId,
       watchedOn: voteSession.movieNightDate.toLocaleDateString('en-CA'),
       chosenBy: createdBy.id,
     };
 
-    setTieBreakerModalOpen(false);
     await addWatchedMovieAction(data);
-
     router.refresh();
   };
 
+  // FINAL VOTE AFTER TIEBREAKER
+  const handleFinalVote = async (movieId: number) => {
+    setTieBreakerModalOpen(false);
+    finalizeSessionWithWinner(movieId);
+  };
   const voteInProgress = voteSession.status === 'inProgress';
-  const tieBreakerMovieList = tieBreakerMovies?.map((movie) => (
+
+  const tieBreakerMovieList = tieBreakerMovies.map((movie) => (
     <div className="w-40 shrink-0 " key={movie.id}>
       <TieBreakerVoteCard key={movie.id} movie={movie} finalVote={handleFinalVote} />
     </div>
   ));
 
+  // FINAL VOTE
+
   const handleSubmitSessionFinalVote = async () => {
-    if (!tiebreakers) return; // safety guard
     setIsClosingVoting(true);
 
     try {
@@ -112,32 +118,22 @@ export default function VoteSessionLayout({
         setTieBreakerModalOpen(true);
         const tieMovieIds = tiebreakers.map((t) => t.movieId);
         setTieBreakerMovies(movies.filter((movie) => tieMovieIds.includes(movie.id)));
+        setIsClosingVoting(false);
         return;
       }
 
       // FINAL PROCESS
-      await closeVotingSessionAction(voteSession.id);
+      const winner = votesByMovie.reduce<VoteByMovie | null>((highestVote, movie) => {
+        if (!highestVote || movie.count > highestVote.count) return movie;
+        return highestVote;
+      }, null);
 
-      const winner =
-        votesByMovie.length === 0
-          ? null
-          : votesByMovie.reduce((currentWinner, movie) => {
-              if (movie.count > currentWinner.count) {
-                return movie;
-              }
-              return currentWinner;
-            });
+      if (!winner) {
+        finalizeSessionWithWinner(null);
+        return;
+      }
 
-      if (!winner) return; // safety guard
-
-      const data: WatchedMovieInsert = {
-        movieId: winner.movieId,
-        watchedOn: voteSession.movieNightDate.toLocaleDateString('en-CA'),
-        chosenBy: createdBy.id,
-      };
-
-      await addWatchedMovieAction(data);
-      router.refresh();
+      finalizeSessionWithWinner(winner.movieId);
     } finally {
       setIsClosingVoting(false);
     }
@@ -150,22 +146,15 @@ export default function VoteSessionLayout({
     }) ?? false;
 
   const loggedInUserId = Number(loggedInUser?.id);
+  const voteMap = useMemo(() => new Map(votesByMovie.map((v) => [v.movieId, v])), [votesByMovie]);
 
   const moviesForVoting = (
     <div className="flex gap-2 p-4 rounded-box list-none">
       {movies.map((movie) => {
-        const voteInfo = votesByMovie.find((vote) => vote.movieId === movie.id);
+        const voteInfo = voteMap.get(movie.id);
         const userVoted = didUserVote(voteInfo);
-        const computedWinner =
-          tieBreakerWinnerId ??
-          (votesByMovie.length === 0
-            ? null
-            : votesByMovie.reduce((currentWinner, movie) => {
-                if (movie.count > currentWinner.count) return movie;
-                return currentWinner;
-              }).movieId);
 
-        const displayWinner = !voteInProgress && computedWinner === movie.id;
+        const displayWinner = !voteInProgress && voteSession.winningMovieId === movie.id;
         //voting
         const isThisMoviePending = pendingVoteMovieId === movie.id;
 
@@ -204,7 +193,7 @@ export default function VoteSessionLayout({
 
             <div className="flex flex-col gap-2 h-full w-full rounded-2xl justify-start items-center badge badge-soft p-2">
               <div className="text-3xl badge badge-secondary p-4 badge-outline">
-                {voteInfo?.count ? voteInfo?.count : 0}
+                {voteInfo?.count ?? 0}
               </div>
               <div className=" flex gap-1 w-full overflow-scroll">
                 {voteInfo?.users.map((user) => (
@@ -333,7 +322,6 @@ export default function VoteSessionLayout({
       </div>
 
       <div className="flex flex-col flex-1 justify-between">
-
         <div className="flex justify-center items-center w-full bg-base-200 px-4 ">
           <div className="flex p-2 w-full justify-center">
             {isClosingVoting ? <div className="loading"></div> : carouselMovies}

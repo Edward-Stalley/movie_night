@@ -81,7 +81,7 @@ export function ReviewRow({ loggedInUser, movie, review }: EditableReviewRowProp
   );
 
   const displayComment = (
-    <div className="wrap-break-word whitespace-pre-wrap"> {review.comment}</div>
+    <div className="wrap-break-word whitespace-pre-wrap chat chat-bubble"> {review.comment}</div>
   );
 
   const editToggleButton = (
