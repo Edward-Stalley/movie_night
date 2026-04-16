@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="sunset">
-      <body className={`${geistSans.variable} ${geistMono.variable}  min-h-dvh flex flex-col`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}  min-h-dvh flex flex-col bg-base-200`}>
         <Suspense>
           <Navbar />
         </Suspense>

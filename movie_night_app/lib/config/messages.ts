@@ -1,8 +1,8 @@
 export const messages = {
   success: {
     votes_session: { created: 'New Session Created!' },
-    watched_movies: { added: 'Movie Added to Watched.', deleted: 'Watched Movie Deleted!' },
-    movies: { added: 'Movie Added!.', deleted: 'Movie Deleted!' },
+    watched_movies: { added: 'Movie Added to Watched!', deleted: 'Watched Movie Deleted.' },
+    movies: { added: 'Movie Added!', deleted: 'Movie Deleted.' },
   },
   errors: {
     unique: {
