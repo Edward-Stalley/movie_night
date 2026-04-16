@@ -36,7 +36,7 @@ export function MovieListItem({ movie, editMode, onDelete }: MovieListItemProps)
         <div className="flex flex-col md:flex-row flex-1 gap-4">
           {/* OVERVIEW */}
           {/* TRAILER */}
-          <div className="md:w-72 md:shrink-0">
+          <div className="w-full md:w-72 md:shrink-0">
             <div className="flex-1 rounded-2xl p-2">
               <div className="border-b-2 pl-2 pr-0 pt-2 pb-2 flex justify-between items-center">
                 {movie.trailerUrl ? (
