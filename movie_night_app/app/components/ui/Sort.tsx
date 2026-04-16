@@ -4,6 +4,8 @@ import { buildSortParams } from '@/lib/utils/urls/sortParams';
 import { SortOption, SortOrder } from '@/lib/types/sort';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
+import { useEffect, useState, useTransition } from 'react';
 
 type SortProps = {
   options: SortOption[];
@@ -14,26 +16,53 @@ type SortProps = {
 export function Sort({ options, value, order }: SortProps) {
   const searchParams = useSearchParams();
 
-  const sortOptions = options;
+  const [pendingParams, setPendingParams] = useState<string | null>(null);
+  const currentParams = searchParams.toString();
+  const isPending = pendingParams !== null && pendingParams !== currentParams;
 
+  useEffect(() => {
+    if (pendingParams === currentParams) {
+      setPendingParams(null);
+    }
+  }, [currentParams, pendingParams]);
+
+  const sortOptions = options;
   return (
-    <div className="dropdown dropdown-end bg-neutral h-6 rounded-2xl items-center justify-center flex p-2">
-      <div tabIndex={0} role="button" className="btn btn-ghost btn-circle flex w-fit">
-        Sort ▼
+    <div className="dropdown dropdown-end bg-base-100 dropdown- h-6 rounded-sm items-center justify-center flex mr-2 relative">
+      <div
+        tabIndex={0}
+        role="button"
+        className="btn btn-ghost  min-h-0 h-6 flex items-center gap-2"
+      >
+        <span className="">Sort</span>
+        <span className=" flex justify-center">
+          <ChevronDownIcon className="h-5 w-5" />
+        </span>
       </div>
 
-      <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow z-50 mt-3 w-32 p-2 sm:w-44">
+      <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow z-50 mt-3 w-44 p-2 sm:w-44">
+        {isPending && (
+          <div className="loading loading-spinner absolute bottom-2 right-5 h-2 w-2 ">''</div>
+        )}
+
         {sortOptions.map((opt) => {
           const params = buildSortParams(searchParams, value, order, opt.value);
           return (
-            <li key={opt.value} className="">
+            <li key={opt.value} className="h-8">
               <Link
-                className={`px-4 py-2 hover:bg-gray-200 text-left cursor ${
-                  opt.value === value ? 'font-bold text-accent ' : ''
+                onClick={() => setPendingParams(params)}
+                className={`flex items-center justify-between w-full cursor ${
+                  opt.value === value ? 'font-bold text-primary ' : ''
                 }`}
                 href={`?${params}`}
               >
-                {opt.label}
+                <p className='text-xs'>{opt.label}</p>
+                {opt.value === value && order === 'asc' && (
+                  <ChevronDownIcon className="h-5 w-5 text-right" />
+                )}
+                {opt.value === value && order === 'desc' && (
+                  <ChevronUpIcon className="h-5 w-5 text-right" />
+                )}
               </Link>
             </li>
           );

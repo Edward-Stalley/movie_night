@@ -24,6 +24,8 @@ export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title' | 'trailerUrl'>
   priority?: boolean;
 };
 
+export type WatchedMovieDeleteHandler = () => void;
+
 export type MovieDeleteHandler = () => void;
 
 export type MovieAddHandler = () => void;

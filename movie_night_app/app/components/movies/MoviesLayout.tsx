@@ -14,7 +14,7 @@ export default function MoviesLayout({
   sortOrder,
 }: MoviesLayoutProps) {
   const [layout, setLayout] = useState<Layout>('grid');
-  const headerTitle = 'Movies';
+  const headerTitle = '';
 
   const [movieListState, setMovieListState] = useState(movies);
 

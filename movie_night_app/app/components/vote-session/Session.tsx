@@ -23,7 +23,7 @@ export default function Session({ session, createdBy, onDeleted }: SessionsListP
         href={`sessions/${session.id}`}
         className="flex flex-1 flex-col sm:flex-row sm:items-center gap-3"
       >
-        <div className="text-3xl sm:text-4xl font-thin opacity-30 tabular-nums">
+        <div className="text-2xl sm:text-4xl font-thin opacity-30 tabular-nums">
           Session {session.id}
         </div>
 
@@ -47,16 +47,13 @@ export default function Session({ session, createdBy, onDeleted }: SessionsListP
 
         <div>
           {session.status === 'inProgress' ? (
-            <div className="badge badge-info ">Vote in Progress</div>
+            <div className="badge badge-info text-xs ">Vote in Progress</div>
           ) : (
             <div className="badge badge-neutral opacity-50">Complete</div>
           )}
         </div>
       </Link>
-
-      <div>
-        <DeleteSessionButton id={session.id} className="rounded-full" onDeleted={onDeleted} />
-      </div>
+      <DeleteSessionButton id={session.id} className="rounded-full" onDeleted={onDeleted} />
     </li>
   );
 }

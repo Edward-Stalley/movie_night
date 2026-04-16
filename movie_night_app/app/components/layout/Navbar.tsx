@@ -30,7 +30,7 @@ export default async function Navbar() {
   }
 
   return (
-    <div className="navbar bg-base-300 shadow-sm">
+    <div className="navbar bg-base-300 shadow-sm h-0 border-b">
       <div className="navbar-start flex items-center">
         <NavbarMenu />
         <Link href="/" className="flex w-fit justify-start">

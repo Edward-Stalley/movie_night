@@ -22,9 +22,6 @@ export default async function WatchedMovieContent({ params }: { params: Promise<
 
   return (
     <ul className="list bg-base-300 rounded-box shadow-md flex-1 rounded-none">
-      <li className=" text-base-content text-1xl font-bold p-4 pb-2 opacity-40 tracking-wide ">
-        {m.title}
-      </li>
       <WatchedMovieCard
         movie={m}
         key={`${m.id}+${m.movieId}`}
