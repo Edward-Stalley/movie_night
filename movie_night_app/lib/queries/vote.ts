@@ -9,8 +9,9 @@ import {
   MoviesQuery,
   MovieRow,
   AllVotesFilter,
+  VoteSessionStatusDB,
 } from '../types/db';
-import { VoteSessionStatus } from '@/lib/types/domain';
+// import { VoteSessionStatusDomain } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
 
 type CreateVoteSessionQuery = {
@@ -75,7 +76,7 @@ export async function deleteVoteSession(sessionId: number): Promise<void> {
 export async function closeVotingSession({
   voteSessionId,
   winningMovieId,
-}: VoteSessionFilter): Promise<VoteSessionStatus> {
+}: VoteSessionFilter): Promise<VoteSessionStatusDB> {
   await pool.query(
     `
     UPDATE vote_sessions 
@@ -88,6 +89,27 @@ export async function closeVotingSession({
   );
 
   return 'completed';
+}
+
+export async function getVoteSessionStatus(voteSessionId: number) {
+  const res = await pool.query<{ status: string }>(
+    `SELECT status FROM vote_sessions WHERE id = $1`,
+    [voteSessionId],
+  );
+
+  return res.rows[0]?.status ?? null;
+}
+
+export async function updateSessionStatus(voteSessionId: number, sessionStatus: VoteSessionStatusDB) {
+  const res = await pool.query<{ status: string }>(
+    `UPDATE vote_sessions
+    SET status = $2
+    WHERE id = $1
+    RETURNING status
+    `,
+    [voteSessionId, sessionStatus],
+  );
+  return res.rows[0].status;
 }
 
 export async function addVote(vote: VoteKey) {

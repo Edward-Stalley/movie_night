@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
 import { Layout, VoteByMovie, VoteMoviesLayoutProps } from '@/lib/types/ui';
 import VoteMovieCard from './VoteMovieCard';
 import { VoteKey, WatchedMovieInsert } from '@/lib/types/db';
@@ -17,8 +17,9 @@ import {
   MinusCircleIcon,
   PlusCircleIcon,
 } from '@heroicons/react/20/solid';
-import { StoredMovie } from '@/lib/types/domain';
 import TieBreakerVoteCard from './TieBreakerVoteCard';
+import { useSessionPolling } from '@/lib/hooks/useSessionPolling';
+import { startTieBreakerAction } from '@/lib/actions/startTieBreakerAction';
 
 export default function VoteSessionLayout({
   movies,
@@ -30,13 +31,21 @@ export default function VoteSessionLayout({
   const [layout] = useState<Layout>('grid');
   const headerTitle = 'Vote For Movie';
   const router = useRouter();
-  const [tieBreakerModalOpen, setTieBreakerModalOpen] = useState<boolean>(false);
-  const [tieBreakerMovies, setTieBreakerMovies] = useState<StoredMovie[]>([]);
   const [pendingVoteMovieId, setPendingVoteMovieId] = useState<number | null>(null);
   const [isClosingVoting, setIsClosingVoting] = useState(false);
+  const votingOpen = voteSession.status === 'inProgress';
+
+  const refresh = useCallback(() => router.refresh(), [router]);
+
+  useSessionPolling({
+    status: voteSession.status,
+    refresh,
+  });
+
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const tieBreakerCarouselRef = useRef<HTMLDivElement>(null);
+  
   const scrollLeft = () => {
     carouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
   };
@@ -54,6 +63,10 @@ export default function VoteSessionLayout({
   };
 
   const toggleVote = async (id: number) => {
+    if (!votingOpen) {
+      alert('Voting Closed');
+      return;
+    }
     if (!loggedInUser) {
       alert('Please Login to Vote!');
       return;
@@ -68,6 +81,10 @@ export default function VoteSessionLayout({
     setPendingVoteMovieId(id);
     try {
       await toggleVoteAction(vote);
+      router.refresh();
+    } catch {
+      alert('Voting Closed.');
+      router.refresh();
     } finally {
       setPendingVoteMovieId(null);
     }
@@ -96,10 +113,16 @@ export default function VoteSessionLayout({
 
   // FINAL VOTE AFTER TIEBREAKER
   const handleFinalVote = async (movieId: number) => {
-    setTieBreakerModalOpen(false);
+    // setTieBreakerModalOpen(false);
     finalizeSessionWithWinner(movieId);
   };
   const voteInProgress = voteSession.status === 'inProgress';
+
+  const tieBreakerMovies = useMemo(() => {
+    if (voteSession.status !== 'tieBreaker') return [];
+    const tieMovieIds = tiebreakers.map((t) => t.movieId);
+    return movies.filter((m) => tieMovieIds.includes(m.id));
+  }, [voteSession.status, tiebreakers, movies]);
 
   const tieBreakerMovieList = tieBreakerMovies.map((movie) => (
     <div className="w-40 shrink-0 " key={movie.id}>
@@ -115,9 +138,7 @@ export default function VoteSessionLayout({
     try {
       // TIE BREAKER
       if (tiebreakers.length > 1) {
-        setTieBreakerModalOpen(true);
-        const tieMovieIds = tiebreakers.map((t) => t.movieId);
-        setTieBreakerMovies(movies.filter((movie) => tieMovieIds.includes(movie.id)));
+        await startTieBreakerAction(voteSession.id, 'tieBreaker');
         setIsClosingVoting(false);
         return;
       }
@@ -191,7 +212,7 @@ export default function VoteSessionLayout({
               </button>
             )}
 
-            <div className="flex flex-col gap-2 h-full w-full rounded-2xl justify-start items-center badge badge-soft p-2">
+            <div className="flex flex-col gap-2 mt-2 h-full w-full rounded-2xl justify-start items-center badge badge-soft p-2">
               <div className="text-3xl badge badge-secondary p-4 badge-outline">
                 {voteInfo?.count ?? 0}
               </div>
@@ -361,11 +382,9 @@ export default function VoteSessionLayout({
         </div>
       </div>
 
-      {/* )} */}
-
       {/* TO DO: ADD VOTE GRAPH */}
       {/* TIEBREAKER */}
-      {tieBreakerModalOpen && (
+      {voteSession.status == 'tieBreaker' && (
         <dialog className="modal modal-open p-4">
           <div className="modal-box max-w-3xl w-full overflow-hidden bg-base-100">
             <h3 className="font-bold text-2xl">Uh Oh! It's a tie.</h3>
@@ -381,16 +400,12 @@ export default function VoteSessionLayout({
               </div>
             )}
 
-            <div className="modal-action">
-              <button className="btn" onClick={() => setTieBreakerModalOpen(false)}>
-                Cancel
-              </button>
-            </div>
+            <div className="modal-action"></div>
           </div>
 
           {/* backdrop click closes */}
           <form method="dialog" className="modal-backdrop">
-            <button onClick={() => setTieBreakerModalOpen(false)}>close</button>
+            {/* <button onClick={() => }>close</button> */}
           </form>
         </dialog>
       )}

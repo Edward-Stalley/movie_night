@@ -58,7 +58,7 @@ export function WatchedMovieListItem({
           </div>
           <div className="flex  justify-end pr-5 ml-2">
             <div className="flex btn btn-outline  ">
-              <Link href={`/movies/${movie.movieId}`} className="">
+              <Link href={`/movies/${movie.movieId}`} className="" prefetch={false}>
                 <DocumentMagnifyingGlassIcon className="h-5 w-5" />
               </Link>
             </div>
