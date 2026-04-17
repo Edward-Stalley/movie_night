@@ -8,7 +8,6 @@ export async function startTieBreakerAction(
   sessionId: number,
   sessionStatus: VoteSessionStatusDomain,
 ) {
-  console.log('in tie breaker', sessionId, sessionStatus);
 
   const dbStatus = mapStatusToDb('tieBreaker');
 

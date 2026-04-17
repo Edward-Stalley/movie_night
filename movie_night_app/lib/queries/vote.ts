@@ -11,7 +11,6 @@ import {
   AllVotesFilter,
   VoteSessionStatusDB,
 } from '../types/db';
-// import { VoteSessionStatusDomain } from '@/lib/types/domain';
 import { PaginatedResult } from '@/lib/types/pagination';
 
 type CreateVoteSessionQuery = {

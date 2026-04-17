@@ -12,7 +12,6 @@ import { revalidatePath } from 'next/cache';
 export async function toggleVoteAction({ voteSessionId, userId, movieId }: VoteKey) {
   const status = await getVoteSessionStatus(voteSessionId);
   
-  console.log('status', status)
   if (!status) {
     throw new Error('Voting session not found');
   }

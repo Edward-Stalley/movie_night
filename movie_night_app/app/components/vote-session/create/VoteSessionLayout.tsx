@@ -33,19 +33,24 @@ export default function VoteSessionLayout({
   const router = useRouter();
   const [pendingVoteMovieId, setPendingVoteMovieId] = useState<number | null>(null);
   const [isClosingVoting, setIsClosingVoting] = useState(false);
-  const votingOpen = voteSession.status === 'inProgress';
-
+  const [optimisticStatus, setOptimisticStatus] = useState(voteSession.status);
+  const effectiveStatus = optimisticStatus ?? voteSession.status;
+  const votingOpen = effectiveStatus === 'inProgress';
   const refresh = useCallback(() => router.refresh(), [router]);
+  const [isPending, setTransition] = useTransition();
 
   useSessionPolling({
-    status: voteSession.status,
+    status: effectiveStatus,
     refresh,
   });
 
+  useEffect(() => {
+    setOptimisticStatus(voteSession.status);
+  }, [voteSession.status]);
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const tieBreakerCarouselRef = useRef<HTMLDivElement>(null);
-  
+
   const scrollLeft = () => {
     carouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
   };
@@ -113,16 +118,15 @@ export default function VoteSessionLayout({
 
   // FINAL VOTE AFTER TIEBREAKER
   const handleFinalVote = async (movieId: number) => {
-    // setTieBreakerModalOpen(false);
+    setOptimisticStatus('completed');
     finalizeSessionWithWinner(movieId);
   };
-  const voteInProgress = voteSession.status === 'inProgress';
-
+  const voteInProgress = effectiveStatus === 'inProgress';
   const tieBreakerMovies = useMemo(() => {
-    if (voteSession.status !== 'tieBreaker') return [];
+    if (effectiveStatus !== 'tieBreaker') return [];
     const tieMovieIds = tiebreakers.map((t) => t.movieId);
     return movies.filter((m) => tieMovieIds.includes(m.id));
-  }, [voteSession.status, tiebreakers, movies]);
+  }, [effectiveStatus, tiebreakers, movies]);
 
   const tieBreakerMovieList = tieBreakerMovies.map((movie) => (
     <div className="w-40 shrink-0 " key={movie.id}>
@@ -138,6 +142,7 @@ export default function VoteSessionLayout({
     try {
       // TIE BREAKER
       if (tiebreakers.length > 1) {
+        setOptimisticStatus('tieBreaker');
         await startTieBreakerAction(voteSession.id, 'tieBreaker');
         setIsClosingVoting(false);
         return;
@@ -150,10 +155,11 @@ export default function VoteSessionLayout({
       }, null);
 
       if (!winner) {
+        setOptimisticStatus('completed');
         finalizeSessionWithWinner(null);
         return;
       }
-
+      setOptimisticStatus('completed');
       finalizeSessionWithWinner(winner.movieId);
     } finally {
       setIsClosingVoting(false);
@@ -190,7 +196,7 @@ export default function VoteSessionLayout({
                 movie={movie}
                 layout={layout}
                 VotingSessionProps={{
-                  status: voteSession.status,
+                  status: effectiveStatus,
                   canVote: !!loggedInUser,
                 }}
               />
@@ -300,7 +306,7 @@ export default function VoteSessionLayout({
   const sessionDetail = (
     <div
       key={voteSession.id}
-      className="mt-2 list-row flex justify-center gap-2 items-center p-2 flex-col sm:flex-row bg-base-100"
+      className=" pt-10 list-row flex justify-center gap-2 items-center flex-col sm:flex-row bg-base-200"
     >
       <div className="flex w-full justify-center gap-4">
         <div className="flex gap-2">
@@ -319,8 +325,8 @@ export default function VoteSessionLayout({
           </div>
         </div>
 
-        <div className="p-1 text-xs opacity-60 tracking-wide flex pl-2 items-center">
-          {voteSession.status === 'inProgress' ? (
+        <div className=" text-xs opacity-60 tracking-wide flex pl-2 items-center">
+          {effectiveStatus === 'inProgress' ? (
             <div className="badge badge-info">In Progress</div>
           ) : (
             <div className="badge badge-info">Completed</div>
@@ -334,9 +340,9 @@ export default function VoteSessionLayout({
   );
 
   return (
-    <div className="flex flex-col bg-base-200 pb-5 flex-1">
-      <div className="w-full mb-10">{sessionDetail}</div>
-      <div className="flex justify-center">
+    <div className="flex flex-col bg-base-200 pb-5 flex-1 ">
+      <div className="w-full">{sessionDetail}</div>
+      <div className="flex justify-center bg-secondary my-6 py-2">
         <h1 className="text-xl badge h-fit badge-secondary font-bold badge-outline text-center bg-base-300 ">
           {headerTitle}
         </h1>
@@ -351,18 +357,22 @@ export default function VoteSessionLayout({
 
         <div className="flex justify-center items-center w-full gap-4">
           <button
-            className="btn btn-soft rounded-none w-36"
+            className="btn btn-soft rounded-xl w-fit"
             disabled={!voteInProgress}
-            onClick={() => router.refresh()}
+            onClick={() =>
+              setTransition(() => {
+                router.refresh();
+              })
+            }
           >
-            <ArrowPathIcon className="h-5 w-5" />
+            {isPending ? <div className="loading "></div> : <ArrowPathIcon className="h-5 w-5" />}
             <p>Refresh</p>
           </button>
           <div className="flex items-center justify-center">
             <button
               onClick={handleSubmitSessionFinalVote}
               disabled={loggedInUser?.id != createdBy.id || !voteInProgress || isClosingVoting}
-              className={` text-xs btn btn-soft w-36 border p-2 text-md rounded-none ${voteInProgress ? 'btn' : 'btn-info'}`}
+              className={` text-xs btn btn-soft w-fit border p-2 text-md rounded-xl ${voteInProgress ? 'btn' : 'btn-info'}`}
             >
               {isClosingVoting ? (
                 <span className="loading loading-spinner"></span>
@@ -384,19 +394,19 @@ export default function VoteSessionLayout({
 
       {/* TO DO: ADD VOTE GRAPH */}
       {/* TIEBREAKER */}
-      {voteSession.status == 'tieBreaker' && (
-        <dialog className="modal modal-open p-4">
-          <div className="modal-box max-w-3xl w-full overflow-hidden bg-base-100">
-            <h3 className="font-bold text-2xl">Uh Oh! It's a tie.</h3>
+      {effectiveStatus == 'tieBreaker' && (
+        <dialog className="modal modal-open p-4 ">
+          <div className="modal-box max-w-3xl w-full overflow-hidden bg-base-100 justify-center">
+            <h3 className="font-bold text-2xl text-center">Uh Oh! It's a tie.</h3>
             {loggedInUser?.id == createdBy.id && (
               <div>
-                <p className="py-4">You get the final vote!</p>
+                <p className="py-4 flex justify-center">You get the final vote!</p>
                 <div className="">{carouselTieBreakerMovies}</div>
               </div>
             )}
             {loggedInUser?.id != createdBy.id && (
-              <div>
-                <p className="py-4">Wait a sec. {createdBy.name} is choosing.</p>
+              <div className="flex justify-center">
+                <p className="py-4">Please wait a second. {createdBy.name} is choosing.</p>
               </div>
             )}
 
@@ -404,9 +414,7 @@ export default function VoteSessionLayout({
           </div>
 
           {/* backdrop click closes */}
-          <form method="dialog" className="modal-backdrop">
-            {/* <button onClick={() => }>close</button> */}
-          </form>
+          <form method="dialog" className="modal-backdrop"></form>
         </dialog>
       )}
     </div>

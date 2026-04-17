@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable react-hooks/set-state-in-effect */
 
-import { useState } from 'react';
+import { startTransition, useState, useTransition } from 'react';
 import { GridOrList } from '@/app/components/layout/GridOrList';
 import { Layout, CreateVotingSessionLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_MOVIES } from '@/lib/config/sorts';
@@ -14,6 +14,7 @@ import { useRef, useEffect } from 'react';
 import { StoredMovie } from '@/lib/types/domain';
 import { messages } from '@/lib/config/messages';
 import { handleActionToast } from '@/lib/utils/messageHandling/toastActionResult';
+import Loading from '../../layout/Loading';
 
 export default function CreateVoteSessionLayout({
   movies,
@@ -35,8 +36,8 @@ export default function CreateVoteSessionLayout({
   const dateInputclassName = { input: 'h-10' };
   const carouselRef = useRef<HTMLDivElement>(null);
   const nonCarouselMovies = movies.filter((movie) => !selectedIds.includes(movie.id));
-  const [isCreatingVote, setCreatingVote] = useState(false);
-
+  const [createStatus, setCreateStatus] = useState<'idle' | 'loading' | 'navigating'>('idle');
+  const [isPending, startTransition] = useTransition();
   //  SCROLL ARROW FUNCTIONS
   const scrollLeft = () => {
     carouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });
@@ -49,8 +50,8 @@ export default function CreateVoteSessionLayout({
   // CREATE
   const handleSubmitCreateVote = async (e: React.SubmitEvent) => {
     try {
-      setCreatingVote(true);
       e.preventDefault();
+      setCreateStatus('loading');
 
       const result = await createVotingSessionAction({
         movieNightDate,
@@ -59,14 +60,19 @@ export default function CreateVoteSessionLayout({
       });
 
       if (!handleActionToast(result, messages.success.votes_session.created)) {
+        setCreateStatus('idle');
         return;
       }
 
       localStorage.removeItem('selectedMovies');
       setSelectedMovies([]);
-      router.replace(`/vote-session/sessions/${result.data}`);
+
+      setCreateStatus('navigating');
+      startTransition(() => {
+        router.replace(`/vote-session/sessions/${result.data}`);
+      });
     } finally {
-      setCreatingVote(false);
+      // setCreateStatus('idle');
     }
   };
 
@@ -175,47 +181,58 @@ export default function CreateVoteSessionLayout({
 
   return (
     <div className="bg-base-200">
-      {voteStarted && (
-        <div className="flex rounded-2xl  justify-center bg-base-100 h-50 items-center m-4">
-          {selectedMovies.length > 0 ? carouselMovies: <p className='text-sm'>Add Movies From List Below</p>}
+      {createStatus === 'loading' || createStatus === 'navigating' ? (
+        <div className="min-h-[calc(100vh-4rem)] flex  items-center justify-center z-50">
+          <Loading />
         </div>
-      )}
-      <div className="flex justify-center items-center mt-4 gap-0 flex-col sm:flex-row">
+      ) : (
         <div>
-          <form className=" flex gap-2 rounded-2xl items-center" onSubmit={handleSubmitCreateVote}>
-            {isCreatingVote ? (
-              <div className="loading" />
-            ) : (
-              <>
-                <DateInput
-                  className={dateInputclassName}
-                  date={movieNightDate}
-                  onChange={setMovieNightDate}
-                  min={getTodayLocal()}
-                />
+          {voteStarted && (
+            <div className="flex rounded-2xl  justify-center bg-base-100 h-50 items-center m-4">
+              {selectedMovies.length > 0 ? (
+                carouselMovies
+              ) : (
+                <p className="text-sm">Add Movies From List Below</p>
+              )}
+            </div>
+          )}
+          <div className="flex justify-center items-center mt-4 gap-0 flex-col sm:flex-row">
+            <div>
+              <form
+                className=" flex gap-2 rounded-2xl items-center"
+                onSubmit={handleSubmitCreateVote}
+              >
+                <>
+                  <DateInput
+                    className={dateInputclassName}
+                    date={movieNightDate}
+                    onChange={setMovieNightDate}
+                    min={getTodayLocal()}
+                  />
 
-                <button className="btn btn-secondary rounded-xl h-9 ">Create</button>
-              </>
-            )}
-          </form>
+                  <button className="btn btn-secondary rounded-xl h-9 ">Create</button>
+                </>
+              </form>
+            </div>
+          </div>
+          {voteStarted && (
+            <GridOrList
+              layout={layout}
+              setLayout={setLayout}
+              headerTitle={headerTitle}
+              pagination={pagination}
+              sortValue={sortValue}
+              sortOrder={sortOrder}
+              sortOptions={SORT_OPTIONS_MOVIES}
+              canToggleLayout={canToggleLayout}
+              editMode={false}
+              setEditMode={() => {}}
+              displayEditToggle={false}
+            >
+              {movieList}
+            </GridOrList>
+          )}
         </div>
-      </div>
-      {voteStarted && (
-        <GridOrList
-          layout={layout}
-          setLayout={setLayout}
-          headerTitle={headerTitle}
-          pagination={pagination}
-          sortValue={sortValue}
-          sortOrder={sortOrder}
-          sortOptions={SORT_OPTIONS_MOVIES}
-          canToggleLayout={canToggleLayout}
-          editMode={false}
-          setEditMode={() => {}}
-          displayEditToggle={false}
-        >
-          {movieList}
-        </GridOrList>
       )}
     </div>
   );
