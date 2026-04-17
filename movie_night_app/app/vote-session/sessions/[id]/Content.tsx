@@ -31,8 +31,7 @@ export default async function VotingSessionContent({
   if (!voteSession || !voteSession.movies.length) {
     throw new Error(`Voting session ${numericId} has no movies`);
   }
-  console.log('sessions', sessionRows);
-
+  
   // AUTH
   const session = await auth();
   const loggedInUser = mapSessionToLoggedInUser(session);

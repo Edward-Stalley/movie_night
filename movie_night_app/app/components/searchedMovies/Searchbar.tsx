@@ -20,7 +20,7 @@ export default function Searchbar({ movieTitle, setMovieTitle }: SearchbarProps)
     });
   };
   return (
-    <div className=" bg-base-200 flex flex-col flex-1">
+    <div className=" bg-base-200 flex flex-col">
       <div className=" bg-base-200 flex items-center justify-center p-2">
         <input
           placeholder="Type Film Name..."

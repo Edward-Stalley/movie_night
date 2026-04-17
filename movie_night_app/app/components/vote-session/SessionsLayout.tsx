@@ -4,7 +4,7 @@ import { VoteSession, User } from '@/lib/types/domain';
 import Session from './Session';
 import getUserFromId from '@/lib/utils/users/getUsersFromIds';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { ArrowPathIcon } from '@heroicons/react/16/solid';
 
 type SessionsLayoutProps = {
@@ -16,6 +16,7 @@ export default function SessionsLayout({ sessions, users }: SessionsLayoutProps)
   const router = useRouter();
   const headerTitle = 'Movie Night Sessions';
   const [sessionListState, setSessionListState] = useState(sessions);
+  const [isPending, setTransition] = useTransition();
 
   useEffect(() => {
     setSessionListState(sessions);
@@ -42,6 +43,10 @@ export default function SessionsLayout({ sessions, users }: SessionsLayoutProps)
     );
   });
 
+  function setTranstion(arg0: () => void): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div className=" flex flex-col gap-2 p-2 bg-base-200 flex-1 ">
       <div className="flex justify-start mt-5">
@@ -54,8 +59,15 @@ export default function SessionsLayout({ sessions, users }: SessionsLayoutProps)
           <ul className="list bg-base-200">{movieNightsession}</ul>
         </>
         <div className="flex justify-end gap-4">
-          <button className="btn btn-soft rounded-none w-36" onClick={() => router.refresh()}>
-            <ArrowPathIcon className="h-5 w-5" />
+          <button
+            className="btn btn-soft rounded-xl w-fit"
+            onClick={() =>
+              setTransition(() => {
+                router.refresh();
+              })
+            }
+          >
+            {isPending ? <div className="loading "></div> : <ArrowPathIcon className="h-5 w-5" />}
             <p>Refresh</p>
           </button>
         </div>

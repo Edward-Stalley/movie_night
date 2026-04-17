@@ -1,5 +1,5 @@
-import { VoteSessionStatus as DbStatus } from '@/lib/types/db';
-import { VoteSessionStatus as DomainStatus } from '@/lib/types/domain';
+import { VoteSessionStatusDB as DbStatus } from '@/lib/types/db';
+import { VoteSessionStatusDomain as DomainStatus } from '@/lib/types/domain';
 
 export function mapStatusToDomain(status: DbStatus): DomainStatus {
   switch (status) {
@@ -7,6 +7,8 @@ export function mapStatusToDomain(status: DbStatus): DomainStatus {
       return 'inProgress';
     case 'completed':
       return 'completed';
+    case 'tie_breaker':
+      return 'tieBreaker';
   }
 }
 
@@ -16,5 +18,7 @@ export function mapStatusToDb(status: DomainStatus): DbStatus {
       return 'in_progress';
     case 'completed':
       return 'completed';
+    case 'tieBreaker':
+      return 'tie_breaker';
   }
 }
