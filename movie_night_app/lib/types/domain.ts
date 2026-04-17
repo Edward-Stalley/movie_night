@@ -39,7 +39,7 @@ export type VoteSessionWithMovie = {
   movieNightDate: Date;
   createdBy: number;
   createdAt: Date;
-  status: VoteSessionStatus;
+  status: VoteSessionStatusDomain;
   winningMovieId: number | null;
   movies: {
     id: number;
@@ -53,11 +53,11 @@ export type VoteSession = {
   movieNightDate: Date;
   createdBy: number;
   createdAt: Date;
-  status: VoteSessionStatus;
+  status: VoteSessionStatusDomain;
   winningMovieId: number | null;
 };
 
-export type VoteSessionStatus = 'inProgress' | 'completed';
+export type VoteSessionStatusDomain = 'inProgress' | 'completed' | 'tieBreaker';
 
 export type StoredMovie = MovieBase & {
   id: number;

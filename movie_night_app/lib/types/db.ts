@@ -50,7 +50,7 @@ export type MovieNightSessionWithMovieRow = {
   movieId: number;
   movieNightDate: Date;
   winningMovieId: number | null;
-  status: VoteSessionStatus;
+  status: VoteSessionStatusDB;
   title: string;
   posterPath: string;
 };
@@ -60,11 +60,11 @@ export type MovieNightSessionRow = {
   createdBy: number;
   movieNightDate: Date;
   createdAt: Date;
-  status: VoteSessionStatus;
+  status: VoteSessionStatusDB;
   winningMovieId: number | null;
 };
 
-export type VoteSessionStatus = 'in_progress' | 'completed';
+export type VoteSessionStatusDB = 'in_progress' | 'completed' | 'tie_breaker';
 
 export type VoteRow = {
   id: number;
