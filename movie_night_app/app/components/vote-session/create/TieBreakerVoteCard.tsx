@@ -17,7 +17,7 @@ export default function VoteMovieCard({ movie, finalVote }: TieBreakerCardCardPr
         className="btn btn-secondary h-8  w-full bottom-0 mt-2"
         onClick={() => finalVote(movie.id)}
       >
-     <EyeIcon className='h-5 w-5'/>
+        <EyeIcon className="h-5 w-5" />
       </button>
     </li>
   );

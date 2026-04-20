@@ -22,7 +22,6 @@ export function WatchedMovieListItem({
   users,
   loggedInUser,
   onDelete,
-  isDetailScreen,
   editMode,
 }: WatchedMovieListItemProps) {
   const userReview = movie.reviews.some((r) => {
@@ -30,7 +29,9 @@ export function WatchedMovieListItem({
   });
   return (
     <div className="relative flex gap-4 bg-base-300 m-2 p-2 rounded-none flex-col sm:flex-row border-b ">
-      <div className="text-xl font-bold pl-4 flex justify-start w-full md:w-50  ">{movie.title}</div>
+      <div className="text-xl font-bold pl-4 flex justify-start w-full md:w-50  ">
+        {movie.title}
+      </div>
       <div className="flex flex-1">
         <div className="ml-2 w-28 sm:w-32 md:w-36 shrink-0">
           <div className="relative  aspect-2/3  w-full overflow-hidden rounded-2xl">
