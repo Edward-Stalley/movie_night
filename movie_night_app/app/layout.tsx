@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/app/components/layout/Navbar';
 import { Suspense } from 'react';
 import ToasterComponent from './components/toast/Toaster';
+import FooterNavbar from './components/layout/FooterNavbar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,17 +30,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="sunset">
-      <body className={`${geistSans.variable} ${geistMono.variable}  min-h-dvh flex flex-col bg-base-200`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable}  min-h-dvh flex flex-col bg-base-200`}
+      >
         <Suspense>
           <Navbar />
         </Suspense>
         {/* Children (Pages) layer */}
-        <main className="flex flex-1 flex-col">
+        <main className="flex flex-1 flex-col pb-16">
           <ToasterComponent />
           {children}
         </main>
         {/* Modal layer */}
         {modal}
+        <Suspense>
+          <div className="md:hidden lg:hidden">
+            <FooterNavbar />
+          </div>
+        </Suspense>
       </body>
     </html>
   );
