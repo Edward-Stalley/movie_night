@@ -1,7 +1,7 @@
 'use client';
 /* eslint-disable react-hooks/set-state-in-effect */
 
-import { startTransition, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { GridOrList } from '@/app/components/layout/GridOrList';
 import { Layout, CreateVotingSessionLayoutProps } from '@/lib/types/ui';
 import { SORT_OPTIONS_MOVIES } from '@/lib/config/sorts';

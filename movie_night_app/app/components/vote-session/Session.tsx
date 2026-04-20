@@ -4,7 +4,6 @@ import { User, VoteSession } from '@/lib/types/domain';
 import Link from 'next/link';
 import Image from 'next/image';
 import DeleteSessionButton from '@/app/components/vote-session/DeleteVoteSessionButton';
-import { useState } from 'react';
 
 interface SessionsListProps {
   session: VoteSession;

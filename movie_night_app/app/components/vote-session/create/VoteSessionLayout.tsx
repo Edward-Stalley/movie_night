@@ -143,7 +143,7 @@ export default function VoteSessionLayout({
       // TIE BREAKER
       if (tiebreakers.length > 1) {
         setOptimisticStatus('tieBreaker');
-        await startTieBreakerAction(voteSession.id, 'tieBreaker');
+        await startTieBreakerAction(voteSession.id);
         setIsClosingVoting(false);
         return;
       }
@@ -342,7 +342,7 @@ export default function VoteSessionLayout({
   return (
     <div className="flex flex-col bg-base-200 pb-5 flex-1 ">
       <div className="w-full">{sessionDetail}</div>
-      <div className="flex justify-center bg-secondary my-6 py-2">
+      <div className="flex justify-center border-secondary border-t border-b my-6 py-2">
         <h1 className="text-xl badge h-fit badge-secondary font-bold badge-outline text-center bg-base-300 ">
           {headerTitle}
         </h1>
@@ -397,7 +397,7 @@ export default function VoteSessionLayout({
       {effectiveStatus == 'tieBreaker' && (
         <dialog className="modal modal-open p-4 ">
           <div className="modal-box max-w-3xl w-full overflow-hidden bg-base-100 justify-center">
-            <h3 className="font-bold text-2xl text-center">Uh Oh! It's a tie.</h3>
+            <h3 className="font-bold text-2xl text-center">{`Uh Oh! It's a tie.`}</h3>
             {loggedInUser?.id == createdBy.id && (
               <div>
                 <p className="py-4 flex justify-center">You get the final vote!</p>

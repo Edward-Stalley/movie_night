@@ -31,7 +31,7 @@ export default async function VotingSessionContent({
   if (!voteSession || !voteSession.movies.length) {
     throw new Error(`Voting session ${numericId} has no movies`);
   }
-  
+
   // AUTH
   const session = await auth();
   const loggedInUser = mapSessionToLoggedInUser(session);
@@ -48,7 +48,7 @@ export default async function VotingSessionContent({
     throw new Error(`Creator user ${voteSession.createdBy} not found`);
   }
 
-  const voteRows = await getAllVotesForMovieSession({ voteSessionId: numericId, });
+  const voteRows = await getAllVotesForMovieSession({ voteSessionId: numericId });
   const votes = voteRows.map(toVote);
   const votesByMovie = countVotesByMovie(votes, users);
   return (

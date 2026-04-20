@@ -4,11 +4,10 @@ import { LoggedInUser, Review, WatchedMovie } from '@/lib/types/domain';
 import StarRating from '@/app/components/shared/StarRating';
 import { useState } from 'react';
 import { InvertedCommas } from '@/app/components/icons';
-import { EditPen } from '@/app/components/icons';
 import { useRouter } from 'next/navigation';
 import { saveReview } from '@/lib/api/reviews';
 import { ReviewInsert } from '@/lib/types/db';
-import { PencilIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
 
 type EditableReviewRowProps = {
   loggedInUser?: LoggedInUser;

@@ -19,7 +19,7 @@ export default function DeleteButton({ onDelete, id, className, onDeleted }: Del
       e.preventDefault();
       e.stopPropagation();
       await onDelete(id);
-      onDeleted && onDeleted(id);
+      onDeleted?.(id);
     } finally {
       setIsDeleting(false);
     }

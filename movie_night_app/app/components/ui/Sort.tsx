@@ -5,7 +5,7 @@ import { SortOption, SortOrder } from '@/lib/types/sort';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 
 type SortProps = {
   options: SortOption[];
@@ -56,7 +56,7 @@ export function Sort({ options, value, order }: SortProps) {
                 }`}
                 href={`?${params}`}
               >
-                <p className='text-xs'>{opt.label}</p>
+                <p className="text-xs">{opt.label}</p>
                 {opt.value === value && order === 'asc' && (
                   <ChevronDownIcon className="h-5 w-5 text-right" />
                 )}
