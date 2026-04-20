@@ -10,12 +10,7 @@ type SearchedMovieGridItemProps = {
   editMode: boolean;
 };
 
-export function SearchedMovieGridItem({
-  movie,
-  urlRoute,
-  onAdd,
-  editMode,
-}: SearchedMovieGridItemProps) {
+export function SearchedMovieGridItem({ movie, urlRoute, onAdd }: SearchedMovieGridItemProps) {
   return (
     <div className="group relative transition-transform duration-300 hover:scale-103 bg-base-300 border-2 rounded-2xl overflow-hidden">
       <div className="relative w-full aspect-2/3">

@@ -43,10 +43,6 @@ export default function SessionsLayout({ sessions, users }: SessionsLayoutProps)
     );
   });
 
-  function setTranstion(arg0: () => void): void {
-    throw new Error('Function not implemented.');
-  }
-
   return (
     <div className=" flex flex-col gap-2 p-2 bg-base-200 flex-1 ">
       <div className="flex justify-start mt-5">

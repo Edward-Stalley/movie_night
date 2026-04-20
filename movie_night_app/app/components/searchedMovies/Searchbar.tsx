@@ -30,11 +30,8 @@ export default function Searchbar({ movieTitle, setMovieTitle }: SearchbarProps)
           className="input m-2 text-base-content rounded-2xl"
         ></input>
 
-        <button
-          onClick={handleSearch}
-          className="btn rounded-2xl w-18 btn-outline "
-        >
-          {isPending ? <div className=" loading" /> : <div className='text-md'>Search</div>}
+        <button onClick={handleSearch} className="btn rounded-2xl w-18 btn-outline ">
+          {isPending ? <div className=" loading" /> : <div className="text-md">Search</div>}
         </button>
       </div>
     </div>

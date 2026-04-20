@@ -22,9 +22,7 @@ export default function Toolbar({
         {/* LEFT GROUP */}
         <div className="flex sm:gap-2 gap-1 ml-2 h-5">
           {canToggleLayout && <LayoutToggle layout={layout} onChange={setLayout} />}
-          {displayEditToggle  && (
-            <EditModeToggle editMode={editMode} setEditMode={setEditMode} />
-          )}
+          {displayEditToggle && <EditModeToggle editMode={editMode} setEditMode={setEditMode} />}
         </div>
 
         {/* RIGHT GROUP */}
