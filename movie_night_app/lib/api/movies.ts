@@ -1,5 +1,3 @@
-// lib/api/movies.ts
-
 import { SearchedMovie, StoredMovie } from '../types/domain';
 
 export async function deleteMovieFromMovies(movie: StoredMovie) {
