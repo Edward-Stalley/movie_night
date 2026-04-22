@@ -7,7 +7,10 @@ Built with **Next.js, Tailwind CSS, DaisyUI, TMDB API**, focusing on clean UX, r
 ---
 
 ## 🌐 Live Demo
-👉 [Movie Night](https://movie-night-chitose.vercel.app/)
+👉 [Movie Night](https://movie-night-chitose.vercel.app/) 
+
+-- Mobile Styling [done]
+-- Desktop Styling [Work in Progress]
 
 ---
 
