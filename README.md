@@ -11,30 +11,6 @@ Built with **Next.js, Tailwind CSS, DaisyUI, TMDB API**, focusing on clean UX, r
 
 ---
 
-## 📸 Screenshots
-
-> Add screenshots of your app here later
-
-### 🏠 Landing Page
-![Home Screenshot](./screenshots/home.png)
-
-### 🔍 Search Feature View
-![Feature Screenshot](./screenshots/feature.png)
-
-### 🎬 Movies View
-![Mobile Screenshot](./screenshots/mobile.png)
-
-### 📱 Mobile View
-![Mobile Screenshot](./screenshots/mobile.png)
-
-### 👀 Watched View
-![Mobile Screenshot](./screenshots/mobile.png)
-
-### 📋 Detail View
-![Mobile Screenshot](./screenshots/mobile.png)
-
----
-
 ## ✨ Features
 
 - Browse and interact with content in real-time
@@ -83,3 +59,24 @@ Built with **Next.js, Tailwind CSS, DaisyUI, TMDB API**, focusing on clean UX, r
 - Followed **component-based architecture** for reusable UI elements
 - Prioritized **mobile-first responsive design**
 - Focused on **UX states (loading / empty / error)** to improve user experience
+
+## 📸 Screenshots
+
+### 🏠 Landing Page
+![Home Screenshot](./screenshots/landing-screen.png)
+
+### 🔍 Create Movie Night Session View
+![Feature Screenshot](./screenshots/create-screen.png)
+
+### 🎬 Movies View
+![Mobile Screenshot](./screenshots/movies-screen.png)
+
+### 👀 Watched View
+![Mobile Screenshot](./screenshots/watched-reviews-screen.png)
+
+### 📋 Detail View
+![Mobile Screenshot](./screenshots/details-screen.png)
+
+---
+
+
