@@ -1,4 +1,4 @@
-#  🍿 [Movie Night]
+#  🍿 Movie Night
 
 A full-stack web application that allows users to **to plan/schedule movie nights with friends by shortlisting films, voting, and keeping a record and reviews of watched films.**.
 
