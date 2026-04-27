@@ -22,7 +22,7 @@ export type MoviePoster = {
   disableLink?: boolean;
   priority?: boolean;
   
-  posterPath: string;
+  posterPath: string | null;
   title: string | null;
   trailerUrl?: string | null;
 
