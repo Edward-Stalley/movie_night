@@ -1,5 +1,4 @@
 'use client';
-/* eslint-disable react-hooks/set-state-in-effect */
 
 import { useState, useTransition } from 'react';
 import { GridOrList } from '@/app/components/layout/GridOrList';
@@ -37,7 +36,7 @@ export default function CreateVoteSessionLayout({
   const carouselRef = useRef<HTMLDivElement>(null);
   const nonCarouselMovies = movies.filter((movie) => !selectedIds.includes(movie.id));
   const [createStatus, setCreateStatus] = useState<'idle' | 'loading' | 'navigating'>('idle');
-  const [isPending, startTransition] = useTransition();
+  const [startTransition] = useTransition();
   //  SCROLL ARROW FUNCTIONS
   const scrollLeft = () => {
     carouselRef.current?.scrollBy({ left: -300, behavior: 'smooth' });

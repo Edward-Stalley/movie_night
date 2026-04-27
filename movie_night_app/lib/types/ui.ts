@@ -3,7 +3,6 @@ import {
   User,
   SearchedMovie,
   WatchedMovie,
-  MovieBase,
   StoredMovie,
   VoteSession,
 } from '@/lib/types/domain';
