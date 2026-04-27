@@ -3,7 +3,6 @@ import {
   User,
   SearchedMovie,
   WatchedMovie,
-  MovieBase,
   StoredMovie,
   VoteSession,
 } from '@/lib/types/domain';
@@ -15,24 +14,22 @@ import {
   WatchedMovieSortValue,
 } from '@/lib/types/sort';
 
-export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title' | 'trailerUrl'> & {
+export type MoviePoster = {
   id?: number;
   urlRoute?: string;
   selected?: boolean;
   className?: string;
   disableLink?: boolean;
   priority?: boolean;
+  
+  posterPath: string | null;
+  title: string | null;
+  trailerUrl?: string | null;
+
 };
 
-export type WatchedMovieDeleteHandler = () => void;
 
-export type MovieDeleteHandler = () => void;
-
-export type MovieAddHandler = () => void;
-
-export type WatchedMovieAddHandler = () => void;
-
-export type SearchedMovieAddHandler = () => void;
+export type VoidHandler = () => void;
 
 export type IsDetailScreen = boolean;
 
@@ -67,17 +64,17 @@ export type WatchedMovieCardProps = {
 export type IconProps = React.SVGProps<SVGSVGElement>;
 
 export type DeleteMovieButtonProps = {
-  onDelete: MovieDeleteHandler;
+  onDelete: VoidHandler;
   isDetailScreen: IsDetailScreen;
 };
 
 export type AddWatchedMovieButtonProps = {
-  onAdd: MovieAddHandler;
+  onAdd: VoidHandler;
   isDetailScreen: IsDetailScreen;
 };
 
 export type AddSearchedMovieButtonProps = {
-  onAdd: SearchedMovieAddHandler; // CHECK delete should be add?
+  onAdd: VoidHandler;
   isDetailScreen: IsDetailScreen;
 };
 

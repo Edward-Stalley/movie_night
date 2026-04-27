@@ -1,8 +1,4 @@
-import {
-  MovieDeleteHandler,
-  MoviePoster as MoviePosterTypes,
-  WatchedMovieAddHandler,
-} from '@/lib/types/ui';
+import { VoidHandler, MoviePoster as MoviePosterTypes } from '@/lib/types/ui';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { DeleteMovieButton } from '@/app/components/shared/DeleteMovieButton';
 import { AddMovieToWatchedButton } from './AddMovieToWatchedButton';
@@ -10,8 +6,8 @@ import Image from 'next/image';
 import { toIso } from '@/lib/transform';
 
 type MovieGridItemProps = MoviePosterTypes & {
-  onDelete: MovieDeleteHandler;
-  onAdd?: WatchedMovieAddHandler;
+  onDelete: VoidHandler;
+  onAdd?: VoidHandler;
   watchedOn?: Date;
   chosenByName?: string;
   chosenByImage?: string;
