@@ -15,14 +15,20 @@ import {
   WatchedMovieSortValue,
 } from '@/lib/types/sort';
 
-export type MoviePoster = Pick<MovieBase, 'posterPath' | 'title' | 'trailerUrl'> & {
+export type MoviePoster = {
   id?: number;
   urlRoute?: string;
   selected?: boolean;
   className?: string;
   disableLink?: boolean;
   priority?: boolean;
+  
+  posterPath: string;
+  title: string | null;
+  trailerUrl?: string | null;
+
 };
+
 
 export type VoidHandler = () => void;
 

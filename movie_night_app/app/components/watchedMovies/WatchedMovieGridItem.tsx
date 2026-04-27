@@ -1,7 +1,4 @@
-import {
-  VoidHandler,
-  MoviePoster as MoviePosterTypes,
-} from '@/lib/types/ui';
+import { VoidHandler, MoviePoster as MoviePosterTypes } from '@/lib/types/ui';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { DeleteMovieButton } from '@/app/components/shared/DeleteMovieButton';
 import { AddMovieToWatchedButton } from './AddMovieToWatchedButton';
