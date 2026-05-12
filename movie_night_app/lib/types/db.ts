@@ -39,7 +39,7 @@ export type MovieRow = {
   posterPath: string | null;
   tmdbId: number;
   addedBy: number;
-  trailerUrl: string; // 未実装 Need to implement
+  trailerUrl: string;
   addedOn: Date;
 };
 

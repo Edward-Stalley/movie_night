@@ -1,21 +1,17 @@
-import {
-  MovieDeleteHandler,
-  MoviePoster as MoviePosterTypes,
-  WatchedMovieAddHandler,
-} from '@/lib/types/ui';
+import { MoviePoster as MoviePosterTypes, VoidHandler } from '@/lib/types/ui';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { DeleteMovieButton } from '../shared/DeleteMovieButton';
 import { AddMovieToWatchedButton } from '@/app/components/watchedMovies/AddMovieToWatchedButton';
 
 type MovieGridItemProps = MoviePosterTypes & {
-  onDelete: MovieDeleteHandler;
-  onAdd?: WatchedMovieAddHandler;
+  onDelete: VoidHandler;
+  onAdd?: VoidHandler;
   selectable?: boolean;
   selected?: boolean;
-  toggleSelect?: () => void;
+  toggleSelect?: VoidHandler;
   voteInSession?: boolean;
   voteCompleted?: boolean;
-  toggleVote?: () => void;
+  toggleVote?: VoidHandler;
   index?: number;
   editMode: boolean;
 };

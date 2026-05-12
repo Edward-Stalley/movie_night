@@ -1,11 +1,11 @@
-import { MoviePoster as MoviePosterTypes } from '@/lib/types/ui';
+import { MoviePoster as MoviePosterTypes, VoidHandler } from '@/lib/types/ui';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/16/solid';
 
 type VoteMovieGridItemProps = MoviePosterTypes & {
   selectable?: boolean;
   selected?: boolean;
-  toggleSelect?: () => void;
+  toggleSelect?: VoidHandler;
 };
 
 export function VoteMovieGridItem({

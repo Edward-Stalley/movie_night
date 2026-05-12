@@ -3,7 +3,7 @@ import ChosenByInput from '../ui/ChosenByInput';
 import { ReviewRow } from './reviews/ReviewRow';
 import { ReviewRowAdd } from './reviews/ReviewRowAdd';
 import { LoggedInUser, Review, User, WatchedMovie } from '@/lib/types/domain';
-import { IsDetailScreen, MovieDeleteHandler } from '@/lib/types/ui';
+import { IsDetailScreen, VoidHandler } from '@/lib/types/ui';
 import WatchedDateInput from './WatchedDateInput';
 import Link from 'next/link';
 import { DocumentMagnifyingGlassIcon, TrashIcon } from '@heroicons/react/20/solid';
@@ -12,7 +12,7 @@ type WatchedMovieListItemProps = {
   movie: WatchedMovie;
   users: User[];
   loggedInUser?: LoggedInUser;
-  onDelete: MovieDeleteHandler;
+  onDelete: VoidHandler;
   isDetailScreen: IsDetailScreen;
   editMode: boolean;
 };

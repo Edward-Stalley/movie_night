@@ -5,7 +5,7 @@ import { SortOption, SortOrder } from '@/lib/types/sort';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type SortProps = {
   options: SortOption[];
@@ -19,12 +19,6 @@ export function Sort({ options, value, order }: SortProps) {
   const [pendingParams, setPendingParams] = useState<string | null>(null);
   const currentParams = searchParams.toString();
   const isPending = pendingParams !== null && pendingParams !== currentParams;
-
-  useEffect(() => {
-    if (pendingParams === currentParams) {
-      setPendingParams(null);
-    }
-  }, [currentParams, pendingParams]);
 
   const sortOptions = options;
   return (
@@ -42,7 +36,7 @@ export function Sort({ options, value, order }: SortProps) {
 
       <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box shadow z-50 mt-3 w-44 p-2 sm:w-44">
         {isPending && (
-          <div className="loading loading-spinner absolute bottom-2 right-5 h-2 w-2 ">''</div>
+          <div className="loading loading-spinner absolute bottom-2 right-5 h-2 w-2 "/>
         )}
 
         {sortOptions.map((opt) => {

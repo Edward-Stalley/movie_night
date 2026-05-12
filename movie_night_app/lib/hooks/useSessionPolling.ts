@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { VoidHandler } from '../types/ui';
 
 type Status = 'inProgress' | 'completed' | 'tieBreaker';
 
 type UseSessionPollingProps = {
   status: Status;
-  refresh: () => void;
+  refresh: VoidHandler;
 };
 
 export function useSessionPolling({ status, refresh }: UseSessionPollingProps) {

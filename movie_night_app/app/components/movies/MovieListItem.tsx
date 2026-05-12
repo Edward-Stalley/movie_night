@@ -4,12 +4,12 @@ import { TrailerLinkButton } from '../shared/TrailerLinkButton';
 import { YouTubeEmbed } from '@next/third-parties/google';
 import { getYouTubeId } from '@/lib/utils/tmdb/getYoutubeId';
 import { TrashIcon, VideoCameraIcon, VideoCameraSlashIcon } from '@heroicons/react/20/solid';
-import { WatchedMovieDeleteHandler } from '@/lib/types/ui';
+import { VoidHandler } from '@/lib/types/ui';
 
 type MovieListItemProps = {
   movie: StoredMovie;
   editMode: boolean;
-  onDelete: WatchedMovieDeleteHandler;
+  onDelete: VoidHandler;
 };
 
 export function MovieListItem({ movie, editMode, onDelete }: MovieListItemProps) {

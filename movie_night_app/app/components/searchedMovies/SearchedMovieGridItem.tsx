@@ -1,10 +1,10 @@
-import { SearchedMovieAddHandler } from '@/lib/types/ui';
+import { VoidHandler } from '@/lib/types/ui';
 import { MoviePoster } from '@/app/components/shared/MoviePoster';
 import { AddSearchedMovieToMoviesButton } from './AddSearchedMovieToMoviesButton';
 import { SearchedMovie } from '@/lib/types/domain';
 
 type SearchedMovieGridItemProps = {
-  onAdd: SearchedMovieAddHandler;
+  onAdd: VoidHandler;
   movie: SearchedMovie;
   urlRoute?: string;
   editMode: boolean;

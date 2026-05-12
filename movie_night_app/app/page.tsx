@@ -115,13 +115,15 @@ export default function Home() {
             <div className="flex flex-col h-full items-center justify-center  ">
               <h1
                 className="text-6xl font-extrabold text-secondary text-outline 
-                     [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans"
+                     [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans bg-clip-text
+  drop-shadow-lg"
               >
                 Movie
               </h1>
               <h1
                 className="text-6xl font-extrabold text-secondary text-outline 
-                     [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans ml-10"
+                     [text-shadow:0_4px_20px_rgba(0,0,0,0.8)] font-sans ml-10 bg-clip-text
+  drop-shadow-lg"
               >
                 Night
               </h1>
